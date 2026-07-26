@@ -401,6 +401,11 @@ button.act.prim:hover{filter:brightness(1.05)}
 .card.out .ph img{filter:grayscale(1) brightness(.5)}
 .tagout{position:absolute;top:9px;left:9px;background:rgba(0,0,0,.82);color:var(--warn);
  font-size:10.5px;padding:3px 8px;border-radius:5px;letter-spacing:.04em;font-weight:650}
+.tagback{position:absolute;bottom:9px;left:9px;z-index:2;background:#123a1e;color:#7be39a;font-size:9.5px;font-weight:800;letter-spacing:.4px;padding:3px 7px;border-radius:5px;text-transform:uppercase}
+.slotout{position:absolute;top:4px;left:4px;z-index:3;background:#3a2020;color:#ff8f8f;font-size:8.5px;font-weight:800;padding:2px 5px;border-radius:4px}
+.slotback{position:absolute;top:4px;left:4px;z-index:3;background:#123a1e;color:#7be39a;font-size:8.5px;font-weight:800;padding:2px 5px;border-radius:4px}
+.slotw.isout img{opacity:.45}
+.fsubtog{margin-left:6px;font-size:12px;color:var(--dim)}
 .tagnew{position:absolute;top:9px;left:9px;background:var(--new);color:#05121e;
  font-size:10px;padding:3px 8px;border-radius:5px;letter-spacing:.05em;font-weight:700}
 .tagvid{position:absolute;top:9px;left:9px;background:#a978ff;color:#12081f;
@@ -517,6 +522,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
    <input type="range" id="pmax" min="0" max="__PMAX__" value="__PMAX__" step="5"></div>
   <label class="tog"><input type="checkbox" id="only" checked> in stock only</label>
   <label class="tog"><input type="checkbox" id="fitsme" checked> fits me (hide S&#8209;only)</label>
+  <label class="tog"><input type="checkbox" id="hidesaved"> hide saved</label>
   <button class="act" id="copyfav">Copy saved list</button>
   <button class="act" id="dlfav">Download saved</button>
  </div>
@@ -529,6 +535,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
    <button class="fsub" data-fs="top">&#9733; Top Fits<span class="n" id="topn"></span></button>
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
    <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
+   <label class="tog fsubtog"><input type="checkbox" id="hidesavedfits"> hide saved outfits</label>
    <span class="fithint">Pick each piece &middot; mix &amp; match &middot; Surprise Me for a starting point</span>
   </div>
   <div id="buildmode">
@@ -623,6 +630,11 @@ const savedUrls = loadSaved();
 // own list is authoritative so removing a saved piece sticks and never silently reappears.
 if(!_hadSaved){ D.forEach(r=>{ if(r.f) savedUrls.add(r.u); }); }
 const favs=new Set(D.filter(r=>savedUrls.has(r.u)).map(r=>r.id));
+const SKEY='streetwear-catalog-stock-v1';
+function loadStock(){ try{return JSON.parse(localStorage.getItem(SKEY))||{};}catch(e){return {};} }
+const _prevStock=loadStock(); const restocked=new Set();
+D.forEach(r=>{ if(savedUrls.has(r.u) && _prevStock[r.u]===false && r.a===true) restocked.add(r.u); });
+function saveStockState(){ const st={}; D.forEach(r=>{ if(savedUrls.has(r.u)) st[r.u]=!!r.a; }); try{localStorage.setItem(SKEY,JSON.stringify(st));}catch(e){} }
 persist();
 const $=id=>document.getElementById(id);
 // ---- saved OUTFITS (whole fits) — a separate store from saved pieces ----
@@ -700,8 +712,9 @@ function filtered(){
        pm=+$('pmax').value, pn=+$('pmin').value,
        only=$('only').checked, fits=$('fitsme').checked;
  let out=D.filter(r=>
-   (!active.size||active.has(r.c)) && (!br||r.b===br) && (!colf||r.col===colf) && (!only||r.a) &&
+   (!active.size||active.has(r.c)) && (!br||r.b===br) && (!colf||r.col===colf) && (!only||r.a||showFav) &&
    (!fits||!r.sm) && (!showPend||r.n) && (!showVid||r.v) &&
+   (!$('hidesaved').checked||showFav||!savedUrls.has(r.u)) &&
    (!showFav||favs.has(r.id)) &&
    (!showND||r.nd) &&
    (!showBW||((r.c==='tee'||r.c==='longsleeve')&&(r.col==='black'||r.col==='white'))) &&
@@ -721,6 +734,7 @@ function card(r){
   <a class="ph" href="${esc(r.u)}" target="_blank" rel="noopener">
    ${r.i?`<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">`:''}
    ${r.n?'<span class="tagnew">BEST OF</span>':(r.v?'<span class="tagvid">VIDEO</span>':(r.a?'':'<span class="tagout">SOLD OUT</span>'))}
+   ${restocked.has(r.u)?'<span class="tagback">BACK IN STOCK</span>':''}
    ${r.sm?'<span class="tagsm">S only</span>':''}
    <span class="cat">${cl?cl[1]:r.c}</span></a>
   <div class="body"><div class="brand">${esc(r.b)}</div>
@@ -754,7 +768,7 @@ $('grid').addEventListener('click',e=>{
 });
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
-['q','brand','sort','only','fitsme','colf'].forEach(id=>$(id).addEventListener('input',()=>{shown=PAGE;render()}));
+['q','brand','sort','only','fitsme','colf','hidesaved'].forEach(id=>{const el=$(id); if(el) el.addEventListener('input',()=>{shown=PAGE;render()});});
 $('pmax').addEventListener('input',e=>{$('pv').textContent=e.target.value;shown=PAGE;render()});
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');
  setTimeout(()=>t.classList.remove('show'),2200);}
@@ -982,9 +996,13 @@ function fitHtml(f){
      <button class="act sm" data-use="${f.i}">Use &amp; edit</button></div></div>
    <div class="slots">${slots}</div></div>`;
 }
+function fitSig(f){ return SLOTORDER.map(k=>f.items[k]?f.items[k].u:"").join("|"); }
+function savedFitSigs(){ return new Set(savedFits.map(f=>SLOTORDER.map(k=>f.items[k]?f.items[k].u:"").join("|"))); }
+function hideSavedFitsOn(){ const el=$("hidesavedfits"); return !!(el&&el.checked); }
 function fitsFiltered(){
  const fm=$('fformula').value, bud=+$('fbudget').value, srt=$('fsort').value;
  let out=FITS.filter(f=>(!fm||f.formula===fm)&&fitTotal(f)<=bud);
+ if(hideSavedFitsOn()){ const sv=savedFitSigs(); out=out.filter(f=>!sv.has(fitSig(f))); }
  if(srt==='pa')out=[...out].sort((a,b)=>fitTotal(a)-fitTotal(b));
  else if(srt==='pd')out=[...out].sort((a,b)=>fitTotal(b)-fitTotal(a));
  else if(srt==='f')out=[...out].sort((a,b)=>a.formula.localeCompare(b.formula));
@@ -1012,7 +1030,9 @@ function fitScore(f, prefFormulas, prefBrands){
 function renderTop(){
  const prefFormulas=new Set(savedFits.map(x=>x.note));
  const prefBrands=new Set(); D.forEach(r=>{ if(savedUrls.has(r.u)) prefBrands.add(r.b); });
- const scored=FITS.map(f=>fitScore(f,prefFormulas,prefBrands))
+ let pool=FITS;
+ if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=FITS.filter(f=>!sv.has(fitSig(f))); }
+ const scored=pool.map(f=>fitScore(f,prefFormulas,prefBrands))
    .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
  const top=scored.slice(0,60);
  const anyLiked=savedUrls.size>0 || savedFits.length>0;
@@ -1060,7 +1080,9 @@ function renderSaved(){
  box.innerHTML=savedFits.map((f,idx)=>{
   if(q){ const hay=((f.note||'')+' '+Object.values(f.items).map(p=>p.b+' '+p.t).join(' ')).toLowerCase(); if(!hay.includes(q)) return ''; }
   const slots=SLOTORDER.filter(k=>f.items[k]).map(k=>{const r=f.items[k];
-    return `<div class="slotw"><button class="sfav${savedUrls.has(r.u)?' on':''}" data-sfav="${esc(r.u)}" title="Save this piece">&#9829;</button>`+
+    const _cur=D.find(x=>x.u===r.u); const _out=_cur&&!_cur.a; const _back=restocked.has(r.u);
+    const _badge=_back?'<span class="slotback">BACK</span>':(_out?'<span class="slotout">SOLD OUT</span>':'');
+    return `<div class="slotw${_out?' isout':''}">${_badge}<button class="sfav${savedUrls.has(r.u)?' on':''}" data-sfav="${esc(r.u)}" title="Save this piece">&#9829;</button>`+
      `<a class="slot" href="${esc(r.u)}" target="_blank" rel="noopener"><div class="lab">${k}</div>`+
      `<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">`+
      `<div class="m"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div><div class="pp">${gbp(r.g)}</div></div></a></div>`;
@@ -1151,6 +1173,7 @@ function setFitSub(which){
  else if(which==='saved') renderSaved();
 }
 document.getElementById('fitsub').addEventListener('click',e=>{const b=e.target.closest('.fsub'); if(b) setFitSub(b.dataset.fs);});
+{const hsf=$('hidesavedfits'); if(hsf) hsf.addEventListener('change',()=>{ if($('topmode')&&!$('topmode').hidden) renderTop(); else if($('looksmode')&&!$('looksmode').hidden) renderFits(); });}
 
 $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on')); b.classList.add('on');
@@ -1168,6 +1191,7 @@ $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
  <td>${s.product_count??''}</td><td>${esc(String(s.note||s.platform||'').slice(0,150))}</td></tr>`;
 }).join('');
 render();
+saveStockState();
 }
 (function(){var GK='cat-gate-pw';
  if(!__ENC__){ var g0=document.getElementById('gate'); if(g0)g0.remove(); startApp(__PLAIN__); return; }
