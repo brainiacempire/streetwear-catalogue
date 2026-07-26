@@ -476,7 +476,7 @@
  },
  {
   "domain": "eu.stussy.com",
-  "brand": "St\u00fcssy",
+  "brand": "Stüssy",
   "cur": "EUR"
  },
  {
@@ -516,7 +516,7 @@
  },
  {
   "domain": "aimeleondore.com",
-  "brand": "Aim\u00e9 Leon Dore",
+  "brand": "Aimé Leon Dore",
   "cur": "USD"
  },
  {
@@ -661,7 +661,7 @@
  },
  {
   "domain": "helascaps.com",
-  "brand": "H\u00e9las",
+  "brand": "Hélas",
   "cur": "EUR"
  },
  {
@@ -898,5 +898,10 @@
   "domain": "colorfulstandard.com",
   "brand": "Colorful Standard",
   "cur": "EUR"
+ },
+ {
+  "domain": "garciago.com",
+  "brand": "Garciago",
+  "cur": "USD"
  }
 ]
