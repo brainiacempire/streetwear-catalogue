@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Aggregate all scraped rows into one self-contained interactive HTML catalog."""
-import json, glob, os, collections, re
+import json, glob, os, collections, re, hashlib, base64
 
 CATS = [("tee","Tees"),("longsleeve","Longsleeves"),("top","Tops"),
         ("hoodie_sweat","Hoodies & Sweats"),("windrunner","Windrunners & Fleece"),
@@ -488,7 +488,8 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .vpt{padding:5px 7px;font-size:10.5px;line-height:1.25;color:var(--dim)}
 .vpt .vb{display:block;color:#fff;font-weight:600;text-transform:uppercase;font-size:9.5px}
 .vpt .vg{display:block;color:#fff;font-weight:700;margin-top:2px}
-</style></head><body>
+.gate{position:fixed;inset:0;z-index:99999;background:#0b0b0f;display:flex;align-items:center;justify-content:center}.gatebox{width:330px;max-width:86vw;text-align:center;color:#eee}.gatelogo{font-size:30px;color:#ff5c8a;margin-bottom:12px}.gatebox h1{font-size:21px;margin:0 0 6px;letter-spacing:.3px}.gatebox p{color:#8a8a93;font-size:13px;margin:0 0 18px;line-height:1.5}.gatebox input{width:100%;padding:12px 14px;border:1px solid #333;background:#15151c;color:#fff;border-radius:10px;font-size:15px;box-sizing:border-box}.gatebox input:focus{outline:none;border-color:#ff5c8a}.gatebox button{width:100%;margin-top:10px;padding:12px;border:0;background:#ff5c8a;color:#111;font-weight:700;border-radius:10px;font-size:15px;cursor:pointer}.gerr{color:#ff6b6b;font-size:12.5px;min-height:16px;margin-top:10px}</style></head><body>
+<div id="gate" class="gate" hidden><div class="gatebox"><div class="gatelogo">&#9670;</div><h1>Private</h1><p>Enter your password to view the catalogue.</p><input id="gpw" type="password" placeholder="Password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button id="gbtn">Enter</button><div id="gerr" class="gerr"></div></div></div>
 <header><div class="wrap">
  <div class="top">
   <div><h1>__TITLE__</h1>
@@ -596,7 +597,13 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div id="pvslots" class="pvslots"></div></div></div>
 <div id="toast"></div>
 <script>
-const D=__DATA__, CATS=__CATS__, ST=__STATUS__, OUT=__OUTFITS__;
+const __ENC__=__ENCBLOB__;
+const __PLAIN__=__PLAINDATA__;
+async function _dk(pw,salt,it){var kb=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:it,hash:'SHA-256'},kb,{name:'AES-GCM',length:256},false,['decrypt']);}
+function _b64(x){var b=atob(x),a=new Uint8Array(b.length),i;for(i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+async function _unlock(pw){var k=await _dk(pw,_b64(__ENC__.salt),__ENC__.it);var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(__ENC__.iv)},k,_b64(__ENC__.ct));return JSON.parse(new TextDecoder().decode(pt));}
+function startApp(data){
+const D=data.D, CATS=__CATS__, ST=data.ST, OUT=data.OUT;
 const PAGE=120; let shown=PAGE, active=new Set(), showPend=false, showFav=false, showVid=false, showBW=false, showND=false;
 const KEY='streetwear-catalog-saved-v1';
 // Saves are keyed by product URL, not row id, so they survive rebuilds where ids shift.
@@ -1161,15 +1168,41 @@ $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
  <td>${s.product_count??''}</td><td>${esc(String(s.note||s.platform||'').slice(0,150))}</td></tr>`;
 }).join('');
 render();
+}
+(function(){var GK='cat-gate-pw';
+ if(!__ENC__){ var g0=document.getElementById('gate'); if(g0)g0.remove(); startApp(__PLAIN__); return; }
+ var ov=document.getElementById('gate'),inp=document.getElementById('gpw'),btn=document.getElementById('gbtn'),err=document.getElementById('gerr');
+ ov.hidden=false;
+ function go(pw,fromSaved){ err.textContent=fromSaved?'':'Checking\u2026'; _unlock(pw).then(function(data){ try{localStorage.setItem(GK,pw);}catch(e){} ov.remove(); startApp(data); }).catch(function(){ try{localStorage.removeItem(GK);}catch(e){} if(!fromSaved){ err.textContent='Wrong password'; inp.value=''; } inp.focus(); }); }
+ btn.onclick=function(){ if(inp.value) go(inp.value,false); };
+ inp.addEventListener('keydown',function(e){ if(e.key==='Enter'&&inp.value) go(inp.value,false); });
+ var saved=null; try{saved=localStorage.getItem(GK);}catch(e){}
+ if(saved) go(saved,true); else inp.focus();
+})();
 </script></body></html>"""
 
 pmax = int(max(prices)) if prices else 100
-out = (tpl.replace("__DATA__", DATA).replace("__CATS__", CATJSON).replace("__STATUS__", STATUS)
+_pw = os.environ.get("SITE_PASSWORD","").strip()
+if _pw:
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    _payload = '{"D":'+DATA+',"OUT":'+OUTJSON+',"ST":'+STATUS+'}'
+    _salt = os.urandom(16); _it = 200000
+    _key = hashlib.pbkdf2_hmac("sha256", _pw.encode("utf-8"), _salt, _it, 32)
+    _nonce = os.urandom(12)
+    _ct = AESGCM(_key).encrypt(_nonce, _payload.encode("utf-8"), None)
+    ENCBLOB = json.dumps({"salt":base64.b64encode(_salt).decode(),"iv":base64.b64encode(_nonce).decode(),"ct":base64.b64encode(_ct).decode(),"it":_it})
+    PLAINDATA = "null"
+    _gate_note = "ENCRYPTED \u2014 password gate ON"
+else:
+    ENCBLOB = "null"
+    PLAINDATA = '{"D":'+DATA+',"OUT":'+OUTJSON+',"ST":'+STATUS+'}'
+    _gate_note = "OPEN \u2014 no SITE_PASSWORD set"
+out = (tpl.replace("__ENCBLOB__", ENCBLOB).replace("__PLAINDATA__", PLAINDATA)
+          .replace("__CATS__", CATJSON)
           .replace("__NROWS__", f"{len(rows):,}").replace("__NINSTOCK__", f"{instock:,}")
           .replace("__NBRANDS__", str(len(brands)))
           .replace("__NSTORE__", str(len({r["d"] for r in rows})))
-          .replace("__PMAX__", str(pmax)).replace("__TITLE__", TITLE)
-          .replace("__OUTFITS__", OUTJSON))
+          .replace("__PMAX__", str(pmax)).replace("__TITLE__", TITLE))
 open(OUT,"w",encoding="utf-8").write(out)
 import os as _os
 _dir=_os.path.dirname(OUT) or "."
@@ -1180,7 +1213,8 @@ print(f"best-of     : {npend}")
 print(f"from videos : {nvid}")
 print(f"S-only flag : {sum(r['sm'] for r in rows)}")
 print(f"restored favs: {sum(r['f'] for r in rows)}")
-print(f"html        : {os.path.getsize(OUT)/1024:.0f} KB\n")
+print(f"html        : {os.path.getsize(OUT)/1024:.0f} KB")
+print(f"gate        : {_gate_note}\n")
 for k, l in CATS:
     if cats[k]:
         print(f"  {l:22} {cats[k]:5}  ({sum(1 for r in rows if r['c']==k and r['a'])} in stock)")
