@@ -116,11 +116,12 @@ for f in _rowfiles:
         url = o.get("url") or ""
         _cur = (o.get("currency") or "USD").upper()
         _g = round(price * TO_GBP.get(_cur, 0.79), 2)
-        _keep = (url in favs) or (url in picks) or (url in vidpicks)
+        _saved = url in favs
+        _keep = _saved or (url in picks) or (url in vidpicks)
         if not _keep:
             if _g < 5:                 continue   # junk: stickers, samples, £0.13 noise
-            if _g > 8000:              continue   # currency mislabel / data error: no wearable piece is £8k+
             if not o.get("image"):     continue   # an imageless card can't be shopped
+        if not _saved and _g > 8000:   continue   # £8k+ ceiling: only YOUR saves are ever exempt (kills mislabels/errors)
         rows.append({
             "b": (o.get("brand") or o.get("domain") or "?").strip(),
             "d": o.get("domain") or "",
