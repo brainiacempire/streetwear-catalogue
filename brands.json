@@ -883,5 +883,100 @@
   "domain": "cabourn.com",
   "brand": "Nigel Cabourn",
   "cur": "JPY"
+ },
+ {
+  "domain": "noongoons.com",
+  "brand": "Noon Goons",
+  "cur": "USD"
+ },
+ {
+  "domain": "kartikresearch.com",
+  "brand": "Kartik Research",
+  "cur": "USD"
+ },
+ {
+  "domain": "theoriesofatlantis.com",
+  "brand": "Theories",
+  "cur": "USD"
+ },
+ {
+  "domain": "quasiskateboards.com",
+  "brand": "Quasi",
+  "cur": "USD"
+ },
+ {
+  "domain": "droledemonsieur.com",
+  "brand": "Drole de Monsieur",
+  "cur": "EUR"
+ },
+ {
+  "domain": "ladywhiteco.com",
+  "brand": "Lady White Co.",
+  "cur": "USD"
+ },
+ {
+  "domain": "dehen.com",
+  "brand": "Dehen 1920",
+  "cur": "USD"
+ },
+ {
+  "domain": "ginewusa.com",
+  "brand": "Ginew",
+  "cur": "USD"
+ },
+ {
+  "domain": "americantrench.com",
+  "brand": "American Trench",
+  "cur": "USD"
+ },
+ {
+  "domain": "savekhaki.com",
+  "brand": "Save Khaki United",
+  "cur": "USD"
+ },
+ {
+  "domain": "leftfieldnyc.com",
+  "brand": "Left Field NYC",
+  "cur": "USD"
+ },
+ {
+  "domain": "misterfreedom.com",
+  "brand": "Mister Freedom",
+  "cur": "USD"
+ },
+ {
+  "domain": "districtvision.com",
+  "brand": "District Vision",
+  "cur": "USD"
+ },
+ {
+  "domain": "alexmill.com",
+  "brand": "Alex Mill",
+  "cur": "USD"
+ },
+ {
+  "domain": "taylorstitch.com",
+  "brand": "Taylor Stitch",
+  "cur": "USD"
+ },
+ {
+  "domain": "toddsnyder.com",
+  "brand": "Todd Snyder",
+  "cur": "USD"
+ },
+ {
+  "domain": "blackhorselane.com",
+  "brand": "Blackhorse Lane Ateliers",
+  "cur": "GBP"
+ },
+ {
+  "domain": "oliverspencer.co.uk",
+  "brand": "Oliver Spencer",
+  "cur": "GBP"
+ },
+ {
+  "domain": "colorfulstandard.com",
+  "brand": "Colorful Standard",
+  "cur": "EUR"
  }
 ]
