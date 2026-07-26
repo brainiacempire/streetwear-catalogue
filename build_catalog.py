@@ -342,6 +342,7 @@ button.act.prim:hover{filter:brightness(1.05)}
 .pkcard .pkm .tt{font-size:11px;line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:2px 0 3px}
 .pkcard .pkm .pp{font-size:11.5px;font-weight:660}
 .pkcard .pkm .cl{font-size:9px;color:var(--dim2);margin-left:5px;text-transform:capitalize}
+[hidden]{display:none!important}   /* ensure hidden always wins over class display rules */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;
  display:flex;flex-direction:column;transition:.14s;position:relative}
