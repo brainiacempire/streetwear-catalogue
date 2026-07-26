@@ -82,7 +82,10 @@ if os.path.exists("video_picks.json"):
             vidpicks[p["url"]] = p.get("src", "From a video")
 
 rows, bad = [], 0
-for f in sorted(glob.glob("rows/*.jsonl")):
+_rowfiles = sorted(glob.glob("rows/*.jsonl"))
+if os.path.exists("_saved.jsonl") and "_saved.jsonl" not in _rowfiles:
+    _rowfiles.append("_saved.jsonl")
+for f in _rowfiles:
     for line in open(f, encoding="utf-8"):
         line = line.strip()
         if not line:
