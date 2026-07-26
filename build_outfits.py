@@ -135,7 +135,8 @@ bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
 
-usage = collections.Counter()   # cap how often any one piece recurs, for variety
+usage = collections.Counter()        # cap how often any one piece recurs
+brand_usage = collections.Counter()  # spread looks across as many brands as possible
 
 def pool(cats, colour=None, neutral=None, hero=False, limit=600):
     """Candidate pieces for one or more categories under colour/tone constraints."""
@@ -158,9 +159,9 @@ def pick(cands, fit_urls, fit_brands, allow_same_brand=False):
     if not allow_same_brand:
         fresh = [r for r in poolc if r["b"].lower() not in fit_brands]
         if fresh: poolc = fresh
-    # prefer rarely-used, then higher score; shuffle the head for variety
-    poolc.sort(key=lambda r: (usage[r["u"]], -r["sc"]))
-    head = poolc[:max(24, len(poolc)//4)]
+    # spread across the catalogue: least-used piece, then least-used brand, then curation score
+    poolc.sort(key=lambda r: (usage[r["u"]], brand_usage[r["b"].lower()], -r["sc"]))
+    head = poolc[:max(40, len(poolc)//3)]
     random.shuffle(head)
     return head[0] if head else None
 
@@ -181,15 +182,17 @@ def build(name, blurb, slots):
     if sig in seen:
         return None
     seen.add(sig)
-    for v in fit.values(): usage[v["u"]] += 1
+    for v in fit.values(): usage[v["u"]] += 1; brand_usage[v["b"].lower()] += 1
     brands = {v["b"] for v in fit.values()}
     return {"formula": name, "note": blurb, "items": fit,
             "brands": len(brands),
             "total": round(sum(v["g"] for v in fit.values()), 2)}
 
+OUTFIT_MULT = 2.2   # scale every formula up — far more variety across the whole catalogue
 def add(name, blurb, slotfn, n):
+    n = int(round(n * OUTFIT_MULT))
     made = 0
-    for _ in range(n * 4):          # over-try; dedup/brand rules reject some
+    for _ in range(n * 5):          # over-try; dedup/brand rules reject some
         o = build(name, blurb, slotfn())
         if o:
             outfits.append(o); made += 1
@@ -394,7 +397,72 @@ add("Statement Bottom",
          ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 10)
 
+# 25) Prep — polo/knit, chino, clean low shoe
+add("Prep",
+    "A polo or fine knit with a chino and a clean low sneaker — collegiate, tidy, tonal.",
+    lambda: [("top", pool(["top","longsleeve","tee"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 10)
+
+# 26) Utility Cargo — cargo trouser, tee, work jacket
+add("Utility Cargo",
+    "A cargo trouser with a plain tee and a utility jacket — pockets and function, kept tonal.",
+    lambda: [("layer", pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("pants")),
+         ("shoe", pool("footwear"))], 12)
+
+# 27) Baggy Denim — baggy jeans, boxy tee, chunky sneaker
+add("Baggy Denim",
+    "Baggy jeans, a boxy graphic tee and a chunky sneaker — the wide-leg denim shape done loud up top.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=False)),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear"))], 12)
+
+# 28) Monochrome Grey — the soft all-grey fit
+add("Monochrome Grey",
+    "Every shade of grey with one white sneaker — the softest monochrome, quietly expensive.",
+    lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], colour="grey")),
+         ("bottom", pool(["sweats","pants"], colour="grey")),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 6)
+
+# 29) Earth Tones — brown/olive/tan tonal
+add("Earth Tones",
+    "Browns, olives and tan layered together — warm, grounded, and easy to wear.",
+    lambda: [("top", pool(["longsleeve","hoodie_sweat","tee"], colour="brown") or pool(["longsleeve","tee"], colour="olive")),
+         ("bottom", pool(["pants","jeans"], colour="tan") or pool("pants", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear"))], 8)
+
+# 30) Sport Luxe — track top, trouser, runner
+add("Sport Luxe",
+    "A track top with a tailored trouser and a technical runner — sportswear dressed up.",
+    lambda: [("layer", pool("windrunner")),
+         ("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear"))], 10)
+
+# 31) Overshirt Layer — overshirt/shacket over a tee
+add("Overshirt Layer",
+    "An overshirt worn open over a tee with straight trousers — the easiest layer to throw on.",
+    lambda: [("layer", pool("jacket_outerwear")),
+         ("top", pool("tee", neutral=True)),
+         ("bottom", pool(["pants","jeans"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 10)
+
+# 32) Colour Pop — neutral fit, one bright piece
+add("Colour Pop",
+    "Everything neutral except one bright piece — a single hit of colour carries the whole fit.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], hero=True)),
+         ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 10)
+
 random.shuffle(outfits)
+outfits = outfits[:700]   # bound page weight while keeping huge variety
 json.dump(outfits, open("outfits.json","w"), indent=1)
 
 print(f"eligible products : {len(rows):,}")
