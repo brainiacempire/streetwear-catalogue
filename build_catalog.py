@@ -185,6 +185,7 @@ for f in _rowfiles:
             "col": o.get("colour","unknown"),
             "neu": 1 if o.get("neutral") else 0,
             "nd": 1 if (o.get("new") or (o.get("domain") or "") in NEWDROP_DOMAINS) else 0,
+            "np": 1 if o.get("new") else 0,          # genuinely new arrival (published <= 7 days)
         })
 
 # The full dataset is now ~152k rows across 287 stores — far too large to render.
@@ -213,13 +214,13 @@ MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "42000"))   # hard ceiling: keeps th
 import collections as _co
 MIN_GBP = float(os.environ.get("MIN_GBP", "0"))   # drop obvious data-error prices from non-saved pieces
 perdom = collections.Counter()
-rows.sort(key=lambda r: (not (r["n"] or r["v"] or r["f"]), not r["a"], r["sm"], -(r.get("sc") or 0), -(r["g"] or 0)))
+rows.sort(key=lambda r: (not (r["n"] or r["v"] or r["f"] or r["np"]), not r["a"], not r["nd"], r["sm"], -(r.get("sc") or 0), -(r["g"] or 0)))
 # 1) always keep curated / saved / video / outfit / reference pieces
 protected, pool = [], []
 for r in rows:
     if MIN_GBP and not r["f"] and (r["g"] or 0) < MIN_GBP:
         continue                      # obvious data-error price on a non-saved piece
-    if r["n"] or r["v"] or r["f"] or r["u"] in OUTFIT_URLS or r["d"] in REFERENCE_DOMAINS:
+    if r["n"] or r["v"] or r["f"] or r["np"] or r["u"] in OUTFIT_URLS or r["d"] in REFERENCE_DOMAINS:
         protected.append(r); continue
     if not ALL_STOCK and (not r["a"] or r["sm"]):
         continue
