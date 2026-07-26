@@ -119,6 +119,7 @@ for f in _rowfiles:
         _keep = (url in favs) or (url in picks) or (url in vidpicks)
         if not _keep:
             if _g < 5:                 continue   # junk: stickers, samples, £0.13 noise
+            if _g > 8000:              continue   # currency mislabel / data error: no wearable piece is £8k+
             if not o.get("image"):     continue   # an imageless card can't be shopped
         rows.append({
             "b": (o.get("brand") or o.get("domain") or "?").strip(),
@@ -847,7 +848,7 @@ pmax = int(max(prices)) if prices else 100
 out = (tpl.replace("__DATA__", DATA).replace("__CATS__", CATJSON).replace("__STATUS__", STATUS)
           .replace("__NROWS__", f"{len(rows):,}").replace("__NINSTOCK__", f"{instock:,}")
           .replace("__NBRANDS__", str(len(brands)))
-          .replace("__NSTORE__", str(sum(1 for s in status.values() if s.get('status')=='ok')))
+          .replace("__NSTORE__", str(len({r["d"] for r in rows})))
           .replace("__PMAX__", str(pmax)).replace("__TITLE__", TITLE)
           .replace("__OUTFITS__", OUTJSON))
 open(OUT,"w",encoding="utf-8").write(out)
