@@ -18,9 +18,40 @@ import json, glob, random, collections, os, re
 random.seed(11)   # deterministic — no Date/random drift between rebuilds
 
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
-BOOT_RE = re.compile(r"\bboots?\b|chelsea|combat boot|hiking|wellington|\bwellies?\b|"
-    r"\bheels?\b|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform heel|"
+BOOT_RE = re.compile(r"boots?|chukka|chelsea|combat|hiking|wellington|wellies?|"
+    r"desert boot|work ?boot|moc.?toe|moccasin|timberland|red ?wing|blundstone|ugg|"
+    r"tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|"
+    r"heel|stiletto|pumps?|ballet|mary.?jane|wedge|platform (heel|sandal)|oxford|"
     r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
+# outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
+SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|"
+    r"gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|"
+    r"\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics", re.I)
+CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
+
+# Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
+_CLS_RULES = [
+ ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
+ ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
+ ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
+ ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
+ ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
+ ("sweats",    r"\b(sweat ?pants?|joggers?|track ?pants?|track ?jort)\b"),
+ ("shorts",    r"\b(shorts|jorts?)\b"),
+ ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
+ ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
+ ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance \d|\d{3,4}v\d)\b"),
+ ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
+ ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
+]
+_CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
+def classify(title, stored):
+    t = title or ""
+    for k, rx in _CLS:
+        if rx.search(t):
+            return k
+    return stored
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}
 HEROES   = {"red","blue","green","olive","burgundy","purple","orange","yellow","pink"}
@@ -89,13 +120,19 @@ for path in files:
         if not big: continue
         b = (o.get("brand") or "").strip()
         u = o["url"]
-        if o.get("category") == "footwear" and BOOT_RE.search(o.get("title","")): continue
+        title = o.get("title","")
+        cat = classify(title, o.get("category"))
+        if cat == "footwear" and BOOT_RE.search(title): continue
         score = 1
         if u in favs:            score += 6
         if u in picks:           score += 3
         if u in vidpicks:        score += 3
         if b.lower() in FAV_BRANDS: score += 2
-        rows.append({"b":b, "t":o.get("title",""), "c":o.get("category"),
+        if cat == "footwear":                       # steer fills toward trainers/sneakers
+            if "loafer" in title.lower():           score -= 8   # rare 1-in-many
+            elif CASUAL_SHOE_RE.search(title):      score -= 4   # sandals/slides/mules occasional
+            elif SNEAKER_RE.search(title):          score += 3
+        rows.append({"b":b, "t":title, "c":cat,
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
                      "i":o["image"], "u":u, "sc":score, "s":sizes[:8]})

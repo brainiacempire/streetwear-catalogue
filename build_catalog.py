@@ -82,9 +82,38 @@ if os.path.exists("video_picks.json"):
             vidpicks[p["url"]] = p.get("src", "From a video")
 
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
-BOOT_RE = re.compile(r"\bboots?\b|chelsea|combat boot|hiking|wellington|\bwellies?\b|"
-    r"\bheels?\b|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform heel|"
+BOOT_RE = re.compile(r"boots?|chukka|chelsea|combat|hiking|wellington|wellies?|"
+    r"desert boot|work ?boot|moc.?toe|moccasin|timberland|red ?wing|blundstone|ugg|"
+    r"tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|"
+    r"heel|stiletto|pumps?|ballet|mary.?jane|wedge|platform (heel|sandal)|oxford|"
     r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
+
+# Title-first classifier — the garment word wins over brand/model names.
+# Checked in priority order; footwear only matches real footwear words AND only after
+# apparel is ruled out, so "Jordan x Awake Thermal Shirt" reads as a longsleeve, not a shoe.
+_CLS_RULES = [
+ ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
+ ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
+ ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
+ ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
+ ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
+ ("sweats",    r"\b(sweat ?pants?|joggers?|track ?pants?|track ?jort)\b"),
+ ("shorts",    r"\b(shorts|jorts?)\b"),
+ ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
+ ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
+ ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance \d|\d{3,4}v\d)\b"),
+ ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
+ ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
+]
+_CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
+def classify(title, stored):
+    t = title or ""
+    for k, rx in _CLS:
+        if rx.search(t):
+            return k
+    return stored
+
 rows, bad = [], 0
 # rows/ = fresh scraped data (refreshed daily by CI); root *.jsonl = permanent
 # snapshots that always render: _saved.jsonl (saves), satoshinakamoto/laced (reference).
@@ -113,7 +142,7 @@ for f in _rowfiles:
         dom = o.get("domain") or ""
         if ONLY is not None and dom not in ONLY:
             continue
-        cat = o.get("category") or "other"
+        cat = classify(t, o.get("category") or "other")
         if cat not in CATLABEL: cat = "other"
         sizes = o.get("sizes") or []
         if not isinstance(sizes, list): sizes = []
@@ -441,6 +470,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .pvx{margin-left:auto;background:none;border:none;color:var(--dim);font-size:26px;cursor:pointer;line-height:1}
 .pvx:hover{color:#fff}
 .pvslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.pvslots:has(.varrow){display:block}
 .pvslot{background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .pvslot img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
 .pvlab{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim2);padding:7px 10px 0}
@@ -449,6 +479,16 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .pvm .tt{font-size:13px;margin:2px 0 4px}
 .pvm .pp{font-size:14px;font-weight:700}
 .pvm .go{display:inline-block;margin-top:6px;font-size:12px;color:var(--acc)}
+.varrow{grid-column:1/-1;border-bottom:1px solid var(--line);padding:10px 0}
+.varhd{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--dim);margin-bottom:8px}
+.varhd b{color:#fff}.varhd .act{margin-left:auto}
+.varpcs{display:flex;gap:10px;flex-wrap:wrap}
+.vpiece{width:118px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.vpiece.lkd{border-color:#ff5c8a}
+.vpiece img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
+.vpt{padding:5px 7px;font-size:10.5px;line-height:1.25;color:var(--dim)}
+.vpt .vb{display:block;color:#fff;font-weight:600;text-transform:uppercase;font-size:9.5px}
+.vpt .vg{display:block;color:#fff;font-weight:700;margin-top:2px}
 </style></head><body>
 <header><div class="wrap">
  <div class="top">
@@ -545,7 +585,9 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  </details>
 </main>
 <div id="pvwrap" class="pvwrap" hidden><div class="pvbox">
- <div class="pvhead"><h3 id="pvtitle">Outfit</h3><span id="pvtotal" class="cost"></span><button id="pvclose" class="pvx" title="Close">&times;</button></div>
+ <div class="pvhead"><h3 id="pvtitle">Outfit</h3><span id="pvtotal" class="cost"></span>
+ <button id="pvvary" class="act sm" title="A few variations — your liked pieces stay">&#8646; Variations</button>
+ <button id="pvclose" class="pvx" title="Close">&times;</button></div>
  <div id="pvslots" class="pvslots"></div></div></div>
 <div id="toast"></div>
 <script>
@@ -868,8 +910,11 @@ function coordPick(k,hero){
  if(k==='top')   return rndFrom(c,r=>!r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>!r.neu,k,st)||rndFrom(c,null,k,st);
  if(k==='bottom')return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
  if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero,k,st))||rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
- // footwear: a clean, coordinating sneaker that matches the fit's style — never random
- if(k==='shoe')  return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||(hero&&rndFrom(c,r=>r.col===hero,k,st))||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,r=>r.col!=='unknown',k,st)||rndFrom(c,null,k,st);
+ // footwear: mainly trainers/sneakers, clean & style-matched — loafers are a rare exception, never random
+ if(k==='shoe'){ const snk=r=>/sneaker|trainer|\bdunk\b|air ?force|air ?max|jordan|gel[- ]|\brunner|gazelle|samba|campus|superstar|new balance|\bnb\b|\bvans\b|sk8|old ?skool|authentic|\b\d{3,4}\b|salomon|asics/i.test(r.t);
+   const bad=r=>/loafer|sandal|\bslide|slider|\bmule|\bclog|\bcroc/i.test(r.t);
+   return rndFrom(c,r=>snk(r)&&!bad(r)&&r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>snk(r)&&!bad(r),k,st)
+        ||(hero&&rndFrom(c,r=>!bad(r)&&r.col===hero,k,st))||rndFrom(c,r=>!bad(r)&&r.neu,k,st)||rndFrom(c,r=>!bad(r),k,st)||rndFrom(c,null,k,st); }
  if(k==='layer') return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
  return rndFrom(c,r=>r.col!=='unknown',k,st)||rndFrom(c,null,k,st);
 }
@@ -998,9 +1043,49 @@ function openPreview(items,title,total){
      `<div class="pp">${gbp(r.g)}${r.col&&r.col!=='unknown'?' \u00b7 '+esc(r.col):''}</div>`+
      `<a class="go" href="${esc(r.u)}" target="_blank" rel="noopener">View item &rarr;</a></div></div>`;}).join('');
  $('pvtitle').textContent=title||'Outfit'; $('pvtotal').textContent=gbp(total||0);
- $('pvslots').innerHTML=slots; $('pvwrap').hidden=false;
+ $('pvslots').innerHTML=slots; $('pvwrap').hidden=false; _pvBase=items;
 }
+let _pvBase=null, _pvVars=[];
+// remix one variation: keep the liked (saved) pieces, re-pick the rest with the style engine
+function buildVariation(base){
+ const keep={}; SLOTORDER.forEach(k=>keep[k]=outfit[k]);
+ SLOTORDER.forEach(k=>outfit[k]=null);
+ SLOTORDER.forEach(k=>{ if(base[k]) outfit[k]=D.find(x=>x.u===base[k].u)||base[k]; });
+ SLOTORDER.forEach(k=>{ const cur=outfit[k]; if(cur && !savedUrls.has(cur.u)){ outfit[k]=coordPick(k,heroColour())||cur; } });
+ const snap={}; SLOTORDER.forEach(k=>{ if(outfit[k]) snap[k]=outfit[k]; });
+ SLOTORDER.forEach(k=>outfit[k]=keep[k]);
+ return snap;
+}
+function showVariations(){
+ if(!_pvBase) return;
+ const anyLiked=Object.values(_pvBase).some(p=>p&&savedUrls.has(p.u));
+ _pvVars=[]; const seen=new Set();
+ for(let t=0;t<12 && _pvVars.length<3;t++){
+   const v=buildVariation(_pvBase);
+   const sig=SLOTORDER.map(k=>v[k]?v[k].u:'').join('|');
+   if(seen.has(sig))continue; seen.add(sig); _pvVars.push(v);
+ }
+ $('pvtitle').textContent='Variations'+(anyLiked?' — liked pieces kept':'');
+ $('pvtotal').textContent='';
+ $('pvslots').innerHTML=_pvVars.map((v,i)=>{
+   const tot=SLOTORDER.filter(k=>v[k]).reduce((a,k)=>a+v[k].g,0);
+   const pcs=SLOTORDER.filter(k=>v[k]).map(k=>{const r=v[k], lk=savedUrls.has(r.u);
+     return `<div class="vpiece${lk?' lkd':''}"><img loading="lazy" src="${esc(r.i)}" onerror="this.style.opacity=.15">`+
+       `<div class="vpt"><span class="vb">${esc(r.b)}</span>${esc(r.t.slice(0,22))}<span class="vg">${gbp(r.g)}</span></div></div>`;}).join('');
+   return `<div class="varrow"><div class="varhd">Variation ${i+1} <b>${gbp(tot)}</b>`+
+     `<button class="act sm" data-usevar="${i}">Use this</button></div><div class="varpcs">${pcs}</div></div>`;
+ }).join('') || '<div class="empty">Not enough stock to vary this one.</div>';
+}
+document.addEventListener('click',e=>{
+ const uv=e.target.closest('[data-usevar]');
+ if(uv){ const v=_pvVars[+uv.dataset.usevar]; if(!v)return;
+   outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
+   SLOTORDER.forEach(k=>{ if(v[k]) outfit[k]=v[k]; });
+   $('pvwrap').hidden=true; document.querySelector('.vt[data-v="fits"]').click(); setFitSub('build');
+   initBuilder(); renderCanvas(); setSlot('top'); toast('Loaded that variation'); }
+});
 $('pvclose').onclick=()=>{$('pvwrap').hidden=true;};
+$('pvvary').onclick=showVariations;
 $('pvwrap').addEventListener('click',e=>{ if(e.target.id==='pvwrap')$('pvwrap').hidden=true; });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')$('pvwrap').hidden=true; });
 document.addEventListener('click',e=>{

@@ -698,5 +698,95 @@
 "domain": "hypeboys.store",
 "brand": "Hypeboys",
 "cur": "EUR"
+},
+{
+"domain": "online-ceramics.com",
+"brand": "Online Ceramics",
+"cur": "USD"
+},
+{
+"domain": "chrystienyc.com",
+"brand": "Chrystie NYC",
+"cur": "USD"
+},
+{
+"domain": "helascaps.com",
+"brand": "H\u00e9las",
+"cur": "EUR"
+},
+{
+"domain": "lastresortab.com",
+"brand": "Last Resort AB",
+"cur": "EUR"
+},
+{
+"domain": "stepneyworkersclub.com",
+"brand": "Stepney Workers Club",
+"cur": "GBP"
+},
+{
+"domain": "noahny.com",
+"brand": "Noah",
+"cur": "USD"
+},
+{
+"domain": "awakeny.com",
+"brand": "Awake NY",
+"cur": "USD"
+},
+{
+"domain": "fuckingawesome.com",
+"brand": "Fucking Awesome",
+"cur": "USD"
+},
+{
+"domain": "marketstudios.com",
+"brand": "Market",
+"cur": "USD"
+},
+{
+"domain": "edwineurope.com",
+"brand": "Edwin",
+"cur": "EUR"
+},
+{
+"domain": "kavu.com",
+"brand": "Kavu",
+"cur": "USD"
+},
+{
+"domain": "afield-out.com",
+"brand": "Afield Out",
+"cur": "USD"
+},
+{
+"domain": "gx1000.us",
+"brand": "GX1000",
+"cur": "USD"
+},
+{
+"domain": "welcomeskateboards.com",
+"brand": "Welcome",
+"cur": "USD"
+},
+{
+"domain": "nothinbutghosts.com",
+"brand": "Ghost",
+"cur": "USD"
+},
+{
+"domain": "sillage.shop",
+"brand": "Sillage",
+"cur": "EUR"
+},
+{
+"domain": "adsum.us",
+"brand": "Adsum",
+"cur": "USD"
+},
+{
+"domain": "brainwaves.store",
+"brand": "Brainwaves",
+"cur": "USD"
 }
 ]
