@@ -1,49 +1,69 @@
 #!/usr/bin/env python3
-"""Generate outfits from the catalog using the styling grammar observed on the
-flat-lay outfit accounts (@fitz2kickz, @trendz4sportswear, @arsnlnc).
+"""Curated outfit engine — the height of it.
 
-The key structural finding from that research: those accounts publish every fit as an
-explicit slot list — top / bottom / shoe / hat / layer — with a colour name per slot.
-So that is exactly the data model used here.
+Not randomised: every fit is assembled under an explicit styling rule (a "formula"),
+coordinated by colour, and forced to MIX BRANDS so no look leans on a single label.
+Draws on the whole catalogue — the scraped brands, the laced.com sneakers, the
+Satoshi reference board and your saved pieces — and weights toward the best pieces:
+your saves, curated Best-of picks, the brands you repeat-buy, and the pieces the
+Black creators/rappers wore in the videos (BBM, EJWAYY, PappiiQ, DDG).
 
-Weighting follows Dave's 119 saved items: longsleeves are ~half his saves, then shorts,
-then hats, and he repeat-saves Lost Intricacy, Paraphernalia 97, Cole Buxton, Icecream,
-Crysp Denim, JJJJound, Ebbets and South of Heaven.
+Styling grammar comes from the outfit accounts studied — @fitz2kickz (a matching cap
+in every fit), @trendz4sportswear (shoe named first, set built around it), @arsnlnc
+(loud graphic + short), @trendz — plus classic menswear rules (tonal, workwear,
+monochrome). Each formula targets a different TYPE of outing so the set spans a wardrobe.
 """
-import json, glob, random, collections
+import json, glob, random, collections, os
 
-random.seed(11)   # deterministic — Date/random-free reproducible builds
+random.seed(11)   # deterministic — no Date/random drift between rebuilds
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}
 HEROES   = {"red","blue","green","olive","burgundy","purple","orange","yellow","pink"}
 
+# brands you repeat-save / rate, and the elevated streetwear labels worth foregrounding
 FAV_BRANDS = {"lost intricacy","paraphernalia 97","cole buxton","icecream europe",
               "crysp denim","jjjjound","ebbets field flannels","eff","south of heaven®",
-              "corteiz","huf","only ny","stussy","polar skate co","butter goods",
+              "corteiz","huf","only ny","stussy","stüssy","polar skate co","butter goods",
               "by parra","brain dead","3sixteen","aries","maharishi","thisisneverthat",
-              "reigning champ","gramicci","stan ray","new balance","asics","salomon"}
+              "reigning champ","gramicci","stan ray","new balance","asics","salomon",
+              "satoshi nakamoto","kapital","needles","wtaps","cav empt","undercover",
+              "aime leon dore","aimé leon dore","fear of god","essentials","rhude",
+              "represent","carhartt wip","patta","palace","supreme","kith","noah",
+              "our legacy","story mfg","kapital","sacai","bode","online ceramics"}
 
-rows = []
-favs = set()
-try:
-    for f in json.load(open("favourites.json")):
-        u = f.get("url") if isinstance(f, dict) else f
-        if u: favs.add(u)
-except Exception:
-    pass
-picks = set()
-try:
-    for p in json.load(open("picks.json")):
-        if p.get("url"): picks.add(p["url"])
-except Exception:
-    pass
+def load_urls(fn):
+    s = set()
+    if os.path.exists(fn):
+        try:
+            for x in json.load(open(fn)):
+                u = x.get("url") if isinstance(x, dict) else x
+                if u: s.add(u)
+        except Exception:
+            pass
+    return s
+
+favs = load_urls("favourites.json")
+picks = load_urls("picks.json")
+vidpicks = set()
+if os.path.exists("video_picks.json"):
+    try:
+        for p in json.load(open("video_picks.json")):
+            if p.get("url"): vidpicks.add(p["url"])
+    except Exception:
+        pass
 
 TO_GBP = {"GBP":1.0,"USD":0.79,"EUR":0.85,"JPY":0.0052,"CNY":0.11,"KRW":0.00058,
  "AUD":0.52,"CAD":0.58,"NZD":0.47,"HKD":0.101,"SGD":0.59,"TWD":0.024,"DKK":0.114,
  "SEK":0.075,"NOK":0.073,"CHF":0.88,"PLN":0.20,"IDR":0.000048,"THB":0.023,
  "MXN":0.042,"BRL":0.14,"ZAR":0.043,"AED":0.215,"ILS":0.21,"INR":0.0094,"TRY":0.023}
 
-for path in glob.glob("rows/*.jsonl"):
+# read the full catalogue: scraped rows PLUS the root snapshots (laced/satoshi/_saved)
+files = sorted(glob.glob("rows/*.jsonl"))
+for extra in sorted(glob.glob("*.jsonl")):
+    if extra not in files: files.append(extra)
+
+rows = []
+for path in files:
     for line in open(path, encoding="utf-8"):
         line = line.strip()
         if not line: continue
@@ -57,126 +77,229 @@ for path in glob.glob("rows/*.jsonl"):
         if p <= 0 or p >= 999999:         continue
         cur = (o.get("currency") or "USD").upper()
         g = p * TO_GBP.get(cur, 0.79)
-        if g < 12 or g > 900:             continue      # avoid junk and grails in generated fits
+        if g < 12 or g > 1200:            continue      # skip junk and blow-out grails
         sizes = [str(s).upper() for s in (o.get("sizes") or [])]
-        # must be wearable: needs M or larger somewhere in the run, or be one-size
         big = (not sizes) or any(s in ("M","L","XL","XXL","2XL","3XL","MEDIUM","LARGE")
                                  or s.replace(".","").isdigit() for s in sizes)
         if not big: continue
         b = (o.get("brand") or "").strip()
-        score = 0
-        if o["url"] in favs:  score += 6
-        if o["url"] in picks: score += 3
+        u = o["url"]
+        score = 1
+        if u in favs:            score += 6
+        if u in picks:           score += 3
+        if u in vidpicks:        score += 3
         if b.lower() in FAV_BRANDS: score += 2
         rows.append({"b":b, "t":o.get("title",""), "c":o.get("category"),
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
-                     "i":o["image"], "u":o["url"], "sc":score, "s":sizes[:8]})
+                     "i":o["image"], "u":u, "sc":score, "s":sizes[:8]})
 
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
 
-def pool(cat, colour=None, neutral=None, hero=None, limit=400):
-    out = []
-    for r in bycat.get(cat, [])[:4000]:
-        if colour and r["col"] != colour: continue
-        if neutral is True and not r["neu"]: continue
-        if neutral is False and r["neu"]: continue
-        if hero and r["col"] not in HEROES: continue
-        out.append(r)
-        if len(out) >= limit: break
-    return out
+usage = collections.Counter()   # cap how often any one piece recurs, for variety
 
-def pick(lst, used):
-    random.shuffle(lst[:120])
-    for r in lst:
-        if r["u"] not in used:
-            return r
-    return None
+def pool(cats, colour=None, neutral=None, hero=False, limit=600):
+    """Candidate pieces for one or more categories under colour/tone constraints."""
+    if isinstance(cats, str): cats = [cats]
+    out = []
+    for cat in cats:
+        for r in bycat.get(cat, [])[:5000]:
+            if colour and r["col"] != colour:            continue
+            if neutral is True and not r["neu"]:         continue
+            if neutral is False and r["neu"]:            continue
+            if hero and r["col"] not in HEROES:          continue
+            out.append(r)
+    return out[:limit]
+
+def pick(cands, fit_urls, fit_brands, allow_same_brand=False):
+    """Best coordinating piece: fresh brand, low recurrence, high curation score."""
+    if not cands: return None
+    poolc = [r for r in cands if r["u"] not in fit_urls]
+    if not poolc: return None
+    if not allow_same_brand:
+        fresh = [r for r in poolc if r["b"].lower() not in fit_brands]
+        if fresh: poolc = fresh
+    # prefer rarely-used, then higher score; shuffle the head for variety
+    poolc.sort(key=lambda r: (usage[r["u"]], -r["sc"]))
+    head = poolc[:max(24, len(poolc)//4)]
+    random.shuffle(head)
+    return head[0] if head else None
 
 outfits = []
-def build(name, blurb, slots, used):
-    fit = {}
+seen = set()
+def build(name, blurb, slots):
+    """slots: list of (slotname, candidate_list). Brands are forced distinct."""
+    fit, fit_urls, fit_brands = {}, set(), set()
     for slot, cands in slots:
-        r = pick(cands, used)
+        r = pick(cands, fit_urls, fit_brands)
+        if r is None:
+            # last resort: allow same brand rather than drop the whole fit
+            r = pick(cands, fit_urls, fit_brands, allow_same_brand=True)
         if r is None:
             return None
-        fit[slot] = r
-        used.add(r["u"])
+        fit[slot] = r; fit_urls.add(r["u"]); fit_brands.add(r["b"].lower())
+    sig = tuple(sorted(fit_urls))
+    if sig in seen:
+        return None
+    seen.add(sig)
+    for v in fit.values(): usage[v["u"]] += 1
+    brands = {v["b"] for v in fit.values()}
     return {"formula": name, "note": blurb, "items": fit,
+            "brands": len(brands),
             "total": round(sum(v["g"] for v in fit.values()), 2)}
 
-TOPS_LOUD  = [c for c in ("longsleeve","tee","top") ]
-seen_urls = set()
+def add(name, blurb, slotfn, n):
+    made = 0
+    for _ in range(n * 4):          # over-try; dedup/brand rules reject some
+        o = build(name, blurb, slotfn())
+        if o:
+            outfits.append(o); made += 1
+        if made >= n: break
 
-# ---- F8 Cap Match: hat colour mirrors the top, bottom stays quiet ----
-for colour in ("black","white","navy","green","red","blue","burgundy","brown","grey","cream","olive","purple","orange","pink","tan"):
-    for _ in range(3):
-        o = build("Cap Match",
-            "Hat colour mirrors the top; bottom stays quiet so the pairing reads. "
-            "Straight from @fitz2kickz, who runs a matching cap in every single fit.",
-            [("top",  pool("longsleeve", colour=colour) or pool("tee", colour=colour)),
-             ("bottom", pool("jeans", neutral=True) or pool("pants", neutral=True)),
+TOPS   = ["longsleeve","tee","top","hoodie_sweat"]
+LEGS   = ["jeans","pants","sweats","shorts"]
+
+# ============ THE FORMULAS — each a different TYPE of outing ============
+
+# 1) Cap Match — @fitz2kickz: a cap that mirrors the top, quiet legs
+for colour in ("black","white","navy","green","red","blue","burgundy","brown","olive","cream","purple","orange","pink","tan","grey"):
+    add("Cap Match",
+        "Hat colour mirrors the top; bottom stays quiet so the pairing reads — @fitz2kickz runs a matching cap in every fit.",
+        lambda c=colour: [("top", pool(["longsleeve","tee"], colour=c)),
+             ("bottom", pool(["jeans","pants"], neutral=True)),
              ("shoe", pool("footwear")),
-             ("hat",  pool("headwear", colour=colour))], seen_urls)
-        if o: outfits.append(o)
+             ("hat", pool("headwear", colour=c))], 2)
 
-# ---- F9 Shoe-First Technical Set: pick the shoe, build the set around it ----
-for _ in range(22):
-    o = build("Shoe-First Technical Set",
-        "Shoe chosen first, then a tonal technical set built around it — the "
-        "@trendz4sportswear method, where the caption names the trainer before the clothes.",
-        [("shoe", pool("footwear")),
+# 2) Shoe-First Technical Set — @trendz4sportswear gorpcore
+add("Shoe-First Technical Set",
+    "Shoe chosen first, then a tonal technical set built around it — @trendz4sportswear names the trainer before the clothes.",
+    lambda: [("shoe", pool("footwear")),
          ("layer", pool("windrunner")),
          ("bottom", pool("sweats", neutral=True)),
-         ("top", pool("tee", neutral=True))], seen_urls)
-    if o: outfits.append(o)
+         ("top", pool(["tee","longsleeve"], neutral=True))], 16)
 
-# ---- F10 Heavy Graphic + Short ----
-for _ in range(22):
-    o = build("Heavy Graphic + Short",
-        "Loud graphic up top, short underneath, shoe picks up an accent from the print. "
-        "@arsnlnc's core shape, and it matches your saves — shorts are your second-biggest lane.",
-        [("top", pool("longsleeve", neutral=False) or pool("tee", neutral=False)),
+# 3) Heavy Graphic + Short — @arsnlnc summer statement
+add("Heavy Graphic + Short",
+    "Loud graphic up top, short underneath, clean shoe — @arsnlnc's core summer shape.",
+    lambda: [("top", pool(["longsleeve","tee"], neutral=False)),
          ("bottom", pool("shorts", neutral=True)),
          ("shoe", pool("footwear")),
-         ("hat", pool("headwear", neutral=True))], seen_urls)
-    if o: outfits.append(o)
+         ("hat", pool("headwear", neutral=True))], 16)
 
-# ---- F5 Loud Top / Quiet Leg ----
-for _ in range(20):
-    o = build("Loud Top, Quiet Leg",
-        "One hero colour up top, everything below it neutral. The simplest rule in the "
-        "grammar and the hardest to get wrong.",
-        [("top", pool("longsleeve", hero=True) or pool("hoodie_sweat", hero=True)),
+# 4) Loud Top, Quiet Leg — the simplest rule in the grammar
+add("Loud Top, Quiet Leg",
+    "One hero colour up top, everything below it neutral. Hardest rule to get wrong.",
+    lambda: [("top", pool(["longsleeve","hoodie_sweat","tee"], hero=True)),
          ("bottom", pool("jeans", neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], seen_urls)
-    if o: outfits.append(o)
+         ("hat", pool("headwear", neutral=True))], 16)
 
-# ---- F7 Windrunner Run ----
-for _ in range(18):
-    o = build("Windrunner Run",
-        "Shell over a longsleeve with sweats — the lane you asked to go deeper on, "
-        "assembled so the shell is the only loud piece.",
-        [("layer", pool("windrunner")),
+# 5) Windrunner Run — shell over LS with sweats
+add("Windrunner Run",
+    "Shell over a longsleeve with sweats — the shell the only loud piece.",
+    lambda: [("layer", pool("windrunner")),
          ("top", pool("longsleeve", neutral=True)),
          ("bottom", pool("sweats", neutral=True)),
-         ("shoe", pool("footwear"))], seen_urls)
-    if o: outfits.append(o)
+         ("shoe", pool("footwear"))], 14)
 
-# ---- F4 Tonal ----
-for colour in ("black","navy","olive","grey","brown","cream"):
-    for _ in range(2):
-        o = build("Tonal",
-            "Single colour family head to toe, with the shoe breaking it. Reads expensive "
-            "regardless of what it cost.",
-            [("top", pool("hoodie_sweat", colour=colour) or pool("longsleeve", colour=colour)),
-             ("bottom", pool("sweats", colour=colour) or pool("pants", colour=colour)),
-             ("shoe", pool("footwear", neutral=False) or pool("footwear")),
-             ("hat", pool("headwear", colour=colour))], seen_urls)
-        if o: outfits.append(o)
+# 6) Tonal — single colour family head to toe, shoe breaks it
+for colour in ("black","navy","olive","grey","brown","cream","tan"):
+    add("Tonal",
+        "One colour family head to toe, the shoe breaking it. Reads expensive whatever it cost.",
+        lambda c=colour: [("top", pool(["hoodie_sweat","longsleeve"], colour=c)),
+             ("bottom", pool(["sweats","pants"], colour=c)),
+             ("shoe", pool("footwear")),
+             ("hat", pool("headwear", colour=c))], 2)
+
+# 7) All-Black Everything — the rapper monochrome (DDG / BBM)
+add("All-Black Everything",
+    "Blacked-out head to toe, one detail shoe. The monochrome rapper fit from the closet tours.",
+    lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], colour="black")),
+         ("bottom", pool(["jeans","sweats","pants"], colour="black")),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", colour="black"))], 14)
+
+# 8) Denim Focus — raw denim hero, plain tee, clean sneaker
+add("Denim Focus",
+    "Denim is the whole fit — a considered pair of jeans, plain tee, one clean sneaker.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True)),
+         ("layer", pool("jacket_outerwear", neutral=True))], 14)
+
+# 9) Tracksuit / Set — matching two-piece energy + runner
+add("Tracksuit Energy",
+    "Top-and-bottom in the same lane with a technical runner — the co-ord look done properly.",
+    lambda: [("top", pool("hoodie_sweat", neutral=True)),
+         ("bottom", pool("sweats", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 12)
+
+# 10) Layered Winter — jacket over hoodie, heavier bottom, boot/runner
+add("Layered Winter",
+    "Outerwear over a hoodie with a heavier trouser — built for cold, styled in three tones.",
+    lambda: [("layer", pool("jacket_outerwear")),
+         ("top", pool("hoodie_sweat", neutral=True)),
+         ("bottom", pool(["jeans","pants"], neutral=True)),
+         ("shoe", pool("footwear"))], 14)
+
+# 11) Clean Neutral — cream/tan minimalism
+add("Clean Neutral",
+    "Cream and tan, nothing loud — quiet luxury proportions, one warm sneaker.",
+    lambda: [("top", pool(["longsleeve","hoodie_sweat","tee"], colour="cream")),
+         ("bottom", pool(["pants","jeans"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 10)
+
+# 12) Statement Sneaker Anchor — neutral fit, one loud trainer
+add("Statement Sneaker Anchor",
+    "Everything quiet except the shoe — a hyped trainer carries the fit (the laced.com method).",
+    lambda: [("shoe", pool("footwear", hero=True) or pool("footwear")),
+         ("top", pool(["tee","longsleeve","hoodie_sweat"], neutral=True)),
+         ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 14)
+
+# 13) Workwear — chore/work jacket, utility trouser, boot or runner
+add("Workwear",
+    "Chore jacket, utility trouser, rugged shoe — Carhartt-lineage workwear built tonal.",
+    lambda: [("layer", pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["longsleeve","tee"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear"))], 12)
+
+# 14) Longsleeve Layer — LS under a short-sleeve, your biggest lane
+add("Longsleeve Layer",
+    "Longsleeve under a tee with denim — the layering trick from your saves, longsleeves being half of them.",
+    lambda: [("top", pool("longsleeve")),
+         ("bottom", pool(["jeans","pants"], neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear"))], 12)
+
+# 15) Summer Shorts & Tee — light, tonal, low
+add("Summer Shorts & Tee",
+    "Tee, shorts, low sneaker — the hottest-day fit kept tonal so it still looks considered.",
+    lambda: [("top", pool("tee")),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear"))], 12)
+
+# 16) Hoodie & Denim — the everyday default done right
+add("Hoodie & Denim",
+    "Heavyweight hoodie, good denim, one sneaker — the everyday uniform elevated by the pieces.",
+    lambda: [("top", pool("hoodie_sweat")),
+         ("bottom", pool("jeans", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 12)
+
+# 17) Loud Shoe + Loud Top, tied by neutral leg — advanced two-accent
+add("Two-Accent",
+    "A loud top and a loud shoe tied together by a neutral leg — the harder, higher-level pairing.",
+    lambda: [("top", pool(["longsleeve","tee","hoodie_sweat"], hero=True)),
+         ("bottom", pool(["jeans","pants"], neutral=True)),
+         ("shoe", pool("footwear", hero=True) or pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 10)
 
 random.shuffle(outfits)
 json.dump(outfits, open("outfits.json","w"), indent=1)
@@ -184,6 +307,9 @@ json.dump(outfits, open("outfits.json","w"), indent=1)
 print(f"eligible products : {len(rows):,}")
 print(f"outfits generated : {len(outfits)}")
 c = collections.Counter(o["formula"] for o in outfits)
-for k,v in c.most_common(): print(f"   {k:28} {v}")
-tot=[o["total"] for o in outfits]
-print(f"\noutfit cost range : £{min(tot):.0f} - £{max(tot):.0f}   median £{sorted(tot)[len(tot)//2]:.0f}")
+for k,v in c.most_common(): print(f"   {k:26} {v}")
+multi = sum(1 for o in outfits if o["brands"] >= len(o["items"]))
+print(f"\nall-distinct-brand fits : {multi}/{len(outfits)}")
+if outfits:
+    tot=[o["total"] for o in outfits]
+    print(f"outfit cost range : GBP {min(tot):.0f} - {max(tot):.0f}   median {sorted(tot)[len(tot)//2]:.0f}")

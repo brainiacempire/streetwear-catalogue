@@ -162,6 +162,7 @@ except Exception:
 # trimmed. Saved / curated / video / outfit pieces are never dropped.
 PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "120"))
 FULL_CAP = int(os.environ.get("FULL_CAP", "600"))
+MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "42000"))   # hard ceiling: keeps the page fast however many brands we add
 keep, perdom = [], collections.Counter()
 rows.sort(key=lambda r: (not (r["n"] or r["v"] or r["f"]), not r["a"], r["sm"], -(r["g"] or 0)))
 for r in rows:
@@ -177,6 +178,14 @@ for r in rows:
     perdom[r["d"]] += 1
     keep.append(r)
 rows = keep
+
+# Global size cap for page speed: always keep saved / curated / video / reference / outfit pieces,
+# then fill the remainder with the best in-stock pieces up to MAX_TOTAL.
+if len(rows) > MAX_TOTAL:
+    protected = [r for r in rows if r["f"] or r["n"] or r["v"] or r["u"] in OUTFIT_URLS or r["d"] in REFERENCE_DOMAINS]
+    rest = [r for r in rows if r not in protected]
+    rest.sort(key=lambda r: (not r["a"], r["sm"], -(r["g"] or 0)))
+    rows = protected + rest[:max(0, MAX_TOTAL - len(protected))]
 
 best = {}
 for r in rows:
@@ -405,6 +414,20 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  color:var(--acc-ink);padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:600;
  opacity:0;pointer-events:none;transition:.2s;z-index:99}
 #toast.show{opacity:1}
+.pkcard{position:relative}
+.pfav,.cvfav,.sfav{position:absolute;top:5px;left:5px;z-index:4;background:rgba(11,11,13,.74);border:none;
+ color:#9aa2ad;font-size:12px;line-height:1;padding:4px 6px;border-radius:6px;cursor:pointer;filter:grayscale(1);opacity:.9}
+.pfav:hover,.cvfav:hover,.sfav:hover{opacity:1;color:#fff}
+.pfav.on,.cvfav.on,.sfav.on{filter:none;color:#ff5c8a;opacity:1}
+.cvslot .shuf{position:absolute;top:5px;right:46px;background:none;border:none;color:var(--dim2);font-size:14px;cursor:pointer;line-height:1;padding:2px}
+.cvslot .shuf:hover{color:#fff}
+.slotw{position:relative}
+.cvslot .inc{font-size:9px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:20px;
+ border:1px solid var(--line);background:transparent;color:var(--dim2);cursor:pointer;margin-left:7px;vertical-align:1px}
+.cvslot .inc.on{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.cvslot.skip{opacity:.45}
+.cvslot.skip .cvadd{text-decoration:line-through}
+.savedhead{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:2px 0 12px;color:var(--dim)}
 </style></head><body>
 <header><div class="wrap">
  <div class="top">
@@ -426,6 +449,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
   <select id="brand"><option value="">All brands</option></select>
   <select id="sort"><option value="rel">Sort: brand</option><option value="pa">Price: low to high</option>
    <option value="pd">Price: high to low</option><option value="az">Name A&ndash;Z</option></select>
+  <select id="colf"><option value="">Any colour</option></select>
   <div class="rng">min&nbsp;£<span id="pvmin">0</span>
    <input type="range" id="pmin" min="0" max="600" value="0" step="5"></div>
   <div class="rng">max&nbsp;£<span id="pv">__PMAX__</span>
@@ -442,6 +466,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
   <div class="fitsub" id="fitsub">
    <button class="fsub on" data-fs="build">Build a fit</button>
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
+   <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
    <span class="fithint">Pick each piece &middot; mix &amp; match &middot; Surprise Me for a starting point</span>
   </div>
   <div id="buildmode">
@@ -452,8 +477,9 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
       <div class="cvbtns">
        <button class="act sm prim" id="bfill">&#10022; Fill the rest</button>
        <button class="act sm" id="brandom">Surprise me</button>
+       <button class="act sm" id="bcopy">Copy fit</button>
        <button class="act sm" id="bclear">Clear</button>
-       <button class="act sm" id="bsave">Save fit</button>
+       <button class="act sm prim" id="bsave">&#9829; Save outfit</button>
       </div>
      </div>
      <div class="cvslots" id="cvslots"></div>
@@ -482,6 +508,11 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
    </div>
    <div id="fitlist"></div>
   </div>
+  <div id="savedmode" hidden>
+   <div class="savedhead"><span id="savedcount">No saved outfits yet</span>
+    <button class="act sm" id="savedclear" hidden>Clear all</button></div>
+   <div id="savedlist"></div>
+  </div>
  </div>
  <div class="empty" id="empty" hidden>Nothing matches those filters.</div>
  <button class="more" id="more" hidden>Show more</button>
@@ -497,9 +528,9 @@ const KEY='streetwear-catalog-saved-v1';
 // Saves are keyed by product URL, not row id, so they survive rebuilds where ids shift.
 // localStorage works when this file is opened locally; if a sandbox blocks it we fall
 // back to memory and the Download button is the safety net.
-let STORE_OK=true;
+let STORE_OK=true, _hadSaved=false;
 function loadSaved(){
- try{ const raw=localStorage.getItem(KEY); return raw? new Set(JSON.parse(raw)) : new Set(); }
+ try{ const raw=localStorage.getItem(KEY); _hadSaved=(raw!=null); return raw? new Set(JSON.parse(raw)) : new Set(); }
  catch(e){ STORE_OK=false; return new Set(); }
 }
 function persist(){
@@ -507,10 +538,33 @@ function persist(){
  catch(e){ STORE_OK=false; }
 }
 const savedUrls = loadSaved();
-D.forEach(r=>{ if(r.f) savedUrls.add(r.u); });      // merge anything restored from disk
+// Seed from the restored snapshot ONLY on the first ever visit; after that the browser's
+// own list is authoritative so removing a saved piece sticks and never silently reappears.
+if(!_hadSaved){ D.forEach(r=>{ if(r.f) savedUrls.add(r.u); }); }
 const favs=new Set(D.filter(r=>savedUrls.has(r.u)).map(r=>r.id));
 persist();
 const $=id=>document.getElementById(id);
+// ---- saved OUTFITS (whole fits) — a separate store from saved pieces ----
+const OKEY='streetwear-catalog-outfits-v1';
+function loadFits(){ try{const r=localStorage.getItem(OKEY);return r?JSON.parse(r):[];}catch(e){return[];} }
+let savedFits=loadFits();
+function persistFits(){ try{localStorage.setItem(OKEY,JSON.stringify(savedFits));}catch(e){} }
+function updateSavedCount(){ const el=$('savedn'); if(el)el.textContent=savedFits.length; }
+function updateFav(){ const n=favs.size; const tot=D.filter(r=>favs.has(r.id)).reduce((a,r)=>a+r.g,0);
+ const fc=$('favcount'); if(fc)fc.textContent=n+' saved'+(n?' \u00b7 '+gbp(tot):''); const fn=$('favn'); if(fn)fn.textContent=n; }
+function togglePiece(u){ const row=D.find(x=>x.u===u);
+ if(savedUrls.has(u)){ savedUrls.delete(u); if(row)favs.delete(row.id); }
+ else { savedUrls.add(u); if(row)favs.add(row.id); }
+ persist(); updateFav(); return savedUrls.has(u); }
+function saveOutfit(items,note){
+ const pieces={}; let any=false;
+ Object.keys(items).forEach(k=>{ const r=items[k]; if(r){ pieces[k]={u:r.u,b:r.b,t:r.t,g:r.g,i:r.i,c:r.c}; any=true; }});
+ if(!any) return 0;
+ const sig=Object.values(pieces).map(p=>p.u).sort().join('|');
+ if(savedFits.some(f=>Object.values(f.items).map(p=>p.u).sort().join('|')===sig)) return -1;
+ savedFits.unshift({items:pieces,note:note||'My fit',total:Object.values(pieces).reduce((a,p)=>a+p.g,0),id:'o'+Date.now()+Math.floor(Math.random()*1000)});
+ persistFits(); updateSavedCount(); return 1;
+}
 const SYM={USD:'$',GBP:'£',EUR:'€',JPY:'¥',CNY:'¥',KRW:'₩',INR:'₹',
  AUD:'A$',CAD:'C$',NZD:'NZ$',HKD:'HK$',SGD:'S$',TWD:'NT$',
  DKK:'kr',SEK:'kr',NOK:'kr',CHF:'CHF ',PLN:'zł',IDR:'Rp',THB:'฿',
@@ -557,13 +611,15 @@ $('collections').onclick=chipClick;
   const op=document.createElement('option'); op.textContent=f; ff.appendChild(op);});}
 const bl=[...new Set(D.map(r=>r.b))].sort((a,b)=>a.localeCompare(b));
 $('brand').innerHTML+=bl.map(b=>`<option>${esc(b)}</option>`).join('');
+{const cols=[...new Set(D.map(r=>r.col).filter(c=>c&&c!=='unknown'))].sort();
+ $('colf').innerHTML+=cols.map(c=>`<option value="${c}">${c[0].toUpperCase()+c.slice(1)}</option>`).join('');}
 
 function filtered(){
- const q=$('q').value.trim().toLowerCase(), br=$('brand').value,
+ const q=$('q').value.trim().toLowerCase(), br=$('brand').value, colf=$('colf').value,
        pm=+$('pmax').value, pn=+$('pmin').value,
        only=$('only').checked, fits=$('fitsme').checked;
  let out=D.filter(r=>
-   (!active.size||active.has(r.c)) && (!br||r.b===br) && (!only||r.a) &&
+   (!active.size||active.has(r.c)) && (!br||r.b===br) && (!colf||r.col===colf) && (!only||r.a) &&
    (!fits||!r.sm) && (!showPend||r.n) && (!showVid||r.v) &&
    (!showFav||favs.has(r.id)) &&
    (!showND||r.nd) &&
@@ -598,7 +654,7 @@ function card(r){
 function render(){
  const f=filtered();
  $('grid').innerHTML=f.slice(0,shown).map(card).join('');
- $('favcount').textContent=favs.size+' saved'; const fn=$('favn'); if(fn)fn.textContent=favs.size;
+ updateFav();
  $('empty').hidden=f.length>0;
  $('more').hidden=f.length<=shown;
  $('more').textContent=`Show more (${f.length-shown} left)`;
@@ -612,12 +668,12 @@ $('grid').addEventListener('click',e=>{
  else { favs.add(id); if(rec) savedUrls.add(rec.u); }
  persist();
  b.classList.toggle('on');
- $('favcount').textContent=favs.size+' saved'; $('favn').textContent=favs.size;
+ updateFav();
  if(showFav) render();
 });
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
-['q','brand','sort','only','fitsme'].forEach(id=>$(id).addEventListener('input',()=>{shown=PAGE;render()}));
+['q','brand','sort','only','fitsme','colf'].forEach(id=>$(id).addEventListener('input',()=>{shown=PAGE;render()}));
 $('pmax').addEventListener('input',e=>{$('pv').textContent=e.target.value;shown=PAGE;render()});
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');
  setTimeout(()=>t.classList.remove('show'),2200);}
@@ -660,18 +716,25 @@ const byCat={}; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
 const cvTotal=()=>Object.values(outfit).reduce((a,b)=>a+(b?b.g:0),0);
 
 const locked={};
+// which slots Fill / Surprise are allowed to touch. Hat/top/bottom/shoe on by default;
+// jacket & extra off so nothing you didn't ask for gets added.
+const include={hat:true,layer:false,top:true,bottom:true,shoe:true,accessory:false};
 function renderCanvas(){
  $('cvslots').innerHTML=CVSLOTS.map(s=>{
   const r=outfit[s.k], act=s.k===activeSlot?' act':'', lk=locked[s.k]?' lk':'';
-  if(r) return `<div class="cvslot filled${act}${lk}" data-slot="${s.k}">
+  const inc=`<button class="inc${include[s.k]?' on':''}" data-inc="${s.k}" title="${include[s.k]?'Will be filled — click to skip this slot':'Skipped — click to include in Fill / Surprise'}">${include[s.k]?'\u2713 fill':'skip'}</button>`;
+  const sk=include[s.k]?'':' skip';
+  if(r) return `<div class="cvslot filled${act}${lk}${sk}" data-slot="${s.k}">
     <button class="pin${locked[s.k]?' on':''}" data-lock="${s.k}" title="${locked[s.k]?'Locked — kept when filling':'Lock this piece'}">&#128204;</button>
+    <button class="cvfav${savedUrls.has(r.u)?' on':''}" data-cvfav="${s.k}" title="Save this piece">&#9829;</button>
+    <button class="shuf" data-shuf="${s.k}" title="Swap for another coordinating piece">&#8635;</button>
     <button class="rm" data-rm="${s.k}" title="Remove">&times;</button>
-    <div class="cvlab">${s.label}</div>
+    <div class="cvlab">${s.label}${inc}</div>
     <img src="${esc(r.i)}" alt="" onerror="this.remove()">
     <div class="cvm"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>
      <div class="pp">${gbp(r.g)} <a class="cvbuy" href="${esc(r.u)}" target="_blank" rel="noopener" data-buy>View &rarr;</a></div></div></div>`;
-  return `<div class="cvslot empty${act}" data-slot="${s.k}">
-    <div class="cvlab">${s.label}</div><div class="cvadd">+ choose</div></div>`;
+  return `<div class="cvslot empty${act}${sk}" data-slot="${s.k}">
+    <div class="cvlab">${s.label}${inc}</div><div class="cvadd">${include[s.k]?'+ choose':'skipped'}</div></div>`;
  }).join('');
  $('btotal').textContent=gbp(cvTotal());
 }
@@ -690,6 +753,7 @@ function renderPicker(){
  const pool=pickerPool();
  $('pkgrid').innerHTML=pool.slice(0,pkShown).map(r=>
   `<div class="pkcard" data-pick="${r.id}" title="${esc(r.b)} — ${esc(r.t)}">
+    <button class="pfav${savedUrls.has(r.u)?' on':''}" data-pfav="${r.id}" title="Save this piece">&#9829;</button>
     <img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">
     <div class="pkm"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>
      <div class="pp">${gbp(r.g)}<span class="cl">${esc(r.col||'')}</span></div></div></div>`
@@ -706,6 +770,12 @@ function initBuilder(){
 }
 $('cvslots').addEventListener('click',e=>{
  if(e.target.closest('[data-buy]')){e.stopPropagation(); return;}
+ const ic=e.target.closest('[data-inc]');
+ if(ic){e.stopPropagation(); const k=ic.dataset.inc; include[k]=!include[k]; renderCanvas(); return;}
+ const fv=e.target.closest('[data-cvfav]');
+ if(fv){e.stopPropagation(); const k=fv.dataset.cvfav; if(outfit[k]){const on=togglePiece(outfit[k].u); fv.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved');} return;}
+ const sh=e.target.closest('[data-shuf]');
+ if(sh){e.stopPropagation(); const k=sh.dataset.shuf; const alt=coordPick(k,heroColour()); if(alt){outfit[k]=alt; renderCanvas();} return;}
  const lk=e.target.closest('[data-lock]');
  if(lk){e.stopPropagation(); const k=lk.dataset.lock; locked[k]=!locked[k]; renderCanvas();
    toast(locked[k]?'Locked — kept when you fill or surprise':'Unlocked'); return;}
@@ -714,6 +784,9 @@ $('cvslots').addEventListener('click',e=>{
  const sl=e.target.closest('[data-slot]'); if(sl) setSlot(sl.dataset.slot);
 });
 $('pkgrid').addEventListener('click',e=>{
+ const fv=e.target.closest('[data-pfav]');
+ if(fv){ e.stopPropagation(); const rr=D.find(x=>x.id===+fv.dataset.pfav);
+   if(rr){ const on=togglePiece(rr.u); fv.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); } return; }
  const c=e.target.closest('[data-pick]'); if(!c)return;
  const r=D.find(x=>x.id===+c.dataset.pick); if(!r)return;
  outfit[activeSlot]=r; renderCanvas();
@@ -725,12 +798,20 @@ $('pkgrid').addEventListener('click',e=>{
 ['pkq','pkcol','pkfit'].forEach(id=>$(id).addEventListener('input',()=>{pkShown=60;renderPicker();}));
 $('pkmore').onclick=()=>{pkShown+=60;renderPicker();};
 
-// ---- grammar-aware selection ----
-function rndFrom(cats,filt){
+// ---- curated, cross-brand, colour-coordinated selection ----
+function usedBrands(exceptK){ const s=new Set(); SLOTORDER.forEach(k=>{ if(k!==exceptK && outfit[k]) s.add((outfit[k].b||'').toLowerCase()); }); return s; }
+function rndFrom(cats,filt,k){
  let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
- if(filt)pool=pool.filter(filt); if(!pool.length)return null;
- pool.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0)));
- const head=pool.slice(0,Math.max(40,Math.floor(pool.length*0.35)));
+ if(filt)pool=pool.filter(filt);
+ if(!pool.length)return null;
+ // never repeat a brand already in the fit (the cross-brand rule) when we can avoid it
+ const ub=usedBrands(k);
+ const fresh=pool.filter(r=>!ub.has((r.b||'').toLowerCase()));
+ if(fresh.length) pool=fresh;
+ // quality first: your saves, then Best-of picks, then video pieces, then known-colour, then sane price
+ pool.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
+   ||((a.col==='unknown'?1:0)-(b.col==='unknown'?1:0))||(a.g-b.g));
+ const head=pool.slice(0,Math.max(18,Math.floor(pool.length*0.28)));
  return head[Math.floor(Math.random()*head.length)];
 }
 const catsOf=k=>CVSLOTS.find(s=>s.k===k).cats;
@@ -744,54 +825,61 @@ function heroColour(){
 // pick a coordinating piece for one slot given the hero colour
 function coordPick(k,hero){
  const c=catsOf(k);
- if(k==='top')   return rndFrom(c,r=>!r.neu)||rndFrom(c);
- if(k==='bottom')return rndFrom(c,r=>r.neu)||rndFrom(c);
- if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero))||rndFrom(c,r=>r.neu)||rndFrom(c);
- if(k==='shoe')  return rndFrom(c,r=>r.neu||(hero&&r.col===hero))||rndFrom(c);
- if(k==='layer') return rndFrom(c,r=>r.neu)||rndFrom(c);
- return rndFrom(c);
+ if(k==='top')   return rndFrom(c,r=>!r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>!r.neu,k)||rndFrom(c,null,k);
+ if(k==='bottom')return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
+ if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero,k))||rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
+ // footwear: a clean, coordinating sneaker — neutral & known-colour first, then hero-match, never random junk
+ if(k==='shoe')  return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||(hero&&rndFrom(c,r=>r.col===hero,k))||rndFrom(c,r=>r.neu,k)||rndFrom(c,r=>r.col!=='unknown',k)||rndFrom(c,null,k);
+ if(k==='layer') return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
+ return rndFrom(c,r=>r.col!=='unknown',k)||rndFrom(c,null,k);
 }
-// FILL THE REST: complete only the empty slots, coordinating with what's placed/pinned
+// FILL THE REST: fill only the slots you've INCLUDED and haven't locked, coordinated around your picks
 $('bfill').onclick=()=>{
- let hero=heroColour();
- // if no top yet, place one first so the rest has something to coordinate to
- if(!outfit.top && !locked.top){ outfit.top=coordPick('top',null); hero=heroColour(); }
- let n=0;
- ['top','bottom','shoe','hat'].forEach(k=>{ if(!outfit[k] && !locked[k]){ outfit[k]=coordPick(k,hero); if(outfit[k])n++; }});
- renderCanvas(); setSlot('top');
- toast(n? `Filled ${n} slot${n>1?'s':''} around your picks` : 'Already complete — unlock or clear to change');
+ if(include.top && !outfit.top && !locked.top){ outfit.top=coordPick('top',null); }
+ let hero=heroColour(), n=0;
+ ['top','bottom','shoe','layer','hat','accessory'].forEach(k=>{
+   if(include[k] && !outfit[k] && !locked[k]){ outfit[k]=coordPick(k,hero); if(outfit[k]){ n++; hero=hero||heroColour(); } }});
+ renderCanvas(); setSlot(activeSlot);
+ toast(n? `Filled ${n} slot${n>1?'s':''} — coordinated, cross-brand` : 'Nothing to fill — include some slots, or unlock them');
 };
 // SURPRISE ME: rebuild every UNLOCKED slot into a fresh coordinated fit
 $('brandom').onclick=()=>{
- ['hat','layer','top','bottom','shoe','accessory'].forEach(k=>{ if(!locked[k]) outfit[k]=null; });
- if(!outfit.top) outfit.top=rndFrom(['longsleeve','tee','hoodie_sweat'],r=>!r.neu)||rndFrom(['longsleeve','tee']);
- const hero=heroColour();
- if(!locked.bottom) outfit.bottom=coordPick('bottom',hero);
- if(!locked.shoe)   outfit.shoe=coordPick('shoe',hero);
- if(!locked.hat)    outfit.hat=coordPick('hat',hero);
- renderCanvas(); setSlot('top'); toast('Fresh fit — lock the keepers, then Fill or Surprise again');
+ SLOTORDER.forEach(k=>{ if(include[k] && !locked[k]) outfit[k]=null; });
+ if(include.top && !outfit.top){ outfit.top=coordPick('top',null); }
+ let hero=heroColour();
+ ['bottom','shoe','layer','hat','accessory'].forEach(k=>{
+   if(include[k] && !locked[k] && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
+ renderCanvas(); setSlot(activeSlot);
+ toast('Fresh coordinated fit — lock keepers, skip slots you don\u2019t want, Surprise again');
 };
 $('bclear').onclick=()=>{outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
  Object.keys(locked).forEach(k=>locked[k]=false); renderCanvas(); setSlot('top');};
 $('bsave').onclick=()=>{
- let n=0; Object.values(outfit).forEach(r=>{if(r&&!savedUrls.has(r.u)){savedUrls.add(r.u);n++;const row=D.find(x=>x.u===r.u);if(row)favs.add(row.id);}});
- persist(); $('favcount').textContent=favs.size+' saved'; const fn=$('favn');if(fn)fn.textContent=favs.size;
- toast(n?`${n} pieces saved to your list`:'Nothing placed yet');
+ const r=saveOutfit(outfit,'My fit');
+ toast(r===1?'Outfit saved to Saved Outfits':r===-1?'That outfit is already saved':'Nothing placed yet');
+};
+$('bcopy').onclick=()=>{
+ const parts=SLOTORDER.filter(k=>outfit[k]).map(k=>`${outfit[k].b} — ${outfit[k].t} — ${gbp(outfit[k].g)} — ${outfit[k].u}`);
+ if(!parts.length){toast('Nothing placed yet');return;}
+ navigator.clipboard.writeText(parts.join('\n')).then(()=>toast('Outfit copied'),()=>toast('Copy failed'));
 };
 // ===== STARTER LOOKS (load into builder) =====
 const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,items:Object.assign({},o.items)}));
 const fitTotal=f=>Object.values(f.items).reduce((a,b)=>a+b.g,0);
 function slotHtml(r,k){
- return `<a class="slot" href="${esc(r.u)}" target="_blank" rel="noopener">
-   <div class="lab">${k}</div><img loading="lazy" src="${esc(r.i)}" alt="">
-   <div class="m"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>
-    <div class="pp">${gbp(r.g)}</div></div></a>`;
+ return `<div class="slotw">
+   <button class="sfav${savedUrls.has(r.u)?' on':''}" data-sfav="${esc(r.u)}" title="Save this piece">&#9829;</button>
+   <a class="slot" href="${esc(r.u)}" target="_blank" rel="noopener">
+    <div class="lab">${k}</div><img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">
+    <div class="m"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>
+     <div class="pp">${gbp(r.g)}</div></div></a></div>`;
 }
 function fitHtml(f){
  const slots=SLOTORDER.filter(k=>f.items[k]).map(k=>slotHtml(f.items[k],k)).join('');
  return `<div class="fit" id="fit${f.i}">
    <div class="fh"><div><h3>${esc(f.formula)}</h3><div class="blurb">${esc(f.note)}</div></div>
     <div class="fr"><span class="cost">${gbp(fitTotal(f))}</span>
+     <button class="act sm" data-savelook="${f.i}" title="Save whole outfit">&#9829; Save</button>
      <button class="act sm" data-use="${f.i}">Use &amp; edit</button></div></div>
    <div class="slots">${slots}</div></div>`;
 }
@@ -822,12 +910,52 @@ document.addEventListener('click',e=>{
   if(id==='fbudget')$('fbv').textContent=$('fbudget').value; renderFits();});});
 
 // ===== sub-tab + view switching =====
+document.addEventListener('click',e=>{
+ const sf=e.target.closest('[data-sfav]');
+ if(sf){ e.preventDefault(); e.stopPropagation(); const on=togglePiece(sf.dataset.sfav); sf.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); return; }
+ const sl=e.target.closest('[data-savelook]');
+ if(sl){ e.preventDefault(); const f=FITS[+sl.dataset.savelook]; const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
+ const ld=e.target.closest('[data-loadsaved]');
+ if(ld){ const f=savedFits[+ld.dataset.loadsaved]; if(!f)return;
+   outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
+   SLOTORDER.forEach(k=>{ if(f.items[k]){ const p=f.items[k]; outfit[k]=D.find(x=>x.u===p.u)||p; }});
+   setFitSub('build'); initBuilder(); renderCanvas(); setSlot('top'); toast('Loaded into the builder'); return; }
+ const dl=e.target.closest('[data-delsaved]');
+ if(dl){ savedFits.splice(+dl.dataset.delsaved,1); persistFits(); renderSaved(); return; }
+});
+function renderSaved(){
+ updateSavedCount();
+ const box=$('savedlist'), cnt=$('savedcount'), clr=$('savedclear');
+ if(!savedFits.length){ box.innerHTML='<div class="empty">No saved outfits yet — build a fit and hit \u201cSave outfit\u201d, or save a starter look.</div>';
+   cnt.textContent='No saved outfits yet'; if(clr)clr.hidden=true; return; }
+ cnt.textContent=savedFits.length+' saved outfit'+(savedFits.length>1?'s':''); if(clr)clr.hidden=false;
+ box.innerHTML=savedFits.map((f,idx)=>{
+  const slots=SLOTORDER.filter(k=>f.items[k]).map(k=>{const r=f.items[k];
+    return `<div class="slotw"><button class="sfav${savedUrls.has(r.u)?' on':''}" data-sfav="${esc(r.u)}" title="Save this piece">&#9829;</button>`+
+     `<a class="slot" href="${esc(r.u)}" target="_blank" rel="noopener"><div class="lab">${k}</div>`+
+     `<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">`+
+     `<div class="m"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div><div class="pp">${gbp(r.g)}</div></div></a></div>`;
+  }).join('');
+  return `<div class="fit"><div class="fh"><div><h3>${esc(f.note||'Saved outfit')}</h3></div>`+
+    `<div class="fr"><span class="cost">${gbp(f.total)}</span>`+
+    `<button class="act sm" data-loadsaved="${idx}">Load</button>`+
+    `<button class="act sm" data-delsaved="${idx}">Remove</button></div></div>`+
+    `<div class="slots">${slots}</div></div>`;
+ }).join('');
+}
+let _clrArm=false;
+document.addEventListener('DOMContentLoaded',()=>{});
+{const sc=$('savedclear'); if(sc) sc.onclick=()=>{
+  if(!_clrArm){_clrArm=true; sc.textContent='Sure? Clear all'; setTimeout(()=>{_clrArm=false;sc.textContent='Clear all';},3000); return;}
+  savedFits=[]; persistFits(); renderSaved(); toast('Saved outfits cleared'); };}
 function setFitSub(which){
  document.querySelectorAll('.fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
  $('buildmode').hidden=which!=='build';
  $('looksmode').hidden=which!=='looks';
+ $('savedmode').hidden=which!=='saved';
  if(which==='build') initBuilder();
- else if(!$('fitlist').innerHTML) renderFits();
+ else if(which==='looks'){ if(!$('fitlist').innerHTML) renderFits(); }
+ else if(which==='saved') renderSaved();
 }
 document.getElementById('fitsub').addEventListener('click',e=>{const b=e.target.closest('.fsub'); if(b) setFitSub(b.dataset.fs);});
 
@@ -840,6 +968,7 @@ $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  document.querySelector('.bar').style.display=isFits?'none':'';
  if(isFits) setFitSub('build');
 };
+updateSavedCount();
 $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
  const ok=s.status==='ok';
  return `<tr><td>${esc(s.domain||'')}</td><td class="${ok?'st-ok':'st-bad'}">${esc(s.status||'')}</td>
