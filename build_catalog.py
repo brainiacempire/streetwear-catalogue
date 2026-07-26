@@ -90,6 +90,7 @@ BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwell
 _CLS_RULES = [
  ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
  ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
+ ("accessory",  r"\b(belts?|totes?|backpacks?|rucksacks?|wallets?|purses?|card ?holders?|cardholders?|sunglasses|eyewear|goggles|necklaces?|bracelets?|earrings?|pendants?|brooch|keychains?|key ?rings?|scarves|scarf|umbrellas?|gloves?|mittens?|\bbags?\b)\b"),
  ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
@@ -552,20 +553,23 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .pvslots:has(.varrow){display:block}
 .pvslots:has(.mqwrap){display:block}
 .mqwrap{display:flex;flex-direction:column;align-items:center}
-.mqstage{position:relative;width:300px;max-width:80vw;aspect-ratio:10/17;background:radial-gradient(130% 90% at 50% 12%,#1b1b24,#0c0c11);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:4px auto 0}
-.mqsil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.mqsil svg{height:96%;fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.09);stroke-width:.6}
-.mqz{position:absolute;left:50%;transform:translateX(-50%);border-radius:10px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.09);background:#15151c}
-.mqz img{width:100%;height:100%;object-fit:cover;display:block}
-.mqz.mqerr img{opacity:.15}
-.mqz .mqlab{position:absolute;left:0;right:0;bottom:0;font-size:8.5px;padding:2px 5px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;text-transform:uppercase;letter-spacing:.5px}
-.mq-hat{top:1.5%;width:23%;aspect-ratio:1.1;z-index:5}
-.mq-top{top:14%;width:43%;aspect-ratio:.82;z-index:3}
-.mq-layer{top:16%;left:27%;transform:none;width:30%;aspect-ratio:.72;z-index:2}
-.mq-bottom{top:45%;width:40%;aspect-ratio:.62;z-index:3}
-.mq-shoe{bottom:1.5%;width:37%;aspect-ratio:1.5;z-index:4}
-.mq-acc{top:22%;right:3%;left:auto;transform:none;width:19%;aspect-ratio:1;z-index:4}
-.mqcap{font-size:11.5px;color:var(--dim);max-width:320px;text-align:center;margin:12px auto 0;line-height:1.5}
+.mqstage{position:relative;width:324px;max-width:84vw;aspect-ratio:9/16;margin:2px auto 0;background:radial-gradient(115% 62% at 50% 6%,#23232e,#0b0b10 72%);border-radius:20px;overflow:hidden}
+.mqfloor{position:absolute;left:50%;bottom:2.5%;transform:translateX(-50%);width:48%;height:4%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);border-radius:50%;z-index:1}
+.mqsil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.mqsil svg{height:93%;fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.08);stroke-width:.5}
+.mqz{position:absolute;left:50%;transform:translateX(-50%);-webkit-mask-image:radial-gradient(118% 128% at 50% 44%,#000 60%,transparent 90%);mask-image:radial-gradient(118% 128% at 50% 44%,#000 60%,transparent 90%);filter:drop-shadow(0 13px 18px rgba(0,0,0,.55))}
+.mqz img{width:100%;height:100%;object-fit:contain;display:block}
+.mqz.mqerr{opacity:.1}
+.mq-hat{top:2.5%;width:32%;height:11.5%;z-index:7}
+.mq-layer{top:11.5%;width:66%;height:36%;z-index:4;opacity:.96}
+.mq-top{top:12%;width:55%;height:34%;z-index:5}
+.mq-bottom{top:40%;width:51%;height:37%;z-index:5}
+.mq-shoe{bottom:3%;width:47%;height:12.5%;z-index:6}
+.mq-acc{top:31%;right:1%;left:auto;transform:none;width:22%;height:13%;z-index:6}
+.mqcap{font-size:11.5px;color:var(--dim);max-width:322px;text-align:center;margin:13px auto 0;line-height:1.5}
+.mq3dhost{position:relative;width:324px;max-width:84vw;height:500px;margin:2px auto 0;background:radial-gradient(120% 60% at 50% 6%,#23232e,#0b0b10 74%);border-radius:20px;overflow:hidden;touch-action:none;cursor:grab}
+.mq3dhost canvas{display:block}
+.mq3dspin{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:10.5px;color:var(--dim);pointer-events:none;letter-spacing:.3px}
 .pvslot{background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .pvslot img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
 .pvlab{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim2);padding:7px 10px 0}
@@ -1282,21 +1286,83 @@ function pvPieces(items){ return SLOTORDER.filter(k=>items[k]).map(k=>{const r=i
 }
 function pvMannequin(items){
  const z=(k,cls)=>{const r=items[k]; if(!r)return '';
-   return `<div class="mqz ${cls}" title="${esc(r.b)} \u2014 ${esc(r.t)}"><img loading="lazy" src="${esc(r.i)}" onerror="this.parentNode.classList.add('mqerr')"><span class="mqlab">${esc(k)}</span></div>`;};
- const sil='<div class="mqsil"><svg viewBox="0 0 100 220" preserveAspectRatio="xMidYMid meet">'
-  +'<circle cx="50" cy="20" r="13"/>'
-  +'<path d="M30 36 L70 36 L75 60 L64 64 L64 122 L36 122 L36 64 L25 60 Z"/>'
-  +'<path d="M38 122 L48 122 L47 208 L39 208 Z"/>'
-  +'<path d="M52 122 L62 122 L61 208 L53 208 Z"/></svg></div>';
+   return `<div class="mqz ${cls}" title="${esc(r.b)} \u2014 ${esc(r.t)}"><img loading="lazy" src="${esc(r.i)}" onerror="this.parentNode.classList.add('mqerr')"></div>`;};
+ const sil='<div class="mqsil"><svg viewBox="0 0 120 240" preserveAspectRatio="xMidYMid meet">'
+  +'<circle cx="60" cy="22" r="14"/>'
+  +'<path d="M40 40 Q60 33 80 40 L87 68 L74 74 L74 132 L46 132 L46 74 L33 68 Z"/>'
+  +'<path d="M41 43 L31 46 L23 100 L31 102 L39 62 Z"/>'
+  +'<path d="M79 43 L89 46 L97 100 L89 102 L81 62 Z"/>'
+  +'<path d="M47 132 L59 132 L57 228 L48 228 Z"/>'
+  +'<path d="M61 132 L73 132 L72 228 L63 228 Z"/></svg></div>';
  const tot=SLOTORDER.filter(k=>items[k]).reduce((a,k)=>a+items[k].g,0);
- return `<div class="mqwrap"><div class="mqstage">${sil}`
+ const pieces=SLOTORDER.filter(k=>items[k]).length;
+ return `<div class="mqwrap"><div class="mqstage"><div class="mqfloor"></div>${sil}`
    +z('hat','mq-hat')+z('layer','mq-layer')+z('top','mq-top')+z('bottom','mq-bottom')+z('shoe','mq-shoe')+z('accessory','mq-acc')
-   +`</div><div class="mqcap">Head-to-toe on the figure \u2014 ${gbp(tot)}. Each piece sits where it's worn, so you can read how the fit stacks together.</div></div>`;
+   +`</div><div class="mqcap">${pieces} pieces styled head-to-toe on the figure \u2014 ${gbp(tot)}. Each sits where it's worn, so you get a real feel for the fit. Hover a piece for the brand.</div></div>`;
 }
 let _pvView='pieces';
+function _loadScript(src){return new Promise((res,rej)=>{var el=document.createElement('script');el.src=src;el.onload=res;el.onerror=rej;document.head.appendChild(el);});}
+var _threeTried=false,_threeOk=false;
+async function ensureThree(){ if(window.THREE)return true; if(_threeTried)return _threeOk; _threeTried=true;
+ try{ await Promise.race([_loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'), new Promise(function(_,rej){setTimeout(function(){rej('t');},6000);})]); _threeOk=!!window.THREE; }catch(e){ _threeOk=false; } return _threeOk; }
+var _COLHEX={black:0x201f1f,white:0xededea,grey:0x8c8c92,cream:0xe6ddc9,tan:0xc7a97b,brown:0x6a482e,navy:0x243250,blue:0x39599c,green:0x40684a,olive:0x6a6a3c,red:0xb23c3c,burgundy:0x6d2b35,purple:0x6d4a88,orange:0xc77a3c,yellow:0xd6b24c,pink:0xd68a9e,unknown:0x7c7c82};
+function _hexFor(r){ return (r&&_COLHEX[r.col])||0x7c7c82; }
+function _matFor(r){ var m=new THREE.MeshStandardMaterial({color:_hexFor(r),roughness:.92,metalness:.03});
+ if(r&&r.i){ try{ var L=new THREE.TextureLoader(); if(L.setCrossOrigin)L.setCrossOrigin('anonymous');
+   L.load(r.i,function(t){ if(THREE.sRGBEncoding)t.encoding=THREE.sRGBEncoding; m.map=t; m.color.set(0xffffff); m.needsUpdate=true; },undefined,function(){}); }catch(e){} }
+ return m; }
+var _mq3d=null;
+function cleanup3D(){ if(_mq3d){ try{cancelAnimationFrame(_mq3d.raf);}catch(e){} try{_mq3d.rnd.dispose();}catch(e){} _mq3d=null; } }
+async function init3D(items,host,capEl){
+ var ok=await ensureThree();
+ if(!ok){ var h2=document.getElementById('pvslots'); if(h2) h2.innerHTML=pvMannequin(items); return; }
+ cleanup3D();
+ var W=host.clientWidth||320, H=host.clientHeight||500;
+ var scene=new THREE.Scene();
+ var cam=new THREE.PerspectiveCamera(36,W/H,0.1,100); cam.position.set(0,0.4,8.2);
+ var rnd=new THREE.WebGLRenderer({antialias:true,alpha:true}); rnd.setSize(W,H); rnd.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+ host.innerHTML=''; host.appendChild(rnd.domElement);
+ scene.add(new THREE.AmbientLight(0xffffff,.9));
+ var dl=new THREE.DirectionalLight(0xffffff,.85); dl.position.set(3,6,6); scene.add(dl);
+ var dl2=new THREE.DirectionalLight(0x8899ff,.28); dl2.position.set(-4,2,-4); scene.add(dl2);
+ var g=new THREE.Group(); scene.add(g);
+ var skin=new THREE.MeshStandardMaterial({color:0xb8a08a,roughness:.95});
+ function cyl(rt,rb,h,seg,mat){ return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||24,1),mat); }
+ var head=new THREE.Mesh(new THREE.SphereGeometry(.5,28,28),skin); head.position.y=3.2; g.add(head);
+ var neck=cyl(.18,.2,.3,16,skin); neck.position.y=2.85; g.add(neck);
+ if(items.hat){ var hm=_matFor(items.hat); var hat=cyl(.58,.58,.42,26,hm); hat.position.y=3.62; g.add(hat);
+   var brim=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.05,26),hm); brim.position.y=3.4; g.add(brim); }
+ var topMat=_matFor(items.top||items.layer);
+ var torso=cyl(.92,.74,2.05,30,topMat); torso.position.y=1.75; g.add(torso);
+ if(items.layer){ var lay=cyl(1.04,.84,2.1,30,_matFor(items.layer)); lay.position.y=1.75; g.add(lay); }
+ var armMat=_matFor(items.layer||items.top);
+ var aL=cyl(.17,.13,1.75,16,armMat); aL.position.set(-1.05,1.72,0); aL.rotation.z=.12; g.add(aL);
+ var aR=cyl(.17,.13,1.75,16,armMat); aR.position.set(1.05,1.72,0); aR.rotation.z=-.12; g.add(aR);
+ var botMat=_matFor(items.bottom);
+ var lL=cyl(.35,.26,2.05,22,botMat); lL.position.set(-.34,-.02,0); g.add(lL);
+ var lR=cyl(.35,.26,2.05,22,botMat); lR.position.set(.34,-.02,0); g.add(lR);
+ var shoeMat=_matFor(items.shoe);
+ var fL=new THREE.Mesh(new THREE.BoxGeometry(.44,.28,.9),shoeMat); fL.position.set(-.34,-1.2,.24); g.add(fL);
+ var fR=new THREE.Mesh(new THREE.BoxGeometry(.44,.28,.9),shoeMat); fR.position.set(.34,-1.2,.24); g.add(fR);
+ var sh=new THREE.Mesh(new THREE.CircleGeometry(1.25,32),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.32}));
+ sh.rotation.x=-Math.PI/2; sh.position.y=-1.42; g.add(sh);
+ g.position.y=-0.35;
+ var drag=false,lx=0,auto=.005;
+ host.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;host.style.cursor='grabbing';});
+ window.addEventListener('pointerup',function(){drag=false;host.style.cursor='grab';});
+ window.addEventListener('pointermove',function(e){ if(drag){ g.rotation.y+=(e.clientX-lx)*.011; lx=e.clientX; }});
+ function loop(){ if(!_mq3d)return; if(!drag) g.rotation.y+=auto; rnd.render(scene,cam); _mq3d.raf=requestAnimationFrame(loop); }
+ _mq3d={rnd:rnd,raf:0};
+ loop();
+ if(capEl){ var tot=SLOTORDER.filter(function(k){return items[k];}).reduce(function(a,k){return a+items[k].g;},0);
+   capEl.innerHTML='A spinnable 3D fit — '+gbp(tot)+'. Drag to rotate. Built in each piece’s real colours; where the store allows it the product image maps on too.'; }
+}
 function renderPreview(){
  if(!_pvBase)return;
- $('pvslots').innerHTML = _pvView==='body' ? pvMannequin(_pvBase) : pvPieces(_pvBase);
+ if(_pvView==='body'){
+  $('pvslots').innerHTML='<div class="mqwrap"><div class="mq3dhost" id="mq3dhost"><div class="mq3dspin">building 3D fit\u2026</div></div><div class="mqcap" id="mq3dcap"></div></div>';
+  init3D(_pvBase, document.getElementById('mq3dhost'), document.getElementById('mq3dcap'));
+ } else { cleanup3D(); $('pvslots').innerHTML=pvPieces(_pvBase); }
  const bb=$('pvbody'); if(bb) bb.innerHTML = _pvView==='body' ? '\uD83D\uDCC7 Pieces' : '\uD83D\uDC64 On the body';
 }
 function openPreview(items,title,total){
@@ -1361,7 +1427,7 @@ document.addEventListener('click',e=>{
    $('pvwrap').hidden=true; document.querySelector('.vt[data-v="fits"]').click(); setFitSub('build');
    initBuilder(); renderCanvas(); setSlot('top'); toast('Loaded that variation'); }
 });
-$('pvclose').onclick=()=>{$('pvwrap').hidden=true;};
+$('pvclose').onclick=()=>{cleanup3D();$('pvwrap').hidden=true;};
 $('pvvary').onclick=showVariations;
 {const bb=$('pvbody'); if(bb) bb.onclick=()=>{ _pvView=_pvView==='body'?'pieces':'body'; renderPreview(); };}
 $('pvwrap').addEventListener('click',e=>{ if(e.target.id==='pvwrap')$('pvwrap').hidden=true; });

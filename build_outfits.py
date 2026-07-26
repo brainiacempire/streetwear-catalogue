@@ -27,6 +27,7 @@ CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.
 _CLS_RULES = [
  ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
  ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
+ ("accessory",  r"\b(belts?|totes?|backpacks?|rucksacks?|wallets?|purses?|card ?holders?|cardholders?|sunglasses|eyewear|goggles|necklaces?|bracelets?|earrings?|pendants?|brooch|keychains?|key ?rings?|scarves|scarf|umbrellas?|gloves?|mittens?|\bbags?\b)\b"),
  ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
