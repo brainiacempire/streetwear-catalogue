@@ -130,7 +130,7 @@
   "cur": "USD"
  },
  {
-  "domain": "bronze56k.com",
+  "domain": "shop.bronze56k.com",
   "brand": "Bronze 56K",
   "cur": "USD"
  },
@@ -155,23 +155,8 @@
   "cur": "USD"
  },
  {
-  "domain": "represent.com",
-  "brand": "Represent",
-  "cur": "GBP"
- },
- {
   "domain": "kith.com",
   "brand": "Kith",
-  "cur": "USD"
- },
- {
-  "domain": "stan-ray.com",
-  "brand": "Stan Ray",
-  "cur": "GBP"
- },
- {
-  "domain": "shopasaali.com",
-  "brand": "Shopasaali",
   "cur": "USD"
  },
  {
@@ -247,11 +232,6 @@
  {
   "domain": "overkillshop.com",
   "brand": "Overkillshop",
-  "cur": "USD"
- },
- {
-  "domain": "covernat.co.kr",
-  "brand": "Covernat",
   "cur": "USD"
  },
  {
@@ -485,11 +465,6 @@
   "cur": "USD"
  },
  {
-  "domain": "yeseyesee.com",
-  "brand": "Yeseyesee",
-  "cur": "USD"
- },
- {
   "domain": "dtmusa.myshopify.com",
   "brand": "Dtmusa",
   "cur": "USD"
@@ -497,11 +472,6 @@
  {
   "domain": "satoshinakamoto.cloud",
   "brand": "SATOSHI NAKAMOTO",
-  "cur": "USD"
- },
- {
-  "domain": "thisisneverthat.com",
-  "brand": "thisisneverthat",
   "cur": "USD"
  },
  {
@@ -540,11 +510,6 @@
   "cur": "EUR"
  },
  {
-  "domain": "carhartt-wip.com",
-  "brand": "Carhartt WIP",
-  "cur": "EUR"
- },
- {
   "domain": "cookiessf.com",
   "brand": "Cookies",
   "cur": "USD"
@@ -560,18 +525,13 @@
   "cur": "USD"
  },
  {
-  "domain": "naked-copenhagen.com",
+  "domain": "nakedcph.com",
   "brand": "Naked Copenhagen",
   "cur": "EUR"
  },
  {
   "domain": "menacelosangeles.com",
   "brand": "Menace",
-  "cur": "USD"
- },
- {
-  "domain": "uniformbridge.com",
-  "brand": "Uniform Bridge",
   "cur": "USD"
  },
  {
@@ -610,11 +570,6 @@
   "cur": "USD"
  },
  {
-  "domain": "adererror.com",
-  "brand": "Ader Error",
-  "cur": "USD"
- },
- {
   "domain": "snowpeak.com",
   "brand": "Snow Peak",
   "cur": "USD"
@@ -647,11 +602,6 @@
  {
   "domain": "nakedandfamousdenim.com",
   "brand": "Naked & Famous",
-  "cur": "USD"
- },
- {
-  "domain": "okayamadenim.com",
-  "brand": "Okayama Denim",
   "cur": "USD"
  },
  {
@@ -705,7 +655,7 @@
   "cur": "USD"
  },
  {
-  "domain": "chrystienyc.com",
+  "domain": "shop.chrystienyc.com",
   "brand": "Chrystie NYC",
   "cur": "USD"
  },
@@ -730,24 +680,9 @@
   "cur": "USD"
  },
  {
-  "domain": "awakeny.com",
-  "brand": "Awake NY",
-  "cur": "USD"
- },
- {
-  "domain": "fuckingawesome.com",
-  "brand": "Fucking Awesome",
-  "cur": "USD"
- },
- {
   "domain": "marketstudios.com",
   "brand": "Market",
   "cur": "USD"
- },
- {
-  "domain": "edwineurope.com",
-  "brand": "Edwin",
-  "cur": "EUR"
  },
  {
   "domain": "kavu.com",
@@ -755,12 +690,12 @@
   "cur": "USD"
  },
  {
-  "domain": "afield-out.com",
+  "domain": "afieldout.com",
   "brand": "Afield Out",
   "cur": "USD"
  },
  {
-  "domain": "gx1000.us",
+  "domain": "gx1000.com",
   "brand": "GX1000",
   "cur": "USD"
  },
@@ -770,23 +705,8 @@
   "cur": "USD"
  },
  {
-  "domain": "nothinbutghosts.com",
-  "brand": "Ghost",
-  "cur": "USD"
- },
- {
-  "domain": "sillage.shop",
+  "domain": "sillage.gallery",
   "brand": "Sillage",
-  "cur": "EUR"
- },
- {
-  "domain": "adsum.us",
-  "brand": "Adsum",
-  "cur": "USD"
- },
- {
-  "domain": "brainwaves.store",
-  "brand": "Brainwaves",
   "cur": "USD"
  },
  {
