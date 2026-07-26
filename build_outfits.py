@@ -43,6 +43,7 @@ _CLS_RULES = [
 _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sandals?|slides?|sliders?|mules?|clogs?|crocs?|plimsolls?|espadrilles?)\b", re.I)
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
 _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
+_NOVELTY = re.compile(r"\b(postcards?|stickers?|magnets?|sponges?|keychains?|earrings?|pins?|badges?|posters?|incense|candles?|mugs?|cups?|saucers?|bowls?|coasters?|plates?|glass|tumblers?|trays?|dish(es)?|ramen|towels?|rugs?|blankets?|ashtrays?|lighters?|air ?fresh|puzzles?|figurines?|keyrings?|ornaments?)\b", re.I)
 def classify(title, stored):
     t = title or ""
     if _FOOT_EXPLICIT.search(t):
@@ -52,11 +53,15 @@ def classify(title, stored):
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
             continue
         if rx.search(t):
+            if k == "set" and _NOVELTY.search(t):   # a postcard/sticker "set" is not a clothing set
+                continue
             return k
     if not apparel:
         for k, rx in _CLS:
             if k == "footwear" and rx.search(t):
                 return k
+    if stored == "set" and _NOVELTY.search(t):
+        return "other"      # scraper-labelled novelty 'set' isn't a clothing set
     return stored
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}

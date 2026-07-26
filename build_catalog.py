@@ -106,6 +106,7 @@ _CLS_RULES = [
 _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sandals?|slides?|sliders?|mules?|clogs?|crocs?|plimsolls?|espadrilles?)\b", re.I)
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
 _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
+_NOVELTY = re.compile(r"\b(postcards?|stickers?|magnets?|sponges?|keychains?|earrings?|pins?|badges?|posters?|incense|candles?|mugs?|cups?|saucers?|bowls?|coasters?|plates?|glass|tumblers?|trays?|dish(es)?|ramen|towels?|rugs?|blankets?|ashtrays?|lighters?|air ?fresh|puzzles?|figurines?|keyrings?|ornaments?)\b", re.I)
 def classify(title, stored):
     t = title or ""
     if _FOOT_EXPLICIT.search(t):
@@ -115,11 +116,15 @@ def classify(title, stored):
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
             continue
         if rx.search(t):
+            if k == "set" and _NOVELTY.search(t):   # a postcard/sticker "set" is not a clothing set
+                continue
             return k
     if not apparel:
         for k, rx in _CLS:
             if k == "footwear" and rx.search(t):
                 return k
+    if stored == "set" and _NOVELTY.search(t):
+        return "other"      # scraper-labelled novelty 'set' isn't a clothing set
     return stored
 
 rows, bad = [], 0
@@ -205,29 +210,46 @@ except Exception:
 PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "120"))
 FULL_CAP = int(os.environ.get("FULL_CAP", "600"))
 MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "42000"))   # hard ceiling: keeps the page fast however many brands we add
-keep, perdom = [], collections.Counter()
-rows.sort(key=lambda r: (not (r["n"] or r["v"] or r["f"]), not r["a"], r["sm"], -(r["g"] or 0)))
+import collections as _co
+MIN_GBP = float(os.environ.get("MIN_GBP", "0"))   # drop obvious data-error prices from non-saved pieces
+perdom = collections.Counter()
+rows.sort(key=lambda r: (not (r["n"] or r["v"] or r["f"]), not r["a"], r["sm"], -(r.get("sc") or 0), -(r["g"] or 0)))
+# 1) always keep curated / saved / video / outfit / reference pieces
+protected, pool = [], []
 for r in rows:
-    if r["n"] or r["v"] or r["f"] or r["u"] in OUTFIT_URLS:
-        keep.append(r); continue
-    if r["d"] in REFERENCE_DOMAINS:
-        keep.append(r); continue
+    if MIN_GBP and not r["f"] and (r["g"] or 0) < MIN_GBP:
+        continue                      # obvious data-error price on a non-saved piece
+    if r["n"] or r["v"] or r["f"] or r["u"] in OUTFIT_URLS or r["d"] in REFERENCE_DOMAINS:
+        protected.append(r); continue
     if not ALL_STOCK and (not r["a"] or r["sm"]):
         continue
-    cap = FULL_CAP if r["d"] in FULL_DOMAINS else PER_DOMAIN
-    if perdom[r["d"]] >= cap:
-        continue
-    perdom[r["d"]] += 1
-    keep.append(r)
-rows = keep
-
-# Global size cap for page speed: always keep saved / curated / video / reference / outfit pieces,
-# then fill the remainder with the best in-stock pieces up to MAX_TOTAL.
-if len(rows) > MAX_TOTAL:
-    protected = [r for r in rows if r["f"] or r["n"] or r["v"] or r["u"] in OUTFIT_URLS or r["d"] in REFERENCE_DOMAINS]
-    rest = [r for r in rows if r not in protected]
-    rest.sort(key=lambda r: (not r["a"], r["sm"], -(r["g"] or 0)))
-    rows = protected + rest[:max(0, MAX_TOTAL - len(protected))]
+    pool.append(r)
+# 2) fill the rest BALANCED across category AND brand, so no category (sets, tees, shoes...)
+#    or brand gets starved by expensive items dominating a global price sort.
+budget = max(0, MAX_TOTAL - len(protected))
+percat = _co.defaultdict(lambda: _co.defaultdict(list))
+for r in pool:
+    percat[r["c"]][r["d"]].append(r)   # already best-first from the sort above
+CAT_CAP = {"other": 40, "underwear": 30, "accessory": 200}   # keep low-interest buckets modest
+cats = [c for c in percat if c != "other"]
+if "other" in percat: cats.append("other")
+catq = {c: _co.deque(sorted(percat[c].keys())) for c in cats}
+catcount, picked = collections.Counter(), []
+progress = True
+while len(picked) < budget and progress:
+    progress = False
+    for c in cats:
+        if len(picked) >= budget: break
+        if catcount[c] >= CAT_CAP.get(c, 10**9): continue
+        q = catq[c]
+        for _ in range(len(q)):
+            d = q[0]; q.rotate(-1)
+            lst = percat[c][d]
+            dcap = FULL_CAP if d in FULL_DOMAINS else PER_DOMAIN
+            if lst and perdom[d] < dcap:
+                picked.append(lst.pop(0)); perdom[d] += 1; catcount[c] += 1; progress = True
+                break
+rows = protected + picked
 
 best = {}
 for r in rows:
