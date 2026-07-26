@@ -216,6 +216,8 @@ OUTJSON = json.dumps(OUTFITS, separators=(",",":"), ensure_ascii=False)
 tpl = r"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="referrer" content="no-referrer">
 <title>__TITLE__</title>
 <style>
 :root{--bg:#0b0b0d;--panel:#14141a;--panel2:#1b1b23;--line:#2a2a35;--ink:#f2f2f5;
@@ -854,6 +856,9 @@ out = (tpl.replace("__DATA__", DATA).replace("__CATS__", CATJSON).replace("__STA
           .replace("__PMAX__", str(pmax)).replace("__TITLE__", TITLE)
           .replace("__OUTFITS__", OUTJSON))
 open(OUT,"w",encoding="utf-8").write(out)
+import os as _os
+_dir=_os.path.dirname(OUT) or "."
+open(_os.path.join(_dir,"robots.txt"),"w").write("User-agent: *\nDisallow: /\n")
 
 print(f"rows kept   : {len(rows):,}   in stock: {instock:,}   brands: {len(brands)}")
 print(f"best-of     : {npend}")
