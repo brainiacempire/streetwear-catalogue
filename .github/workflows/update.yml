@@ -23,9 +23,12 @@ jobs:
       - name: Build starter outfits
         run: python build_outfits.py || echo "outfits skipped"
       - name: Build catalogue
+        env:
+          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
         run: |
+          pip install --quiet cryptography
           mkdir -p site
-          OUT=site/index.html PER_DOMAIN=400 FULL_CAP=800 python build_catalog.py
+          OUT=site/index.html PER_DOMAIN=50 FULL_CAP=150 MAX_TOTAL=6000 python build_catalog.py
       - name: Save data back to repo
         run: |
           git config user.name "catalogue-bot"
