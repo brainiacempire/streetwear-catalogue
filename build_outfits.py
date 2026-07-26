@@ -33,7 +33,7 @@ _CLS_RULES = [
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
- ("shorts",    r"\b(shorts|jorts?)\b"),
+ ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
  ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),

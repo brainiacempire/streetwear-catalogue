@@ -96,7 +96,7 @@ _CLS_RULES = [
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
- ("shorts",    r"\b(shorts|jorts?)\b"),
+ ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
  ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|blazer(?! ?(low|mid|77)))\b"),
@@ -939,7 +939,7 @@ let activeSlot='top', pkShown=60, builderReady=false;
 
 const byCat={}; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
 // ----- Load more pieces: merge extra encrypted chunks into the same catalogue -----
-function reindex(){
+function reindex(quiet){
  const counts={}; D.forEach(r=>counts[r.c]=(counts[r.c]||0)+1);
  $('chips').innerHTML = CATS.filter(([k])=>counts[k]).map(([k,l])=>
    `<button class="chip${active.has(k)?' on':''}" data-c="${k}">${l}<span class="n">${counts[k]}</span></button>`).join('');
@@ -957,7 +957,7 @@ function reindex(){
  $('colf').innerHTML='<option value="">Any colour</option>'+cols.map(c=>`<option value="${c}">${c[0].toUpperCase()+c.slice(1)}</option>`).join(''); $('colf').value=cc;
  for(const k in byCat) delete byCat[k]; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
  D.forEach(r=>{ if(savedUrls.has(r.u)) favs.add(r.id); });
- render();
+ if(!quiet) render();
 }
 function updateLoadMore(){ const btn=$('loadmore'); if(!btn) return;
  if(_chunkNext>=__CHUNKS__.length){ btn.hidden=true; }
@@ -980,6 +980,30 @@ async function loadMore(){
  _loadingChunk=false; if(btn) btn.disabled=false; updateLoadMore();
 }
 async function loadAllChunks(){ while(_chunkNext<__CHUNKS__.length){ await loadMore(); } }
+// Background-fill the FULL library so the randomizer, Surprise, build-a-fit and every
+// count work off everything — not just the first batch. Runs after first paint; uses a
+// quiet reindex so it never resets the grid you're looking at while browsing.
+let _bgFilling=false,_bgDone=false;
+async function loadAllQuiet(){
+ if(_bgFilling||_bgDone) return; _bgFilling=true;
+ while(_chunkNext<__CHUNKS__.length){
+   if(_loadingChunk){ await new Promise(r=>setTimeout(r,200)); continue; }
+   _loadingChunk=true;
+   try{
+     const raw=await fetch(__CHUNKS__[_chunkNext],{cache:'force-cache'}).then(r=>r.json());
+     let pieces;
+     if(_KEY){ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(raw.iv)},_KEY,_b64(raw.ct)); pieces=JSON.parse(new TextDecoder().decode(pt)).D; }
+     else { pieces=raw.D; }
+     for(const r of pieces) D.push(r);
+     _chunkNext++;
+     reindex(true);
+   }catch(e){ _loadingChunk=false; break; }
+   _loadingChunk=false;
+   updateLoadMore();
+   await new Promise(r=>setTimeout(r,140));
+ }
+ _bgFilling=false;_bgDone=true;
+}
 {const lb=$('loadmore'); if(lb) lb.onclick=loadMore;}
 const cvTotal=()=>Object.values(outfit).reduce((a,b)=>a+(b?b.g:0),0);
 
@@ -1331,7 +1355,7 @@ async function init3D(items,host,capEl){
  function gtype(r,slot){ if(!r)return null; var t=(r.t||'').toLowerCase();
    if(slot==='hat'){ if(/beanie|watch ?cap|skully|knit hat/.test(t))return 'beanie'; if(/bucket/.test(t))return 'bucket'; return 'cap'; }
    if(slot==='top'){ if(/hood/.test(t)||r.c==='hoodie_sweat')return 'hood'; if(r.c==='tee'||/t-?shirt|\btee\b|s\/s|short ?sleeve|polo|tank|jersey/.test(t))return 'tee'; return 'ls'; }
-   if(slot==='bottom'){ if(r.c==='shorts'||/shorts|jorts/.test(t))return 'shorts'; return 'pants'; }
+   if(slot==='bottom'){ if(r.c==='shorts'||/(jorts?|shorts?)(?!\s*sleeve)/.test(t))return 'shorts'; return 'pants'; }
    return slot; }
  function armMesh(mat,side,frac,thick){ var len=1.8*frac; var m=cyl(thick,thick*.82,len,16,mat); m.position.set(side*1.02,2.62-len/2,0); m.rotation.z=side*0.12; return m; }
  function legMesh(mat,side,frac,thick){ var len=2.0*frac; var m=cyl(thick,thick*.8,len,18,mat); m.position.set(side*0.34,0.98-len/2,0); return m; }
@@ -1365,8 +1389,9 @@ async function init3D(items,host,capEl){
 function renderPreview(){
  if(!_pvBase)return;
  if(_pvView==='body'){
-  $('pvslots').innerHTML='<div class="mqwrap"><div class="mq3dhost" id="mq3dhost"><div class="mq3dspin">building 3D fit\u2026</div></div><div class="mqcap" id="mq3dcap"></div></div>';
-  init3D(_pvBase, document.getElementById('mq3dhost'), document.getElementById('mq3dcap'));
+  // interim: clean 2D "on a figure" view while the realistic AI try-on is being built
+  // (the old primitive-3D render is retired \u2014 it read as warped/floating, not a worn look)
+  cleanup3D(); $('pvslots').innerHTML=pvMannequin(_pvBase);
  } else { cleanup3D(); $('pvslots').innerHTML=pvPieces(_pvBase); }
  const bb=$('pvbody'); if(bb) bb.innerHTML = _pvView==='body' ? '\uD83D\uDCC7 Pieces' : '\uD83D\uDC64 On the body';
 }
@@ -1482,6 +1507,7 @@ $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
 render();
 updateLoadMore();
 saveStockState();
+setTimeout(loadAllQuiet, 900);   // silently pull the whole library so every pool/count is complete
 }
 (function(){var GK='cat-gate-pw';
  if(!__ENC__){ var g0=document.getElementById('gate'); if(g0)g0.remove(); startApp(__PLAIN__, null); return; }
