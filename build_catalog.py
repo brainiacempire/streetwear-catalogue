@@ -93,11 +93,11 @@ _CLS_RULES = [
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
- ("sweats",    r"\b(sweat ?pants?|joggers?|track ?pants?|track ?jort)\b"),
+ ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
  ("shorts",    r"\b(shorts|jorts?)\b"),
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
- ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
  ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance \d|\d{3,4}v\d)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
  ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
@@ -335,6 +335,9 @@ button.act.sm{padding:5px 11px;font-size:12px}
 .fitbar{border-bottom:1px solid var(--line);margin-bottom:16px}
 .fitcount{font-size:12.5px;color:var(--dim);margin-left:auto}
 .fitsub{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:2px 0 16px}
+.tophead{padding:2px 0 18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.toptitle{font-size:19px;font-weight:800;letter-spacing:.2px}
+.tophint{color:var(--dim);font-size:13px;margin-top:6px;max-width:760px;line-height:1.5}
 .fsub{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:8px 16px;
  border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600;font-family:inherit}
 .fsub.on{background:var(--ink);border-color:var(--ink);color:#0b0b0d}
@@ -522,6 +525,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div id="fits" hidden>
   <div class="fitsub" id="fitsub">
    <button class="fsub on" data-fs="build">Build a fit</button>
+   <button class="fsub" data-fs="top">&#9733; Top Fits<span class="n" id="topn"></span></button>
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
    <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
    <span class="fithint">Pick each piece &middot; mix &amp; match &middot; Surprise Me for a starting point</span>
@@ -554,6 +558,11 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
      <button class="more" id="pkmore" hidden>Show more</button>
     </div>
    </div>
+  </div>
+  <div id="topmode" hidden>
+   <div class="tophead"><div class="toptitle">&#9733; Top Fits</div>
+    <div class="tophint" id="tophint"></div></div>
+   <div id="toplist"></div>
   </div>
   <div id="looksmode" hidden>
    <div class="bar fitbar">
@@ -979,6 +988,34 @@ function renderFits(){
  $('fitlist').innerHTML=f.length?f.map(fitHtml).join(''):'<div class="empty">No looks under that budget.</div>';
  $('fitcount').textContent=`${f.length} of ${FITS.length} looks`;
 }
+// ===== Top Fits: curated ranking weighted toward the user's actual taste =====
+function fitScore(f, prefFormulas, prefBrands){
+ let s=0, liked=0, slots=0;
+ SLOTORDER.forEach(k=>{ const p=f.items[k]; if(!p) return; slots++;
+   if(savedUrls.has(p.u)){ s+=120; liked++; }        // a liked piece dominates — his taste leads
+   if(prefBrands.has(p.b)) s+=9;                      // brands he saves from
+   if(p.n) s+=10;                                     // curated best-of
+   if(p.v) s+=6;                                      // seen in a video
+   s+=Math.min(12, p.sc||0);                          // per-piece curation/quality signal
+ });
+ s+=slots*3;                                          // fuller, more-styled fits
+ if(prefFormulas.has(f.formula)) s+=16;               // formulas he saves as outfits
+ return {f, s, liked, slots};
+}
+function renderTop(){
+ const prefFormulas=new Set(savedFits.map(x=>x.note));
+ const prefBrands=new Set(); D.forEach(r=>{ if(savedUrls.has(r.u)) prefBrands.add(r.b); });
+ const scored=FITS.map(f=>fitScore(f,prefFormulas,prefBrands))
+   .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
+ const top=scored.slice(0,60);
+ const anyLiked=savedUrls.size>0 || savedFits.length>0;
+ const withLiked=top.filter(x=>x.liked>0).length;
+ $('topn').textContent=top.length;
+ $('tophint').textContent = anyLiked
+   ? `Curated from what you\u2019ve liked \u2014 ${withLiked} of the ${top.length} below are built around your saved pieces, with your brands and outfit styles pushed to the top. Heart more and this reshapes around you.`
+   : `The flyest coordinated fits across every brand \u2014 distinct labels head to toe, ranked on curation and quality. Heart any piece or outfit and this instantly reshuffles around your taste.`;
+ $('toplist').innerHTML = top.length ? top.map(x=>fitHtml(x.f)).join('') : '<div class="empty">No fits to rank yet.</div>';
+}
 document.addEventListener('click',e=>{
  const u=e.target.closest('[data-use]'); if(!u)return;
  const f=FITS[+u.dataset.use];
@@ -995,7 +1032,7 @@ document.addEventListener('click',e=>{
 // ===== sub-tab + view switching =====
 document.addEventListener('click',e=>{
  const sf=e.target.closest('[data-sfav]');
- if(sf){ e.preventDefault(); e.stopPropagation(); const on=togglePiece(sf.dataset.sfav); sf.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); return; }
+ if(sf){ e.preventDefault(); e.stopPropagation(); const on=togglePiece(sf.dataset.sfav); sf.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); if($('topmode') && !$('topmode').hidden) renderTop(); return; }
  const sl=e.target.closest('[data-savelook]');
  if(sl){ e.preventDefault(); const f=FITS[+sl.dataset.savelook]; const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
  const ld=e.target.closest('[data-loadsaved]');
@@ -1098,9 +1135,11 @@ document.addEventListener('DOMContentLoaded',()=>{});
 function setFitSub(which){
  document.querySelectorAll('.fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
  $('buildmode').hidden=which!=='build';
+ $('topmode').hidden=which!=='top';
  $('looksmode').hidden=which!=='looks';
  $('savedmode').hidden=which!=='saved';
  if(which==='build') initBuilder();
+ else if(which==='top') renderTop();
  else if(which==='looks'){ if(!$('fitlist').innerHTML) renderFits(); }
  else if(which==='saved') renderSaved();
 }

@@ -1,792 +1,887 @@
 [
-{
-"domain": "colebuxton.com",
-"brand": "Cole Buxton",
-"cur": "GBP"
-},
-{
-"domain": "crtz.xyz",
-"brand": "Corteiz",
-"cur": "GBP"
-},
-{
-"domain": "valabasas.com",
-"brand": "Valabasas",
-"cur": "USD"
-},
-{
-"domain": "paraphernalia.world",
-"brand": "Paraphernalia 97",
-"cur": "USD"
-},
-{
-"domain": "southofheaven.us",
-"brand": "South of Heaven",
-"cur": "USD"
-},
-{
-"domain": "hufworldwide.com",
-"brand": "HUF",
-"cur": "USD"
-},
-{
-"domain": "onlyny.com",
-"brand": "Only NY",
-"cur": "USD"
-},
-{
-"domain": "sergiotacchini.com",
-"brand": "Sergio Tacchini",
-"cur": "USD"
-},
-{
-"domain": "cryspdenim.com",
-"brand": "Crysp Denim",
-"cur": "USD"
-},
-{
-"domain": "eptmusa.com",
-"brand": "EPTM",
-"cur": "USD"
-},
-{
-"domain": "bornxraised.com",
-"brand": "Born X Raised",
-"cur": "USD"
-},
-{
-"domain": "6pmseason.com",
-"brand": "6PM Season",
-"cur": "USD"
-},
-{
-"domain": "reigningchamp.com",
-"brand": "Reigning Champ",
-"cur": "USD"
-},
-{
-"domain": "gramicci.com",
-"brand": "Gramicci",
-"cur": "USD"
-},
-{
-"domain": "polarskateco.com",
-"brand": "Polar Skate Co",
-"cur": "EUR"
-},
-{
-"domain": "buttergoods.com",
-"brand": "Butter Goods",
-"cur": "AUD"
-},
-{
-"domain": "corridornyc.com",
-"brand": "Corridor NYC",
-"cur": "USD"
-},
-{
-"domain": "3sixteen.com",
-"brand": "3sixteen",
-"cur": "USD"
-},
-{
-"domain": "maharishistore.com",
-"brand": "Maharishi",
-"cur": "GBP"
-},
-{
-"domain": "ariesarise.com",
-"brand": "Aries",
-"cur": "GBP"
-},
-{
-"domain": "whodecideswar.com",
-"brand": "Who Decides War",
-"cur": "USD"
-},
-{
-"domain": "warrenlotas.com",
-"brand": "Warren Lotas",
-"cur": "USD"
-},
-{
-"domain": "guapi.ch",
-"brand": "Guapi",
-"cur": "USD"
-},
-{
-"domain": "saintvanity.com",
-"brand": "Saint Vanity",
-"cur": "USD"
-},
-{
-"domain": "notre-shop.com",
-"brand": "Notre",
-"cur": "USD"
-},
-{
-"domain": "awakenyclothing.com",
-"brand": "Awake NY",
-"cur": "USD"
-},
-{
-"domain": "bronze56k.com",
-"brand": "Bronze 56K",
-"cur": "USD"
-},
-{
-"domain": "nahmias.com",
-"brand": "Nahmias",
-"cur": "USD"
-},
-{
-"domain": "pleasuresnow.com",
-"brand": "Pleasures",
-"cur": "USD"
-},
-{
-"domain": "stussy.com",
-"brand": "Stussy",
-"cur": "USD"
-},
-{
-"domain": "ericemanuel.com",
-"brand": "Eric Emanuel",
-"cur": "USD"
-},
-{
-"domain": "represent.com",
-"brand": "Represent",
-"cur": "GBP"
-},
-{
-"domain": "kith.com",
-"brand": "Kith",
-"cur": "USD"
-},
-{
-"domain": "stan-ray.com",
-"brand": "Stan Ray",
-"cur": "GBP"
-},
-{
-"domain": "shopasaali.com",
-"brand": "Shopasaali",
-"cur": "USD"
-},
-{
-"domain": "crepslocker.com",
-"brand": "Crepslocker",
-"cur": "USD"
-},
-{
-"domain": "byparra.com",
-"brand": "Byparra",
-"cur": "USD"
-},
-{
-"domain": "gaboslondon.com",
-"brand": "Gaboslondon",
-"cur": "USD"
-},
-{
-"domain": "antisocialsocialclub.com",
-"brand": "Antisocialsocialclub",
-"cur": "USD"
-},
-{
-"domain": "stadiumgoods.com",
-"brand": "Stadiumgoods",
-"cur": "USD"
-},
-{
-"domain": "corteiz.com",
-"brand": "Corteiz",
-"cur": "USD"
-},
-{
-"domain": "us.bape.com",
-"brand": "Us",
-"cur": "USD"
-},
-{
-"domain": "clubextc.com",
-"brand": "Clubextc",
-"cur": "USD"
-},
-{
-"domain": "cncpts.com",
-"brand": "Cncpts",
-"cur": "USD"
-},
-{
-"domain": "a-ma-maniere.com",
-"brand": "A-Ma-Maniere",
-"cur": "USD"
-},
-{
-"domain": "sneakerpolitics.com",
-"brand": "Sneakerpolitics",
-"cur": "USD"
-},
-{
-"domain": "cherrylosangeles.com",
-"brand": "Cherrylosangeles",
-"cur": "USD"
-},
-{
-"domain": "laced.com",
-"brand": "Laced",
-"cur": "USD"
-},
-{
-"domain": "poptradingcompany.com",
-"brand": "Poptradingcompany",
-"cur": "USD"
-},
-{
-"domain": "overkillshop.com",
-"brand": "Overkillshop",
-"cur": "USD"
-},
-{
-"domain": "covernat.co.kr",
-"brand": "Covernat",
-"cur": "USD"
-},
-{
-"domain": "alphaindustries.com",
-"brand": "Alphaindustries",
-"cur": "USD"
-},
-{
-"domain": "bossisportswear.com",
-"brand": "Bossisportswear",
-"cur": "USD"
-},
-{
-"domain": "embellishnyc.com",
-"brand": "Embellishnyc",
-"cur": "USD"
-},
-{
-"domain": "ironandresin.com",
-"brand": "Ironandresin",
-"cur": "USD"
-},
-{
-"domain": "kidsuper.com",
-"brand": "Kidsuper",
-"cur": "USD"
-},
-{
-"domain": "projectcaprii.com",
-"brand": "Projectcaprii",
-"cur": "USD"
-},
-{
-"domain": "stanray.com",
-"brand": "Stanray",
-"cur": "USD"
-},
-{
-"domain": "vestairestudios.com",
-"brand": "Vestairestudios",
-"cur": "USD"
-},
-{
-"domain": "livevlonedievlone.com",
-"brand": "Livevlonedievlone",
-"cur": "USD"
-},
-{
-"domain": "afew-store.com",
-"brand": "Afew-Store",
-"cur": "USD"
-},
-{
-"domain": "xhibition.co",
-"brand": "Xhibition",
-"cur": "USD"
-},
-{
-"domain": "cherry-fukuoka.com",
-"brand": "Cherry-Fukuoka",
-"cur": "JPY"
-},
-{
-"domain": "adsumnyc.com",
-"brand": "Adsumnyc",
-"cur": "USD"
-},
-{
-"domain": "extrabutterny.com",
-"brand": "Extrabutterny",
-"cur": "USD"
-},
-{
-"domain": "slamjam.com",
-"brand": "Slamjam",
-"cur": "USD"
-},
-{
-"domain": "bape.com",
-"brand": "Bape",
-"cur": "JPY"
-},
-{
-"domain": "brownsfashion.com",
-"brand": "Brownsfashion",
-"cur": "USD"
-},
-{
-"domain": "arte-antwerp.com",
-"brand": "Arte-Antwerp",
-"cur": "USD"
-},
-{
-"domain": "italist.com",
-"brand": "Italist",
-"cur": "USD"
-},
-{
-"domain": "socialstatuspgh.com",
-"brand": "Socialstatuspgh",
-"cur": "USD"
-},
-{
-"domain": "coughsyrup.shop",
-"brand": "Coughsyrup",
-"cur": "USD"
-},
-{
-"domain": "wearebraindead.com",
-"brand": "Wearebraindead",
-"cur": "USD"
-},
-{
-"domain": "denimtears.com",
-"brand": "Denimtears",
-"cur": "USD"
-},
-{
-"domain": "us.deuscustoms.com",
-"brand": "Us",
-"cur": "USD"
-},
-{
-"domain": "dimemtl.com",
-"brand": "Dimemtl",
-"cur": "USD"
-},
-{
-"domain": "godspeednewyork.com",
-"brand": "Godspeednewyork",
-"cur": "USD"
-},
-{
-"domain": "greedyunit.com",
-"brand": "Greedyunit",
-"cur": "USD"
-},
-{
-"domain": "honorthegift.co",
-"brand": "Honorthegift",
-"cur": "USD"
-},
-{
-"domain": "houseoferrors.org",
-"brand": "Houseoferrors",
-"cur": "USD"
-},
-{
-"domain": "jordancraig.com",
-"brand": "Jordancraig",
-"cur": "USD"
-},
-{
-"domain": "korevsn.myshopify.com",
-"brand": "Korevsn",
-"cur": "USD"
-},
-{
-"domain": "kuon.tokyo",
-"brand": "Kuon",
-"cur": "JPY"
-},
-{
-"domain": "rockstaroriginal.com",
-"brand": "Rockstaroriginal",
-"cur": "USD"
-},
-{
-"domain": "noneofus.de",
-"brand": "Noneofus",
-"cur": "USD"
-},
-{
-"domain": "norseprojects.com",
-"brand": "Norseprojects",
-"cur": "USD"
-},
-{
-"domain": "notwoways.com",
-"brand": "Notwoways",
-"cur": "USD"
-},
-{
-"domain": "oneofthesedays.com",
-"brand": "Oneofthesedays",
-"cur": "USD"
-},
-{
-"domain": "representclo.com",
-"brand": "Representclo",
-"cur": "USD"
-},
-{
-"domain": "postarchivefaction.com",
-"brand": "Postarchivefaction",
-"cur": "USD"
-},
-{
-"domain": "rh-ude.com",
-"brand": "Rh-Ude",
-"cur": "USD"
-},
-{
-"domain": "stlnhrts.com",
-"brand": "Stlnhrts",
-"cur": "USD"
-},
-{
-"domain": "universalworks.co.uk",
-"brand": "Universalworks",
-"cur": "USD"
-},
-{
-"domain": "uskees.com",
-"brand": "Uskees",
-"cur": "USD"
-},
-{
-"domain": "vetementfxxx.com",
-"brand": "Vetementfxxx",
-"cur": "USD"
-},
-{
-"domain": "wickedvalleyusa.com",
-"brand": "Wickedvalleyusa",
-"cur": "USD"
-},
-{
-"domain": "willychavarria.com",
-"brand": "Willychavarria",
-"cur": "USD"
-},
-{
-"domain": "yeseyesee.com",
-"brand": "Yeseyesee",
-"cur": "USD"
-},
-{
-"domain": "dtmusa.myshopify.com",
-"brand": "Dtmusa",
-"cur": "USD"
-},
-{
-"domain": "satoshinakamoto.cloud",
-"brand": "SATOSHI NAKAMOTO",
-"cur": "USD"
-},
-{
-"domain": "thisisneverthat.com",
-"brand": "thisisneverthat",
-"cur": "USD"
-},
-{
-"domain": "eu.stussy.com",
-"brand": "St\u00fcssy",
-"cur": "EUR"
-},
-{
-"domain": "ripndipclothing.com",
-"brand": "RIPNDIP",
-"cur": "USD"
-},
-{
-"domain": "undefeated.com",
-"brand": "Undefeated",
-"cur": "USD"
-},
-{
-"domain": "madhappy.com",
-"brand": "Madhappy",
-"cur": "USD"
-},
-{
-"domain": "juicestore.com",
-"brand": "Juice",
-"cur": "GBP"
-},
-{
-"domain": "thehundreds.com",
-"brand": "The Hundreds",
-"cur": "USD"
-},
-{
-"domain": "patta.nl",
-"brand": "Patta",
-"cur": "EUR"
-},
-{
-"domain": "carhartt-wip.com",
-"brand": "Carhartt WIP",
-"cur": "EUR"
-},
-{
-"domain": "cookiessf.com",
-"brand": "Cookies",
-"cur": "USD"
-},
-{
-"domain": "aimeleondore.com",
-"brand": "Aim\u00e9 Leon Dore",
-"cur": "USD"
-},
-{
-"domain": "purple-brand.com",
-"brand": "Purple Brand",
-"cur": "USD"
-},
-{
-"domain": "naked-copenhagen.com",
-"brand": "Naked Copenhagen",
-"cur": "EUR"
-},
-{
-"domain": "menacelosangeles.com",
-"brand": "Menace",
-"cur": "USD"
-},
-{
-"domain": "uniformbridge.com",
-"brand": "Uniform Bridge",
-"cur": "USD"
-},
-{
-"domain": "folkclothing.com",
-"brand": "Folk",
-"cur": "GBP"
-},
-{
-"domain": "percivalclo.com",
-"brand": "Percival",
-"cur": "GBP"
-},
-{
-"domain": "losangelesapparel.net",
-"brand": "Los Angeles Apparel",
-"cur": "USD"
-},
-{
-"domain": "bbcicecream.com",
-"brand": "BBC Ice Cream",
-"cur": "USD"
-},
-{
-"domain": "primitiveskate.com",
-"brand": "Primitive",
-"cur": "USD"
-},
-{
-"domain": "ebbets.com",
-"brand": "Ebbets Field Flannels",
-"cur": "USD"
-},
-{
-"domain": "bode.com",
-"brand": "Bode",
-"cur": "USD"
-},
-{
-"domain": "adererror.com",
-"brand": "Ader Error",
-"cur": "USD"
-},
-{
-"domain": "snowpeak.com",
-"brand": "Snow Peak",
-"cur": "USD"
-},
-{
-"domain": "elder-statesman.com",
-"brand": "The Elder Statesman",
-"cur": "USD"
-},
-{
-"domain": "lowheads.com",
-"brand": "Lowheads",
-"cur": "USD"
-},
-{
-"domain": "blueingreensoho.com",
-"brand": "Blue in Green",
-"cur": "USD"
-},
-{
-"domain": "standardandstrange.com",
-"brand": "Standard & Strange",
-"cur": "USD"
-},
-{
-"domain": "therealmccoys.com",
-"brand": "The Real McCoy's",
-"cur": "GBP"
-},
-{
-"domain": "nakedandfamousdenim.com",
-"brand": "Naked & Famous",
-"cur": "USD"
-},
-{
-"domain": "okayamadenim.com",
-"brand": "Okayama Denim",
-"cur": "USD"
-},
-{
-"domain": "ironheart.co.uk",
-"brand": "Iron Heart",
-"cur": "GBP"
-},
-{
-"domain": "sonofastag.com",
-"brand": "Son of a Stag",
-"cur": "GBP"
-},
-{
-"domain": "bdgastore.com",
-"brand": "BDGA",
-"cur": "USD"
-},
-{
-"domain": "packershoes.com",
-"brand": "Packer",
-"cur": "USD"
-},
-{
-"domain": "civilizednationshop.com",
-"brand": "Civilized",
-"cur": "USD"
-},
-{
-"domain": "reasonclothing.com",
-"brand": "Reason",
-"cur": "USD"
-},
-{
-"domain": "kingspider.co",
-"brand": "King Spider",
-"cur": "USD"
-},
-{
-"domain": "corlection.com",
-"brand": "Corlection",
-"cur": "GBP"
-},
-{
-"domain": "hypeboys.store",
-"brand": "Hypeboys",
-"cur": "EUR"
-},
-{
-"domain": "online-ceramics.com",
-"brand": "Online Ceramics",
-"cur": "USD"
-},
-{
-"domain": "chrystienyc.com",
-"brand": "Chrystie NYC",
-"cur": "USD"
-},
-{
-"domain": "helascaps.com",
-"brand": "H\u00e9las",
-"cur": "EUR"
-},
-{
-"domain": "lastresortab.com",
-"brand": "Last Resort AB",
-"cur": "EUR"
-},
-{
-"domain": "stepneyworkersclub.com",
-"brand": "Stepney Workers Club",
-"cur": "GBP"
-},
-{
-"domain": "noahny.com",
-"brand": "Noah",
-"cur": "USD"
-},
-{
-"domain": "awakeny.com",
-"brand": "Awake NY",
-"cur": "USD"
-},
-{
-"domain": "fuckingawesome.com",
-"brand": "Fucking Awesome",
-"cur": "USD"
-},
-{
-"domain": "marketstudios.com",
-"brand": "Market",
-"cur": "USD"
-},
-{
-"domain": "edwineurope.com",
-"brand": "Edwin",
-"cur": "EUR"
-},
-{
-"domain": "kavu.com",
-"brand": "Kavu",
-"cur": "USD"
-},
-{
-"domain": "afield-out.com",
-"brand": "Afield Out",
-"cur": "USD"
-},
-{
-"domain": "gx1000.us",
-"brand": "GX1000",
-"cur": "USD"
-},
-{
-"domain": "welcomeskateboards.com",
-"brand": "Welcome",
-"cur": "USD"
-},
-{
-"domain": "nothinbutghosts.com",
-"brand": "Ghost",
-"cur": "USD"
-},
-{
-"domain": "sillage.shop",
-"brand": "Sillage",
-"cur": "EUR"
-},
-{
-"domain": "adsum.us",
-"brand": "Adsum",
-"cur": "USD"
-},
-{
-"domain": "brainwaves.store",
-"brand": "Brainwaves",
-"cur": "USD"
-}
+ {
+  "domain": "colebuxton.com",
+  "brand": "Cole Buxton",
+  "cur": "GBP"
+ },
+ {
+  "domain": "crtz.xyz",
+  "brand": "Corteiz",
+  "cur": "GBP"
+ },
+ {
+  "domain": "valabasas.com",
+  "brand": "Valabasas",
+  "cur": "USD"
+ },
+ {
+  "domain": "paraphernalia.world",
+  "brand": "Paraphernalia 97",
+  "cur": "USD"
+ },
+ {
+  "domain": "southofheaven.us",
+  "brand": "South of Heaven",
+  "cur": "USD"
+ },
+ {
+  "domain": "hufworldwide.com",
+  "brand": "HUF",
+  "cur": "USD"
+ },
+ {
+  "domain": "onlyny.com",
+  "brand": "Only NY",
+  "cur": "USD"
+ },
+ {
+  "domain": "sergiotacchini.com",
+  "brand": "Sergio Tacchini",
+  "cur": "USD"
+ },
+ {
+  "domain": "cryspdenim.com",
+  "brand": "Crysp Denim",
+  "cur": "USD"
+ },
+ {
+  "domain": "eptmusa.com",
+  "brand": "EPTM",
+  "cur": "USD"
+ },
+ {
+  "domain": "bornxraised.com",
+  "brand": "Born X Raised",
+  "cur": "USD"
+ },
+ {
+  "domain": "6pmseason.com",
+  "brand": "6PM Season",
+  "cur": "USD"
+ },
+ {
+  "domain": "reigningchamp.com",
+  "brand": "Reigning Champ",
+  "cur": "USD"
+ },
+ {
+  "domain": "gramicci.com",
+  "brand": "Gramicci",
+  "cur": "USD"
+ },
+ {
+  "domain": "polarskateco.com",
+  "brand": "Polar Skate Co",
+  "cur": "EUR"
+ },
+ {
+  "domain": "buttergoods.com",
+  "brand": "Butter Goods",
+  "cur": "AUD"
+ },
+ {
+  "domain": "corridornyc.com",
+  "brand": "Corridor NYC",
+  "cur": "USD"
+ },
+ {
+  "domain": "3sixteen.com",
+  "brand": "3sixteen",
+  "cur": "USD"
+ },
+ {
+  "domain": "maharishistore.com",
+  "brand": "Maharishi",
+  "cur": "GBP"
+ },
+ {
+  "domain": "ariesarise.com",
+  "brand": "Aries",
+  "cur": "GBP"
+ },
+ {
+  "domain": "whodecideswar.com",
+  "brand": "Who Decides War",
+  "cur": "USD"
+ },
+ {
+  "domain": "warrenlotas.com",
+  "brand": "Warren Lotas",
+  "cur": "USD"
+ },
+ {
+  "domain": "guapi.ch",
+  "brand": "Guapi",
+  "cur": "USD"
+ },
+ {
+  "domain": "saintvanity.com",
+  "brand": "Saint Vanity",
+  "cur": "USD"
+ },
+ {
+  "domain": "notre-shop.com",
+  "brand": "Notre",
+  "cur": "USD"
+ },
+ {
+  "domain": "awakenyclothing.com",
+  "brand": "Awake NY",
+  "cur": "USD"
+ },
+ {
+  "domain": "bronze56k.com",
+  "brand": "Bronze 56K",
+  "cur": "USD"
+ },
+ {
+  "domain": "nahmias.com",
+  "brand": "Nahmias",
+  "cur": "USD"
+ },
+ {
+  "domain": "pleasuresnow.com",
+  "brand": "Pleasures",
+  "cur": "USD"
+ },
+ {
+  "domain": "stussy.com",
+  "brand": "Stussy",
+  "cur": "USD"
+ },
+ {
+  "domain": "ericemanuel.com",
+  "brand": "Eric Emanuel",
+  "cur": "USD"
+ },
+ {
+  "domain": "represent.com",
+  "brand": "Represent",
+  "cur": "GBP"
+ },
+ {
+  "domain": "kith.com",
+  "brand": "Kith",
+  "cur": "USD"
+ },
+ {
+  "domain": "stan-ray.com",
+  "brand": "Stan Ray",
+  "cur": "GBP"
+ },
+ {
+  "domain": "shopasaali.com",
+  "brand": "Shopasaali",
+  "cur": "USD"
+ },
+ {
+  "domain": "crepslocker.com",
+  "brand": "Crepslocker",
+  "cur": "USD"
+ },
+ {
+  "domain": "byparra.com",
+  "brand": "Byparra",
+  "cur": "USD"
+ },
+ {
+  "domain": "gaboslondon.com",
+  "brand": "Gaboslondon",
+  "cur": "USD"
+ },
+ {
+  "domain": "antisocialsocialclub.com",
+  "brand": "Antisocialsocialclub",
+  "cur": "USD"
+ },
+ {
+  "domain": "stadiumgoods.com",
+  "brand": "Stadiumgoods",
+  "cur": "USD"
+ },
+ {
+  "domain": "corteiz.com",
+  "brand": "Corteiz",
+  "cur": "USD"
+ },
+ {
+  "domain": "us.bape.com",
+  "brand": "Us",
+  "cur": "USD"
+ },
+ {
+  "domain": "clubextc.com",
+  "brand": "Clubextc",
+  "cur": "USD"
+ },
+ {
+  "domain": "cncpts.com",
+  "brand": "Cncpts",
+  "cur": "USD"
+ },
+ {
+  "domain": "a-ma-maniere.com",
+  "brand": "A-Ma-Maniere",
+  "cur": "USD"
+ },
+ {
+  "domain": "sneakerpolitics.com",
+  "brand": "Sneakerpolitics",
+  "cur": "USD"
+ },
+ {
+  "domain": "cherrylosangeles.com",
+  "brand": "Cherrylosangeles",
+  "cur": "USD"
+ },
+ {
+  "domain": "laced.com",
+  "brand": "Laced",
+  "cur": "USD"
+ },
+ {
+  "domain": "poptradingcompany.com",
+  "brand": "Poptradingcompany",
+  "cur": "USD"
+ },
+ {
+  "domain": "overkillshop.com",
+  "brand": "Overkillshop",
+  "cur": "USD"
+ },
+ {
+  "domain": "covernat.co.kr",
+  "brand": "Covernat",
+  "cur": "USD"
+ },
+ {
+  "domain": "alphaindustries.com",
+  "brand": "Alphaindustries",
+  "cur": "USD"
+ },
+ {
+  "domain": "bossisportswear.com",
+  "brand": "Bossisportswear",
+  "cur": "USD"
+ },
+ {
+  "domain": "embellishnyc.com",
+  "brand": "Embellishnyc",
+  "cur": "USD"
+ },
+ {
+  "domain": "ironandresin.com",
+  "brand": "Ironandresin",
+  "cur": "USD"
+ },
+ {
+  "domain": "kidsuper.com",
+  "brand": "Kidsuper",
+  "cur": "USD"
+ },
+ {
+  "domain": "projectcaprii.com",
+  "brand": "Projectcaprii",
+  "cur": "USD"
+ },
+ {
+  "domain": "stanray.com",
+  "brand": "Stanray",
+  "cur": "USD"
+ },
+ {
+  "domain": "vestairestudios.com",
+  "brand": "Vestairestudios",
+  "cur": "USD"
+ },
+ {
+  "domain": "livevlonedievlone.com",
+  "brand": "Livevlonedievlone",
+  "cur": "USD"
+ },
+ {
+  "domain": "afew-store.com",
+  "brand": "Afew-Store",
+  "cur": "USD"
+ },
+ {
+  "domain": "xhibition.co",
+  "brand": "Xhibition",
+  "cur": "USD"
+ },
+ {
+  "domain": "cherry-fukuoka.com",
+  "brand": "Cherry-Fukuoka",
+  "cur": "JPY"
+ },
+ {
+  "domain": "adsumnyc.com",
+  "brand": "Adsumnyc",
+  "cur": "USD"
+ },
+ {
+  "domain": "extrabutterny.com",
+  "brand": "Extrabutterny",
+  "cur": "USD"
+ },
+ {
+  "domain": "slamjam.com",
+  "brand": "Slamjam",
+  "cur": "USD"
+ },
+ {
+  "domain": "bape.com",
+  "brand": "Bape",
+  "cur": "JPY"
+ },
+ {
+  "domain": "brownsfashion.com",
+  "brand": "Brownsfashion",
+  "cur": "USD"
+ },
+ {
+  "domain": "arte-antwerp.com",
+  "brand": "Arte-Antwerp",
+  "cur": "USD"
+ },
+ {
+  "domain": "italist.com",
+  "brand": "Italist",
+  "cur": "USD"
+ },
+ {
+  "domain": "socialstatuspgh.com",
+  "brand": "Socialstatuspgh",
+  "cur": "USD"
+ },
+ {
+  "domain": "coughsyrup.shop",
+  "brand": "Coughsyrup",
+  "cur": "USD"
+ },
+ {
+  "domain": "wearebraindead.com",
+  "brand": "Wearebraindead",
+  "cur": "USD"
+ },
+ {
+  "domain": "denimtears.com",
+  "brand": "Denimtears",
+  "cur": "USD"
+ },
+ {
+  "domain": "us.deuscustoms.com",
+  "brand": "Us",
+  "cur": "USD"
+ },
+ {
+  "domain": "dimemtl.com",
+  "brand": "Dimemtl",
+  "cur": "USD"
+ },
+ {
+  "domain": "godspeednewyork.com",
+  "brand": "Godspeednewyork",
+  "cur": "USD"
+ },
+ {
+  "domain": "greedyunit.com",
+  "brand": "Greedyunit",
+  "cur": "USD"
+ },
+ {
+  "domain": "honorthegift.co",
+  "brand": "Honorthegift",
+  "cur": "USD"
+ },
+ {
+  "domain": "houseoferrors.org",
+  "brand": "Houseoferrors",
+  "cur": "USD"
+ },
+ {
+  "domain": "jordancraig.com",
+  "brand": "Jordancraig",
+  "cur": "USD"
+ },
+ {
+  "domain": "korevsn.myshopify.com",
+  "brand": "Korevsn",
+  "cur": "USD"
+ },
+ {
+  "domain": "kuon.tokyo",
+  "brand": "Kuon",
+  "cur": "JPY"
+ },
+ {
+  "domain": "rockstaroriginal.com",
+  "brand": "Rockstaroriginal",
+  "cur": "USD"
+ },
+ {
+  "domain": "noneofus.de",
+  "brand": "Noneofus",
+  "cur": "USD"
+ },
+ {
+  "domain": "norseprojects.com",
+  "brand": "Norseprojects",
+  "cur": "USD"
+ },
+ {
+  "domain": "notwoways.com",
+  "brand": "Notwoways",
+  "cur": "USD"
+ },
+ {
+  "domain": "oneofthesedays.com",
+  "brand": "Oneofthesedays",
+  "cur": "USD"
+ },
+ {
+  "domain": "representclo.com",
+  "brand": "Representclo",
+  "cur": "USD"
+ },
+ {
+  "domain": "postarchivefaction.com",
+  "brand": "Postarchivefaction",
+  "cur": "USD"
+ },
+ {
+  "domain": "rh-ude.com",
+  "brand": "Rh-Ude",
+  "cur": "USD"
+ },
+ {
+  "domain": "stlnhrts.com",
+  "brand": "Stlnhrts",
+  "cur": "USD"
+ },
+ {
+  "domain": "universalworks.co.uk",
+  "brand": "Universalworks",
+  "cur": "USD"
+ },
+ {
+  "domain": "uskees.com",
+  "brand": "Uskees",
+  "cur": "USD"
+ },
+ {
+  "domain": "vetementfxxx.com",
+  "brand": "Vetementfxxx",
+  "cur": "USD"
+ },
+ {
+  "domain": "wickedvalleyusa.com",
+  "brand": "Wickedvalleyusa",
+  "cur": "USD"
+ },
+ {
+  "domain": "willychavarria.com",
+  "brand": "Willychavarria",
+  "cur": "USD"
+ },
+ {
+  "domain": "yeseyesee.com",
+  "brand": "Yeseyesee",
+  "cur": "USD"
+ },
+ {
+  "domain": "dtmusa.myshopify.com",
+  "brand": "Dtmusa",
+  "cur": "USD"
+ },
+ {
+  "domain": "satoshinakamoto.cloud",
+  "brand": "SATOSHI NAKAMOTO",
+  "cur": "USD"
+ },
+ {
+  "domain": "thisisneverthat.com",
+  "brand": "thisisneverthat",
+  "cur": "USD"
+ },
+ {
+  "domain": "eu.stussy.com",
+  "brand": "St\u00fcssy",
+  "cur": "EUR"
+ },
+ {
+  "domain": "ripndipclothing.com",
+  "brand": "RIPNDIP",
+  "cur": "USD"
+ },
+ {
+  "domain": "undefeated.com",
+  "brand": "Undefeated",
+  "cur": "USD"
+ },
+ {
+  "domain": "madhappy.com",
+  "brand": "Madhappy",
+  "cur": "USD"
+ },
+ {
+  "domain": "juicestore.com",
+  "brand": "Juice",
+  "cur": "GBP"
+ },
+ {
+  "domain": "thehundreds.com",
+  "brand": "The Hundreds",
+  "cur": "USD"
+ },
+ {
+  "domain": "patta.nl",
+  "brand": "Patta",
+  "cur": "EUR"
+ },
+ {
+  "domain": "carhartt-wip.com",
+  "brand": "Carhartt WIP",
+  "cur": "EUR"
+ },
+ {
+  "domain": "cookiessf.com",
+  "brand": "Cookies",
+  "cur": "USD"
+ },
+ {
+  "domain": "aimeleondore.com",
+  "brand": "Aim\u00e9 Leon Dore",
+  "cur": "USD"
+ },
+ {
+  "domain": "purple-brand.com",
+  "brand": "Purple Brand",
+  "cur": "USD"
+ },
+ {
+  "domain": "naked-copenhagen.com",
+  "brand": "Naked Copenhagen",
+  "cur": "EUR"
+ },
+ {
+  "domain": "menacelosangeles.com",
+  "brand": "Menace",
+  "cur": "USD"
+ },
+ {
+  "domain": "uniformbridge.com",
+  "brand": "Uniform Bridge",
+  "cur": "USD"
+ },
+ {
+  "domain": "folkclothing.com",
+  "brand": "Folk",
+  "cur": "GBP"
+ },
+ {
+  "domain": "percivalclo.com",
+  "brand": "Percival",
+  "cur": "GBP"
+ },
+ {
+  "domain": "losangelesapparel.net",
+  "brand": "Los Angeles Apparel",
+  "cur": "USD"
+ },
+ {
+  "domain": "bbcicecream.com",
+  "brand": "BBC Ice Cream",
+  "cur": "USD"
+ },
+ {
+  "domain": "primitiveskate.com",
+  "brand": "Primitive",
+  "cur": "USD"
+ },
+ {
+  "domain": "ebbets.com",
+  "brand": "Ebbets Field Flannels",
+  "cur": "USD"
+ },
+ {
+  "domain": "bode.com",
+  "brand": "Bode",
+  "cur": "USD"
+ },
+ {
+  "domain": "adererror.com",
+  "brand": "Ader Error",
+  "cur": "USD"
+ },
+ {
+  "domain": "snowpeak.com",
+  "brand": "Snow Peak",
+  "cur": "USD"
+ },
+ {
+  "domain": "elder-statesman.com",
+  "brand": "The Elder Statesman",
+  "cur": "USD"
+ },
+ {
+  "domain": "lowheads.com",
+  "brand": "Lowheads",
+  "cur": "USD"
+ },
+ {
+  "domain": "blueingreensoho.com",
+  "brand": "Blue in Green",
+  "cur": "USD"
+ },
+ {
+  "domain": "standardandstrange.com",
+  "brand": "Standard & Strange",
+  "cur": "USD"
+ },
+ {
+  "domain": "therealmccoys.com",
+  "brand": "The Real McCoy's",
+  "cur": "GBP"
+ },
+ {
+  "domain": "nakedandfamousdenim.com",
+  "brand": "Naked & Famous",
+  "cur": "USD"
+ },
+ {
+  "domain": "okayamadenim.com",
+  "brand": "Okayama Denim",
+  "cur": "USD"
+ },
+ {
+  "domain": "ironheart.co.uk",
+  "brand": "Iron Heart",
+  "cur": "GBP"
+ },
+ {
+  "domain": "sonofastag.com",
+  "brand": "Son of a Stag",
+  "cur": "GBP"
+ },
+ {
+  "domain": "bdgastore.com",
+  "brand": "BDGA",
+  "cur": "USD"
+ },
+ {
+  "domain": "packershoes.com",
+  "brand": "Packer",
+  "cur": "USD"
+ },
+ {
+  "domain": "civilizednationshop.com",
+  "brand": "Civilized",
+  "cur": "USD"
+ },
+ {
+  "domain": "reasonclothing.com",
+  "brand": "Reason",
+  "cur": "USD"
+ },
+ {
+  "domain": "kingspider.co",
+  "brand": "King Spider",
+  "cur": "USD"
+ },
+ {
+  "domain": "corlection.com",
+  "brand": "Corlection",
+  "cur": "GBP"
+ },
+ {
+  "domain": "hypeboys.store",
+  "brand": "Hypeboys",
+  "cur": "EUR"
+ },
+ {
+  "domain": "online-ceramics.com",
+  "brand": "Online Ceramics",
+  "cur": "USD"
+ },
+ {
+  "domain": "chrystienyc.com",
+  "brand": "Chrystie NYC",
+  "cur": "USD"
+ },
+ {
+  "domain": "helascaps.com",
+  "brand": "H\u00e9las",
+  "cur": "EUR"
+ },
+ {
+  "domain": "lastresortab.com",
+  "brand": "Last Resort AB",
+  "cur": "EUR"
+ },
+ {
+  "domain": "stepneyworkersclub.com",
+  "brand": "Stepney Workers Club",
+  "cur": "GBP"
+ },
+ {
+  "domain": "noahny.com",
+  "brand": "Noah",
+  "cur": "USD"
+ },
+ {
+  "domain": "awakeny.com",
+  "brand": "Awake NY",
+  "cur": "USD"
+ },
+ {
+  "domain": "fuckingawesome.com",
+  "brand": "Fucking Awesome",
+  "cur": "USD"
+ },
+ {
+  "domain": "marketstudios.com",
+  "brand": "Market",
+  "cur": "USD"
+ },
+ {
+  "domain": "edwineurope.com",
+  "brand": "Edwin",
+  "cur": "EUR"
+ },
+ {
+  "domain": "kavu.com",
+  "brand": "Kavu",
+  "cur": "USD"
+ },
+ {
+  "domain": "afield-out.com",
+  "brand": "Afield Out",
+  "cur": "USD"
+ },
+ {
+  "domain": "gx1000.us",
+  "brand": "GX1000",
+  "cur": "USD"
+ },
+ {
+  "domain": "welcomeskateboards.com",
+  "brand": "Welcome",
+  "cur": "USD"
+ },
+ {
+  "domain": "nothinbutghosts.com",
+  "brand": "Ghost",
+  "cur": "USD"
+ },
+ {
+  "domain": "sillage.shop",
+  "brand": "Sillage",
+  "cur": "EUR"
+ },
+ {
+  "domain": "adsum.us",
+  "brand": "Adsum",
+  "cur": "USD"
+ },
+ {
+  "domain": "brainwaves.store",
+  "brand": "Brainwaves",
+  "cur": "USD"
+ },
+ {
+  "domain": "battenwear.com",
+  "brand": "Battenwear",
+  "cur": "USD"
+ },
+ {
+  "domain": "18east.co",
+  "brand": "18 East",
+  "cur": "USD"
+ },
+ {
+  "domain": "rogueterritory.com",
+  "brand": "Rogue Territory",
+  "cur": "USD"
+ },
+ {
+  "domain": "freenotecloth.com",
+  "brand": "Freenote Cloth",
+  "cur": "USD"
+ },
+ {
+  "domain": "storymfg.com",
+  "brand": "Story mfg.",
+  "cur": "GBP"
+ },
+ {
+  "domain": "sportyandrich.com",
+  "brand": "Sporty & Rich",
+  "cur": "USD"
+ },
+ {
+  "domain": "universalworks.com",
+  "brand": "Universal Works",
+  "cur": "GBP"
+ },
+ {
+  "domain": "kestin.co",
+  "brand": "Kestin",
+  "cur": "GBP"
+ },
+ {
+  "domain": "waxlondon.com",
+  "brand": "Wax London",
+  "cur": "GBP"
+ },
+ {
+  "domain": "dailypaperclothing.com",
+  "brand": "Daily Paper",
+  "cur": "EUR"
+ },
+ {
+  "domain": "wythe.com",
+  "brand": "Wythe",
+  "cur": "USD"
+ },
+ {
+  "domain": "knickerbocker.nyc",
+  "brand": "Knickerbocker",
+  "cur": "USD"
+ },
+ {
+  "domain": "museumofpeaceandquiet.us",
+  "brand": "Museum of Peace and Quiet",
+  "cur": "USD"
+ },
+ {
+  "domain": "youmustcreate.com",
+  "brand": "YMC",
+  "cur": "GBP"
+ },
+ {
+  "domain": "portugueseflannel.com",
+  "brand": "Portuguese Flannel",
+  "cur": "EUR"
+ },
+ {
+  "domain": "rowingblazers.com",
+  "brand": "Rowing Blazers",
+  "cur": "USD"
+ },
+ {
+  "domain": "soulland.com",
+  "brand": "Soulland",
+  "cur": "EUR"
+ },
+ {
+  "domain": "sunspel.com",
+  "brand": "Sunspel",
+  "cur": "GBP"
+ },
+ {
+  "domain": "cabourn.com",
+  "brand": "Nigel Cabourn",
+  "cur": "JPY"
+ }
 ]
