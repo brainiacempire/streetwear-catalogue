@@ -1,0 +1,6198 @@
+[
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Butter Goods",
+    "t": "Relay Fleece Track Jacket, Ash",
+    "c": "windrunner",
+    "g": 103.97,
+    "p": 199.95,
+    "cur": "AUD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/RelayFleeceTrackJacketAsh1.png?v=1778556805",
+    "u": "https://buttergoods.com/products/relay-fleece-track-jacket-ash-ash-q226",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "K-9INE RAGLAN LS [BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/GUNNERRAGLANLS_BLACK_01.png?v=1782133143",
+    "u": "https://crtz.xyz/products/k-9ine-raglan-ls-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP V2 SWEATPANT [FOREST GREEN]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CRTZ_HMPPant_Green_01.png?v=1756985419",
+    "u": "https://crtz.xyz/products/hmp-v2-sweatpant-forest-green",
+    "sc": 2,
+    "s": [
+     "S",
+     "M"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas x Brain Dead Predator - Core Black / Cream White / Core Black",
+    "c": "footwear",
+    "g": 158.0,
+    "p": 200.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/PREDATOR_BRAIN_DEAD_Shoes_Black_KJ4289_01_00_standard.jpg?v=1782744362",
+    "u": "https://kith.com/products/aakj4289",
+    "sc": 0,
+    "s": [
+     "5",
+     "5.5",
+     "6.5",
+     "8",
+     "8.5",
+     "10.5",
+     "13"
+    ]
+   }
+  },
+  "total": 456.97
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "ProjectCapri",
+    "t": "PRJCT A04 - THERMAL ZIP",
+    "c": "longsleeve",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0553/7765/7905/files/blue_hoodie_white_bg.jpg?v=1772219492",
+    "u": "https://projectcaprii.com/products/futbol-10-thermal-zipup",
+    "sc": 9,
+    "s": [
+     "MEDIUM",
+     "LARGE",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "RS-222xs ~ Relaxed Straight - Stonewashed Double Black",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-09SEP25_DENIM_PANT_RS-222XS_ON_MODEL-FRONT_CROPPED-A_ONBODY.jpg?v=1776885083",
+    "u": "https://3sixteen.com/products/rs-222xs-relaxed-straight-stonewashed-double-black",
+    "sc": 2,
+    "s": [
+     "28",
+     "33",
+     "34",
+     "36",
+     "38"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Boot Sock ~ Marled Sand",
+    "c": "footwear",
+    "g": 27.65,
+    "p": 35.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-10OCT25-MARLED-BOOT-SOCKS-A_9ff44342-ced2-43c8-93b0-db8877b4fc64.jpg?v=1760021990",
+    "u": "https://3sixteen.com/products/boot-sock-marled-sand",
+    "sc": 2,
+    "s": []
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "SOPHOMORE TRUCKER HAT [RED]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SOPHOMORETRUCKERHAT_RED_01.png?v=1769608083",
+    "u": "https://crtz.xyz/products/sophomore-trucker-hat-red",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 391.55
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Yuketen Scout Moc - Tosca Khaki",
+    "c": "footwear",
+    "g": 425.81,
+    "p": 539.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/95730_Yuketen_Scout_Moc_Tosca_Khaki_01_Product_on_White.jpg?v=1782140185",
+    "u": "https://kith.com/products/ykysm-tmcss26",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10.5",
+     "11",
+     "12"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "GABRIEL MOSES TRACK JACKET [BLACK]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/REGINAJACKET_BLACK_02.png?v=1776944697",
+    "u": "https://crtz.xyz/products/gabriel-moses-track-jacket-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "GABRIEL MOSES TRACK PANT [BLACK]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/REGINATRACKPANT_BLACK_01.png?v=1776944627",
+    "u": "https://crtz.xyz/products/gabriel-moses-track-pant-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Track Tee ~ Black/Brown",
+    "c": "tee",
+    "g": 69.52,
+    "p": 88.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_MESH_TEE_BLACK_FRONT_CROPPED_A_ONBODY.jpg?v=1779482821",
+    "u": "https://3sixteen.com/products/mesh-training-tee-black-brown",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   }
+  },
+  "total": 745.33
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Zip Hoody ~ Grey",
+    "c": "windrunner",
+    "g": 154.05,
+    "p": 195.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-ZIP-HOODY-GREY-FRONT_CROPPED_ONBODY.jpg?v=1771618769",
+    "u": "https://3sixteen.com/products/heavyweight-hoody-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "Supreme",
+    "t": "Supreme Tiger Raglan Longsleeve",
+    "c": "longsleeve",
+    "g": 172.22,
+    "p": 218.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0721/4553/5280/files/Supreme-Tiger-raglan-black.png?v=1775523960",
+    "u": "https://pieceslosangeles.com/products/supreme-tiger-raglan-longsleeve",
+    "sc": 6,
+    "s": [
+     "M"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP V2 SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPV2SWEATPANT_BLACK_01.png?v=1769605360",
+    "u": "https://crtz.xyz/products/hmp-v2-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Dunk Low Protro - Fierce Purple / Blue Lagoon / Sail",
+    "c": "footwear",
+    "g": 114.55,
+    "p": 145.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IM0586-500_PHSRH000-2000_bd8c8177-1bc0-48bf-8b7e-78f057037ee1.jpg?v=1782159297",
+    "u": "https://kith.com/products/nkim0586-500",
+    "sc": 0,
+    "s": [
+     "4",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   }
+  },
+  "total": 560.82
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "3sixteen",
+    "t": "Pace Tee ~ Purple",
+    "c": "tee",
+    "g": 69.52,
+    "p": 88.0,
+    "cur": "USD",
+    "col": "purple",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_PACE_TEE_PURPLE_FRONT_CROPPED_A_ONBODY.jpg?v=1779470605",
+    "u": "https://3sixteen.com/products/pace-tee-purple",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CS-222xs ~ Classic Straight - Stonewashed Double Black",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/202106073ixteen-pants-black-5.jpg?v=1623339347",
+    "u": "https://3sixteen.com/products/cs-222xs-classic-straight-stonewashed-lightweight-double-black",
+    "sc": 2,
+    "s": [
+     "33",
+     "35",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS GEL-KAYANO 14 - Birch / Pure Silver",
+    "c": "footwear",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AI1203A537-200-Front_154c68ef-0d94-4dfc-92f7-9bcc369c925a.jpg?v=1784648618",
+    "u": "https://kith.com/products/ai1203a537-200",
+    "sc": 0,
+    "s": [
+     "4",
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5"
+    ]
+   },
+   "hat": {
+    "b": "Saint Vanity",
+    "t": "Purple Saint Vanity Snapback+",
+    "c": "headwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "purple",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0691/8599/5050/files/IMG-2670.jpg?v=1772207033",
+    "u": "https://saintvanity.com/products/purple-saint-vanity-snapback",
+    "sc": 0,
+    "s": []
+   }
+  },
+  "total": 511.92
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "STENCIL RAGLAN LS [GOLD/OLIVE]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/STENCILRAGLANLS_GOLDOLIVE_01_f1a4e590-2738-4a83-8433-c093d6e30fe5.png?v=1777545149",
+    "u": "https://crtz.xyz/products/stencil-raglan-ls-gold-olive",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "NT-220x ~ Narrow Tapered - Double Black",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/3sixteen-jean-NT-220x-1.jpg?v=1554911946",
+    "u": "https://3sixteen.com/products/nt-220x-narrow-tapered-double-black",
+    "sc": 2,
+    "s": [
+     "31"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance Made in USA 990v4 - Pumpernickel / Pink Chalk / Alabaster",
+    "c": "footwear",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "pink",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u990ic4_5.jpg?v=1784648621",
+    "u": "https://kith.com/products/nbu990ic4",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "PEEK-A-BEANIE [OLIVE]",
+    "c": "headwear",
+    "g": 30.0,
+    "p": 30.0,
+    "cur": "GBP",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/PEEK-A-BEANIE_OLIVE_01.png?v=1769606287",
+    "u": "https://crtz.xyz/products/peek-a-beanie-olive",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 464.45
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Garment Dyed French Terry Pullover ~ Smoke",
+    "c": "windrunner",
+    "g": 82.95,
+    "p": 105.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-09SEP24-HOODIE-GRAY-FRONT.jpg?v=1725900052",
+    "u": "https://3sixteen.com/products/french-terry-pullover-smoke-garment-dyed",
+    "sc": 2,
+    "s": [
+     "M"
+    ]
+   },
+   "top": {
+    "b": "Lost Intricacy",
+    "t": "Lost Intricacy Davidson Thermal Longsleeve Vintage Black",
+    "c": "longsleeve",
+    "g": 211.72,
+    "p": 268.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0721/4553/5280/files/david-1.png?v=1772839446",
+    "u": "https://pieceslosangeles.com/products/lost-intricacy-davidson-thermal-longsleeve-vintage-black",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP STENCIL OPEN HEM SWEATPANT [BLACK OVERDYE]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPSTENCILOPENHEMPANT_BLACK_01_e20cb0f3-a437-44f0-88be-47fdd9d26c67.png?v=1763031918",
+    "u": "https://crtz.xyz/products/hmp-stencil-open-hem-sweatpant-black-overdye",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas Y-3 Adios Pro 4 - Night Red / Warm Clay / Active Maroon",
+    "c": "footwear",
+    "g": 260.7,
+    "p": 330.0,
+    "cur": "USD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/Y-3_ADIOS_PRO_4_sneakers_Burgundy_KI7791_01_00_standard.jpg?v=1783346489",
+    "u": "https://kith.com/products/y3ki7791",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   }
+  },
+  "total": 675.37
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "PUMA x A$AP Rocky Suede 94 - Black / White",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/Untitleddesign-2026-07-13T115511.471.jpg?v=1784147164",
+    "u": "https://kith.com/products/pu408735-01",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "10"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "ELITEWORK\u2122 APEX SHELL JACKET [NAVY]",
+    "c": "windrunner",
+    "g": 220.0,
+    "p": 220.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ELITEWORK_APEXSHELLJACKET_NAVY_01.png?v=1769604038",
+    "u": "https://corteiz.com/products/eliteworktm-apex-shell-jacket-navy",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Brain Dead",
+    "t": "Brooks Brothers California Collegiate Sweatpant - Navy",
+    "c": "sweats",
+    "g": 96.78,
+    "p": 122.5,
+    "cur": "USD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0642/8893/files/BROOKS_BROTHERS_CALIFORNIA_COLLEGIATE_SWEATPANT_NAVY_Front_optimized.jpg?v=1741301876",
+    "u": "https://wearebraindead.com/products/brooks-brothers-california-collegiate-sweatpant-navy",
+    "sc": 8,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "OUTLINE HEAVYWEIGHT TEE [BLACK]",
+    "c": "tee",
+    "g": 70.0,
+    "p": 70.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/OUTLINEHEAVYWEIGHTTEE_BLACK_01.png?v=1772023262",
+    "u": "https://crtz.xyz/products/outline-heavyweight-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   }
+  },
+  "total": 481.58
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "On Running Cloudrock Low Waterproof - Black",
+    "c": "footwear",
+    "g": 158.0,
+    "p": 200.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/f771008fd9c9adb3829577d6218aeb7bfdf13d5b.jpg?v=1783693431",
+    "u": "https://kith.com/products/onr3mf10251043",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "3 STAR CREST TRACK JACKET [BLACK]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/3STARCRESTTRACKJACKET_BLACK_01.png?v=1757503859",
+    "u": "https://crtz.xyz/products/3-star-crest-track-jacket-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "MINI ISLAND SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 105.0,
+    "p": 105.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/MINIISLANDSWEATPANT_BLACK_01.png?v=1765449914",
+    "u": "https://crtz.xyz/products/mini-island-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Short Sleeve Knit Shirt ~ Black De Stijl",
+    "c": "tee",
+    "g": 209.35,
+    "p": 265.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S_SS26_SS_KNIT_SHIRT-DE_STIHL_BLACK_FRONT_CROPPED_1_ONBODY_bdb7d299-0283-4707-bee3-30bec3092bf2.jpg?v=1771326905",
+    "u": "https://3sixteen.com/products/short-sleeve-knit-shirt-black-de-stijl",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   }
+  },
+  "total": 602.35
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens Low Sneaks - Black / Milk",
+    "c": "footwear",
+    "g": 872.95,
+    "p": 1105.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/RICRU02F4891LCO911LowSneaksBlackMilkMilk_1.jpg?v=1784226091",
+    "u": "https://kith.com/products/ricru02f4891lco911",
+    "sc": 0,
+    "s": [
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46"
+    ]
+   },
+   "layer": {
+    "b": "by Parra",
+    "t": "Loners only fleece jacket",
+    "c": "windrunner",
+    "g": 161.57,
+    "p": 190.08,
+    "cur": "EUR",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1327/2947/files/55105-04_e8f8eefe-6a17-4741-b712-b7ff22e1d473.jpg?v=1771498536",
+    "u": "https://byparra.com/products/loners-only-fleece-jacket-55105",
+    "sc": 11,
+    "s": [
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "XLARGE"
+    ]
+   },
+   "bottom": {
+    "b": "Alpha Industries",
+    "t": "UNFRM CARGO SWEATPANT",
+    "c": "sweats",
+    "g": 71.1,
+    "p": 90.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/2513/7040/files/unfrm-cargo-sweatpant-bottom-black-xs-793127.jpg?v=1760399137",
+    "u": "https://alphaindustries.com/products/mbu54508c1-unfrm-cargo-sweatpant",
+    "sc": 9,
+    "s": [
+     "S",
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "AMIRI",
+    "t": "OVAL TEE",
+    "c": "tee",
+    "g": 232.26,
+    "p": 294.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0626/9065/files/AMJYTE1133-BLK_1.jpg?v=1731009866",
+    "u": "https://a-ma-maniere.com/products/amiri-oval-tee",
+    "sc": 6,
+    "s": [
+     "M",
+     "L"
+    ]
+   }
+  },
+  "total": 1337.88
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Nylon Windbreaker",
+    "c": "windrunner",
+    "g": 132.72,
+    "p": 168.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Track_Jacket_Blue-1_9a904434-9a58-4386-b277-f6ba7502d06e.jpg?v=1778253180",
+    "u": "https://ericemanuel.com/products/ee-r-jacket-20260508-2",
+    "sc": 0,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "SOPHOMORE RAGLAN LS [BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SOPHOMORERAGLANLS_BLACK_01.png?v=1768774076",
+    "u": "https://crtz.xyz/products/sophomore-raglan-ls-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Polar Skate Co",
+    "t": "Lasse Track Pants | Black",
+    "c": "sweats",
+    "g": 29.75,
+    "p": 35.0,
+    "cur": "EUR",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/products/Polar-Skate-Co-SP23-Lasse-Track-Pants-Black-1.png?v=1675703542",
+    "u": "https://polarskateco.com/products/lasse-track-pants-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens Minimal Suede Trimmed Sneaks - Black / Black / Black",
+    "c": "footwear",
+    "g": 738.65,
+    "p": 935.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/RU01F2889-NDOLVX-999RickOwensMinimalSneaksScarpeInTessutoEPelleBlackBlackBlack_217.jpg?v=1773760173",
+    "u": "https://kith.com/products/ru01f2889-ndolvx-999",
+    "sc": 0,
+    "s": [
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46"
+    ]
+   }
+  },
+  "total": 976.12
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "ISLAND WAFFLE THERMAL [OLIVE]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDTHERMALLS_OLIVE_01.png?v=1763986374",
+    "u": "https://crtz.xyz/products/island-waffle-thermal-olive",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "NT-100x ~ Narrow Tapered - Indigo Selvedge",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/3sixteen-jean-NT-100x-1.jpg?v=1554911955",
+    "u": "https://3sixteen.com/products/nt-100x-narrow-tapered-indigo-selvedge",
+    "sc": 2,
+    "s": [
+     "28",
+     "29",
+     "30",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Air Max 95 Big Bubble - Pearl Grey / Light Charcoal",
+    "c": "footwear",
+    "g": 150.1,
+    "p": 190.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/p26-nike-ir0802-100_0da120fb-874d-4e50-9740-d7af5b0fe826.jpg?v=1782920764",
+    "u": "https://kith.com/products/nkir0802-100",
+    "sc": 0,
+    "s": [
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORKY CAP [OLIVE]",
+    "c": "headwear",
+    "g": 28.0,
+    "p": 28.0,
+    "cur": "GBP",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LiteworkCap_Olive_01.png?v=1756984976",
+    "u": "https://crtz.xyz/products/liteworky-cap-olive",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 466.4
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance RC56 - Silver Metallic / Black",
+    "c": "footwear",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/new-balance-rc56-silver-metallic-black-urc562l1-footwear_sneaker-packshots-0.jpg?v=1784053786",
+    "u": "https://kith.com/products/nburc562l1",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8.5"
+    ]
+   },
+   "layer": {
+    "b": "3sixteen",
+    "t": "Track Jacket ~ Black/Grey",
+    "c": "windrunner",
+    "g": 154.05,
+    "p": 195.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_TRACK_JACKET_BLACK_GREY_FRONT_CROPPED_B_ONBODY.jpg?v=1779483032",
+    "u": "https://3sixteen.com/products/track-jacket-black-grey",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "bottom": {
+    "b": "aNYthing",
+    "t": "Men's Subway Series Sweatpants Black",
+    "c": "sweats",
+    "g": 68.0,
+    "p": 80.0,
+    "cur": "EUR",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0576/7705/4136/files/aNYthing-Clothing-Sweatpants-SubwaySeriesSweatpantsBlack-ANY-015BLACK-20241202120047_01.jpg?v=1733149281",
+    "u": "https://slamjam.com/products/anything-clothing-subway-series-sweatpants-black-j303196",
+    "sc": 6,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "ROYALE HEAVYWEIGHT TEE [NAVY]",
+    "c": "tee",
+    "g": 65.0,
+    "p": 65.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SUPERIORROYALETEE_NAVY_03.png?v=1768822466",
+    "u": "https://crtz.xyz/products/superior-royale-tee-navy-white",
+    "sc": 2,
+    "s": [
+     "L"
+    ]
+   }
+  },
+  "total": 405.55
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "VANS LX Authentic 44 Field - Black",
+    "c": "footwear",
+    "g": 79.0,
+    "p": 100.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/be844667-f2af-450e-be89-5379f10008fa_30595b5d-c5f2-40d0-97de-f95986388748.jpg?v=1784211504",
+    "u": "https://kith.com/products/vn000d9nblk1",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "layer": {
+    "b": "Butter Goods",
+    "t": "Relay Fleece Track Jacket, Washed Navy",
+    "c": "windrunner",
+    "g": 103.97,
+    "p": 199.95,
+    "cur": "AUD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/RelayFleeceTrackJacketWashedNavy1.png?v=1778556967",
+    "u": "https://buttergoods.com/products/relay-fleece-track-jacket-washed-navy-washed-navy-q226-2",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Owners Club",
+    "t": "Represent Owners Club Sweatpant - Jet Black",
+    "c": "sweats",
+    "g": 138.25,
+    "p": 175.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0587/5816/8785/files/GqIsgVxXZ-mZuvZQ1mPWiUvZpMc7NPKMQEI6itbI8xQ.jpg?v=1778078910",
+    "u": "https://representclo.com/products/represent-owners-club-sweatpant-jet-black",
+    "sc": 9,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Pace Tee ~ Black",
+    "c": "tee",
+    "g": 69.52,
+    "p": 88.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_PACE_TEE_BLACK_FRONT_CROPPED_A_ONBODY.jpg?v=1779802775",
+    "u": "https://3sixteen.com/products/pace-tee-black",
+    "sc": 5,
+    "s": [
+     "L",
+     "XL"
+    ]
+   }
+  },
+  "total": 390.74
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Ultraweight Pullover ~ Kombu Green",
+    "c": "windrunner",
+    "g": 173.8,
+    "p": 220.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR25_HOODIE_GREEN_FRONT_CROPPED_B_ONBODY.jpg?v=1771437746",
+    "u": "https://3sixteen.com/products/ultraweight-pullover-kombu-green",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "top": {
+    "b": "Huf",
+    "t": "huf x Spider-Man Web Long Sleeve Double Layer Top",
+    "c": "longsleeve",
+    "g": 55.3,
+    "p": 70.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0268/5180/3305/files/SPIDERMAN-WEB-LS-DOUBLE-LAYER-TOP_BLACK_KN00634_BLACK_01.png?v=1784307733",
+    "u": "https://hufworldwide.com/products/huf-x-marvel-spider-man-web-long-sleeve-double-layer-top-kn00634",
+    "sc": 8,
+    "s": [
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP OPEN HEM SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPOPENHEMSWEATPANT_BLACK_01.png?v=1769604733",
+    "u": "https://crtz.xyz/products/hmp-open-hem-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Air Force 1 '07 LV8 - Beach / Coconut Milk / Sail",
+    "c": "footwear",
+    "g": 98.75,
+    "p": 125.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/NKIM5751-200NikeAirForce1_07Lv8BeachBeach-CoconutMilk-Sail_216.jpg?v=1784910718",
+    "u": "https://kith.com/products/nkim5751-200",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   }
+  },
+  "total": 447.85
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens Vintage Sneaks - Black / Milk",
+    "c": "footwear",
+    "g": 880.85,
+    "p": 1115.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/RICRU02F4897LCOLVS91RickOwensVintageSneaksBlackMilkMilk_32.jpg?v=1783693430",
+    "u": "https://kith.com/products/ricru02f4897lcolvs91",
+    "sc": 0,
+    "s": [
+     "41",
+     "42",
+     "43"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "CREST ARCH TRACK JACKET [BLACK]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CRESTARCHTRACKJACKET_BLACK_01.png?v=1756985056",
+    "u": "https://crtz.xyz/products/crest-arch-track-jacket-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT OPEN HEM SWEATPANT [HEATHER GREY]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDPUFFPRINTOPENHEMSWEATPANT_HEATHERGREY_01.png?v=1769006174",
+    "u": "https://crtz.xyz/products/island-puff-print-open-hem-sweatpant-heather-grey",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Training Cutoff Tee ~ Black",
+    "c": "tee",
+    "g": 43.45,
+    "p": 55.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-08AUG24-CUTOFF-TEES-BLACK-FRONT.jpg?v=1722977900",
+    "u": "https://3sixteen.com/products/training-cutoff-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   }
+  },
+  "total": 1164.3
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Pullover Hoody ~ Grey",
+    "c": "windrunner",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-HOODY-GREY-FRONT_CROPPED_ONBODY.jpg?v=1771622239",
+    "u": "https://3sixteen.com/products/heavyweight-pullover-hoody-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "top": {
+    "b": "Buco",
+    "t": "BUCO L/S TEE / CHIEF\u2019S",
+    "c": "longsleeve",
+    "g": 115.0,
+    "p": 115.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0302/9939/0092/files/BC26005_BBL_251021_6731.jpg?v=1774517145",
+    "u": "https://therealmccoys.com/products/buco-l-s-tee-chief-s_312-black-blue",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT OPEN HEM SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDPUFFPRINTOPENHEMSWEATPANT_BLACK_01.png?v=1769006786",
+    "u": "https://crtz.xyz/products/island-puff-print-open-hem-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS x Griff Gel-Cumulus 16 - Black",
+    "c": "footwear",
+    "g": 130.35,
+    "p": 165.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/1203B038_001_SR_RT_GLB_7c817e44-0d3d-453f-80a5-753e4aed55b5.jpg?v=1783349652",
+    "u": "https://kith.com/products/ai1203b038-001",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7.5",
+     "8.5"
+    ]
+   }
+  },
+  "total": 501.5
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Stussy",
+    "t": "PIGMENT DYED LS THERMAL",
+    "c": "longsleeve",
+    "g": 59.25,
+    "p": 75.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0174/0580/4598/files/1140396_FBLA_1.jpg?v=1771525571",
+    "u": "https://eu.stussy.com/products/1140396-pigment-dyed-ls-thermal-faded-black",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Embellish NYC",
+    "t": "Easy Shorts (Grey Washed)",
+    "c": "shorts",
+    "g": 67.15,
+    "p": 85.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0614/9161/files/20260602_EMB_SUM26_Product_Shots_EMB-SUM226-06_0001.jpg?v=1784303896",
+    "u": "https://embellishnyc.com/products/easy-shorts-grey-washed",
+    "sc": 6,
+    "s": [
+     "28",
+     "30",
+     "32",
+     "34",
+     "36",
+     "38",
+     "40",
+     "42"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance FuelCell Rebel v5 - Altitude / Shadow Blue",
+    "c": "footwear",
+    "g": 114.55,
+    "p": 145.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/mfcx9sg_2.jpg?v=1783612402",
+    "u": "https://kith.com/products/nbmfcx9sg",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORKY CAP [TRIPLE BLACK]",
+    "c": "headwear",
+    "g": 28.0,
+    "p": 28.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LITEWORKYCAP_BLACK_01_a76ff8a1-5049-4d72-8e9f-e16ef06e817c.png?v=1757504511",
+    "u": "https://crtz.xyz/products/liteworky-cap-triple-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 268.95
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "VANS LX Authentic 44 - Woodland Camo Green",
+    "c": "footwear",
+    "g": 79.0,
+    "p": 100.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/Premium-Authentic-Shoe-VANS-HERO_7b19e168-0e03-4d13-824b-72ec3a358316.jpg?v=1784147189",
+    "u": "https://kith.com/products/vn000d9nwvd1",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "layer": {
+    "b": "Huf",
+    "t": "huf FC Windbreaker",
+    "c": "windrunner",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0268/5180/3305/files/HUF-FC-WINDBREAKER_BLACK_JK00533_BLACK_01.png?v=1779122048",
+    "u": "https://hufworldwide.com/products/huf-fc-windbreaker-jk00533",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Aries Arise",
+    "t": "Premium Faded Temple Straight Sweatpant",
+    "c": "sweats",
+    "g": 210.0,
+    "p": 210.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0208/0184/7345/files/AR30004.05_AGED_PREMIUM_TEMPLE_STRAIGHT_SWEATPANT_BLACK_XL_1_EDITED_9422e8cb-7a0f-4dca-b91b-976c70195c8a.png?v=1775826281",
+    "u": "https://ariesarise.com/products/ss26-premium-faded-temple-straight-sweatpant-black",
+    "sc": 9,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "REMINDER TEE [HEATHER GREY]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/GREYREMINDERTEE.png?v=1783016901",
+    "u": "https://crtz.xyz/products/reminder-tee-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 423.8
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Cole Buxton",
+    "t": "LEAGUE MESH LONG SLEEVE",
+    "c": "longsleeve",
+    "g": 135.0,
+    "p": 135.0,
+    "cur": "GBP",
+    "col": "yellow",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0055/1023/4230/files/290763_Cole_Buxton-03-16180.compressed.jpg?v=1779873777",
+    "u": "https://colebuxton.com/products/league-mesh-long-sleeve-yellow-ss26rlmls330-700",
+    "sc": 11,
+    "s": [
+     "XSMALL",
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "XLARGE",
+     "XXLARGE"
+    ]
+   },
+   "bottom": {
+    "b": "Icecream Europe",
+    "t": "Running Dog Cargo Shorts",
+    "c": "shorts",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0739/3265/files/ICWS26315_BLACK_01.png?v=1778041316",
+    "u": "https://bbcicecream.com/products/running-dog-cargo-shorts-icws26315-black",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens TD Vintage Sneaks - Black / Milk",
+    "c": "footwear",
+    "g": 438.45,
+    "p": 555.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/BG01F3898LMU-911BabysneaksBlackMilkMilk_1.jpg?v=1783693428",
+    "u": "https://kith.com/products/bg01f3898lmu-911",
+    "sc": 0,
+    "s": [
+     "22"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT TRUCKER HAT [WHITE/BLACK]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDPUFFPRINTTRUCKERHAT_BLACK_01_ff17eaed-54b1-46f0-b197-3af204d92f93.png?v=1761921616",
+    "u": "https://crtz.xyz/products/island-puff-print-trucker-hat-white-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 731.95
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens Low Sneaks - Dark Dust / Milk",
+    "c": "footwear",
+    "g": 872.95,
+    "p": 1105.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/RICRU02F4891LCO7811RickOwensLowSneaksDrkdustMilkMilk_36.jpg?v=1783693431",
+    "u": "https://kith.com/products/ricru02f4891lco7811",
+    "sc": 0,
+    "s": [
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "CONSIGLIERE TRACK JACKET [GREY]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/PIPING_TRICOT_TRACK_JACKET_GREY_1.png?v=1761865719",
+    "u": "https://crtz.xyz/products/consigliere-track-jacket-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "MINI ISLAND SWEATPANT [HEATHER GREY]",
+    "c": "sweats",
+    "g": 105.0,
+    "p": 105.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/MINIISLANDSWEATPANT_HEATHERGREY_01.png?v=1768773818",
+    "u": "https://crtz.xyz/products/mini-island-sweatpant-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Heavyweight Boxy T-shirt ~ Black",
+    "c": "tee",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-02FEB26-TEE_HEAVYWEIGHT_BLACK_FRONT_CROPPED_B_ONBODY.jpg?v=1771451394",
+    "u": "https://3sixteen.com/products/heavyweight-boxy-t-shirt-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   }
+  },
+  "total": 1155.35
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Pullover Hoody ~ Black",
+    "c": "windrunner",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-HOODY-BLACK-FRONT_CROPPED_B_ONBODY.jpg?v=1771622308",
+    "u": "https://3sixteen.com/products/heavyweight-pullover-hoody-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "Spring 2026",
+    "t": "Lineup Long Sleeve T-Shirt",
+    "c": "longsleeve",
+    "g": 35.55,
+    "p": 45.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0920/5284/files/Only_NY_Lineup_Long_Sleeve_T_Shirt_Black_01.jpg?v=1783887464",
+    "u": "https://onlyny.com/products/lineup-long-sleeve-t-shirt",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT OPEN HEM SWEATPANT [BROWN]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDPUFFPRINTOPENHEMSWEATPANT_BROWN_01.png?v=1769006693",
+    "u": "https://crtz.xyz/products/island-puff-print-open-hem-sweatpant-brown",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas Samba OG - Core Black",
+    "c": "footwear",
+    "g": 86.9,
+    "p": 110.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/KJ9997_1_FOOTWEAR_Photography_SideLateralCenterView_white.jpg?v=1783346488",
+    "u": "https://kith.com/products/aakj9997",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   }
+  },
+  "total": 378.6
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "OUTLINE HEAVYWEIGHT TEE [ORANGE]",
+    "c": "tee",
+    "g": 70.0,
+    "p": 70.0,
+    "cur": "GBP",
+    "col": "orange",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/OUTLINEHEAVYWEIGHTTEE_ORANGE_01_df2ce682-6673-4657-8c52-a5b7b60dcf4a.png?v=1772023289",
+    "u": "https://crtz.xyz/products/outline-heavyweight-tee-orange",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Butter Goods",
+    "t": "Racer Denim Jeans, Faded Black",
+    "c": "jeans",
+    "g": 56.68,
+    "p": 109.0,
+    "cur": "AUD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/RacerDenimJeansFadedBlack1.png?v=1776843980",
+    "u": "https://buttergoods.com/products/racer-denim-jeans-faded-black",
+    "sc": 2,
+    "s": [
+     "30"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Pennon Concho Duck Boot - Noir",
+    "c": "footwear",
+    "g": 363.4,
+    "p": 460.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/fee26d37dcd7d6a067ed2db0f36eb078_900x_6546853f-65a1-4415-9cd9-f3e8d5fdfb24.jpg?v=1784297570",
+    "u": "https://kith.com/products/pnn256-02-cono",
+    "sc": 0,
+    "s": [
+     "10.5",
+     "11"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND OUTLINE TRUCKER HAT [ORANGE]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "orange",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ALCATRAZCONTRASTSTITCHTRUCKERHAT_ORANGE_01.png?v=1779880459",
+    "u": "https://crtz.xyz/products/island-outline-trucker-hat-orange",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 530.08
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Unisex Tees",
+    "t": "Outdoor Gear L/S Tee",
+    "c": "longsleeve",
+    "g": 44.24,
+    "p": 56.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0060/2030/0890/files/Gramicci-G6SU-T093_VINTAGEBLACK_mens-shirts_1_f9f84c3e-7fd1-4a68-82b8-f0fa676db960.jpg?v=1783632325",
+    "u": "https://gramicci.com/products/outdoor-gear-l-s-tee",
+    "sc": 6,
+    "s": [
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Jameson x KidSuper",
+    "t": "Jameson x KidSuper Track Shorts [Charcoal]",
+    "c": "shorts",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0255/0099/files/HS_PDP_Shortsgrey_0011.jpg?v=1777920984",
+    "u": "https://kidsuper.com/products/jameson-x-kidsuper-track-shorts-charcoal",
+    "sc": 6,
+    "s": [
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 204L - Sea Salt",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u204l9si_2.jpg?v=1783612404",
+    "u": "https://kith.com/products/nbu204l9si",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT TRUCKER HAT [BROWN]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLAND_PUFF_PRINT_TRUCKER_HAT_BROWN_1.png?v=1761865749",
+    "u": "https://crtz.xyz/products/island-puff-print-trucker-hat-brown",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 273.84
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "PARAPHERNALIA 97",
+    "t": "+1 [LONG SLEEVE]",
+    "c": "longsleeve",
+    "g": 63.2,
+    "p": 80.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/56A8F062-A04D-4B28-BB00-9465E85899EC.png?v=1779169339",
+    "u": "https://paraphernalia.world/products/1-long-sleeve",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "eric emanuel",
+    "t": "EE\u00ae Swim Trunk",
+    "c": "shorts",
+    "g": 116.92,
+    "p": 148.0,
+    "cur": "USD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Swim_Navy-1_6d626875-c79e-4596-983d-30411985b2cf.jpg?v=1784822061",
+    "u": "https://ericemanuel.com/products/ee-r-swim-trunk-20260724-2",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance ABZORB 1890 - Streamsong / Alkaline Green / Dark Night",
+    "c": "footwear",
+    "g": 150.1,
+    "p": 190.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u18904do_2.jpg?v=1783612404",
+    "u": "https://kith.com/products/nbu18904do",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "RENTAL TRUCKER HAT [BLACK]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/RENTALTRUCKERHAT_BLACK_01.png?v=1769607742",
+    "u": "https://crtz.xyz/products/rental-trucker-hat-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 370.22
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Reebok x Icecream Board Flip - Blue / Black / Yellow",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/JPG-100282065_SLC_eCom.jpg?v=1784036895",
+    "u": "https://kith.com/products/ree100282065-451",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "layer": {
+    "b": "Paraphernalia 97",
+    "t": "hi-tech fleece anorak",
+    "c": "windrunner",
+    "g": 114.55,
+    "p": 145.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/56CC0247-0B52-4FC0-9A25-E3F807A1DACC.png?v=1777518277",
+    "u": "https://paraphernalia.world/products/hi-tech-fleece-anorak",
+    "sc": 2,
+    "s": []
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "ISLAND KNOCKOUT SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/KNOCKOUTISLANDSWEATPANT_BLACK_01_cc39ae66-cb18-4bbe-8187-cb4ffcb6c695.png?v=1784840622",
+    "u": "https://crtz.xyz/products/island-knockout-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "OG ISLAND TEE [WHITE]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/islandt.png?v=1758544330",
+    "u": "https://crtz.xyz/products/og-island-tee-white",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 390.95
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "On Running Cloudmonster 3 Hyper - Black / Ivory",
+    "c": "footwear",
+    "g": 173.8,
+    "p": 220.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/50fb5df778eafa0739b8c4c58da6f5ecf7f8089d.jpg?v=1783693430",
+    "u": "https://kith.com/products/onr3mg10061430",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "CREST ARCH TRACK JACKET [TRIPLE BLACK]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CRESTARCHTRACKJACKET_TRIPLEBLACK_01.png?v=1763033809",
+    "u": "https://crtz.xyz/products/crest-arch-track-jacket-triple-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP CONTRAST OPEN HEM SWEATPANT [NAVY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPCONSTRASTOPENHEMPANT_NAVY_01.png?v=1758111021",
+    "u": "https://crtz.xyz/products/hmp-contrast-open-hem-sweatpant-navy",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Heavyweight Boxy T-shirt ~ White",
+    "c": "tee",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-02FEB26-TEE_HEAVYWEIGHT_WHITE_FRONT_CROPPED_ONBODY.jpg?v=1771451531",
+    "u": "https://3sixteen.com/products/heavyweight-boxy-t-shirt-white",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "2X"
+    ]
+   }
+  },
+  "total": 471.2
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "JJJJound",
+    "t": "Lightweight Longsleeve - Black",
+    "c": "longsleeve",
+    "g": 71.1,
+    "p": 90.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0562/9737/files/J70_LONGSLEEVE_BLACK_01_UPDATE.jpg?v=1783349517",
+    "u": "https://jjjjound.com/products/70s-longsleeve-black",
+    "sc": 8,
+    "s": [
+     "XSMALL",
+     "SMALL",
+     "MEDIUM"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "RS-100xk ~ Relaxed Straight - Rinsed Indigo Kibata",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-05MAY25-3-ON_MODEL_RS-100XK-FRONT.jpg?v=1750109028",
+    "u": "https://3sixteen.com/products/rs-100xk-relaxed-straight-rinsed-indigo-kibata",
+    "sc": 5,
+    "s": [
+     "31",
+     "34",
+     "36",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "27",
+    "t": "ASICS Gel-ventx Piquant (Green)",
+    "c": "footwear",
+    "g": 85.0,
+    "p": 100.0,
+    "cur": "EUR",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0018/7793/4115/files/1203B040-301_1.jpg?v=1783522423",
+    "u": "https://patta.nl/products/asics-gel-ventx-piquant-green",
+    "sc": 6,
+    "s": []
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORK QUATTRO CAP [BLACK]",
+    "c": "headwear",
+    "g": 35.0,
+    "p": 35.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LITEWORKQUATTROCAP_BLACK_01.png?v=1782817980",
+    "u": "https://crtz.xyz/products/litework-quattro-cap-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 420.2
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 204V - Neo Flame / Black / Black Cement",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u204vmcv_nb_02_i_741afad1-cc81-465f-a9ef-517dfbdbfb54.jpg?v=1784122902",
+    "u": "https://kith.com/products/nbu204vmcv",
+    "sc": 0,
+    "s": [
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8",
+     "8.5"
+    ]
+   },
+   "layer": {
+    "b": "Honor The Gift",
+    "t": "Growth Track Jacket - Black",
+    "c": "windrunner",
+    "g": 173.01,
+    "p": 219.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0013/1111/3328/files/GROWTHTRACKJACKET_BLACK-1.jpg?v=1782942055",
+    "u": "https://honorthegift.co/products/growth-track-jacket-black",
+    "sc": 9,
+    "s": [
+     "S",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Lost Intricacy",
+    "t": "Lost Intricacy MITT Sweatpants Black White",
+    "c": "sweats",
+    "g": 211.72,
+    "p": 268.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0721/4553/5280/files/mitt-black.png?v=1772837795",
+    "u": "https://pieceslosangeles.com/products/lost-intricacy-mitt-sweatpants-black-white",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "ISLAND KNOCKOUT TEE [BLACK]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/BLACKKNOCKOUTTEE_4d1a3ff7-0f3d-42cd-93bc-c16768914692.png?v=1784881243",
+    "u": "https://crtz.xyz/products/island-knockout-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L"
+    ]
+   }
+  },
+  "total": 519.53
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "CHERRY LA",
+    "t": "Mesh Motors Long Sleeve (Charcoal)",
+    "c": "longsleeve",
+    "g": 148.52,
+    "p": 188.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/2362/2159/files/262012-GRY_MESH_MOTORS_LONG_SLEEVE-CHARCOAL_1.jpg?v=1774288670",
+    "u": "https://cherrylosangeles.com/products/mesh-motors-long-sleeve-charcoal",
+    "sc": 9,
+    "s": [
+     "S",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CT-222xs ~ Classic Tapered - Stonewashed Double Black",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/20230110-3sixteen-pants-black2-01.jpg?v=1673490964",
+    "u": "https://3sixteen.com/products/ct-222xs-classic-tapered-stonewashed-double-black",
+    "sc": 2,
+    "s": [
+     "28",
+     "31",
+     "33",
+     "34",
+     "35",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas Hyperboost EPHR LT - Yellow / Cloud White / Silver Metallic",
+    "c": "footwear",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/KZ8507_1_FOOTWEAR_Photography_SideLateralCenterView_white.jpg?v=1784742402",
+    "u": "https://kith.com/products/aakz8507",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "12"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORKY CAP [GREY]",
+    "c": "headwear",
+    "g": 28.0,
+    "p": 28.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/AllstazActiveBeanie_Grey_01.png?v=1756984978",
+    "u": "https://crtz.xyz/products/liteworky-cap-grey",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 524.12
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "SOUTH OF HEAVEN\u00ae",
+    "t": "HEAVY THERMAL LONGSLEEVE - OFF BLACK",
+    "c": "longsleeve",
+    "g": 37.92,
+    "p": 48.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0527/9540/8553/files/OffBlackThermal.jpg?v=1779271744",
+    "u": "https://southofheaven.us/products/heavy-thermal-longsleeve-off-black",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "Type 3s Denim Jacket ~ Double Black",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-10OCT25-ON-MODEL-DENIM-JACKET-BLACK-FRONT_CROPPED_ONBODY_f137aa4b-8e3f-4c21-aaf4-d3d47517f346.jpg?v=1784229559",
+    "u": "https://3sixteen.com/products/type-3s-denim-jacket-double-black-1",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X",
+     "3X"
+    ]
+   },
+   "shoe": {
+    "b": "notwoways",
+    "t": "VAULT REVERSE SYZYGY",
+    "c": "footwear",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0442/1455/0691/files/1_Vault_Syzygy.jpg?v=1771865912",
+    "u": "https://notwoways.com/products/vault-reverse-syzygy",
+    "sc": 9,
+    "s": [
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11"
+    ]
+   },
+   "hat": {
+    "b": "EFF",
+    "t": "Birmingham Black Barons NLB Flip Fitted Ballcap",
+    "c": "headwear",
+    "g": 27.65,
+    "p": 35.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1487/1618/products/21567580_02.jpg?v=1681492331",
+    "u": "https://ebbets.com/products/birmingham-black-barons-nlb-flip-fitted-ballcap",
+    "sc": 8,
+    "s": [
+     "678",
+     "700"
+    ]
+   }
+  },
+  "total": 414.67
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Polar Skate Co",
+    "t": "Mike LS Shirt | Denim - Washed Blue",
+    "c": "longsleeve",
+    "g": 55.25,
+    "p": 65.0,
+    "cur": "EUR",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-SU25-Mike-Denim-Shirt-1.png?v=1746094263",
+    "u": "https://polarskateco.com/products/mike-ls-shirt-denim-washed-blue",
+    "sc": 2,
+    "s": [
+     "L"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CS-220xk ~ Classic Straight - Rinsed Black Kibata",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-05MAY24-CS-220XK-BLACK-BLACK-DENIM-ON-MODEL-FRONT.jpg?v=1717540059",
+    "u": "https://3sixteen.com/products/cs-220xk-classic-straight-rinsed-black-kibata",
+    "sc": 2,
+    "s": [
+     "28"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS x Kiko Kostadinov Ilargi FF II - Driftwood / Dioptase",
+    "c": "footwear",
+    "g": 181.7,
+    "p": 230.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AI1203B111-200ILARGIFFIIDRIFTWOODDIOPTASE_3806.jpg?v=1784838115",
+    "u": "https://kith.com/products/ai1203b111-200",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "PEEK-A-BEANIE [BABY BLUE MULTI]",
+    "c": "headwear",
+    "g": 30.0,
+    "p": 30.0,
+    "cur": "GBP",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/PEEK-A-BEANIE_BABYBLUEMULTI_01.png?v=1769606240",
+    "u": "https://crtz.xyz/products/peek-a-beanie-baby-blue-multi",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 496.05
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Butter Goods",
+    "t": "Thermal S/S Tee, Desert Camo",
+    "c": "longsleeve",
+    "g": 51.97,
+    "p": 99.95,
+    "cur": "AUD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/DSC08586.png?v=1780645161",
+    "u": "https://buttergoods.com/products/thermal-ss-tee-desert-camo-desert-camo-q226dtc",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "EPTM",
+    "t": "EPTM Sway Shorts - Black",
+    "c": "shorts",
+    "g": 59.25,
+    "p": 75.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1162/7718/files/SWAY_SHORTS_BLACK_FLAT.jpg?v=1783528708",
+    "u": "https://eptmusa.com/products/eptm-sway-shorts-black",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "2X"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance ABZORB 1890 - Linen / Pumpernickel / Basil Oil",
+    "c": "footwear",
+    "g": 150.1,
+    "p": 190.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u18904as_2.jpg?v=1783612400",
+    "u": "https://kith.com/products/nbu18904as",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11"
+    ]
+   },
+   "hat": {
+    "b": "3sixteen",
+    "t": "Run Hat ~ Black Reflective",
+    "c": "headwear",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_HAT_BLACK_FRONT.jpg?v=1779481755",
+    "u": "https://3sixteen.com/products/run-hat-black-reflective-1",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 308.72
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Zip Hoody ~ Indigo",
+    "c": "windrunner",
+    "g": 154.05,
+    "p": 195.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-ZIP-HOODY-INDIGO-FRONT_CROPPED_ONBODY.jpg?v=1771619078",
+    "u": "https://3sixteen.com/products/heavyweight-hoody-indigo",
+    "sc": 2,
+    "s": [
+     "M"
+    ]
+   },
+   "top": {
+    "b": "Vale Forever",
+    "t": "Vale Forever Goat Longsleeve Vintage Black",
+    "c": "longsleeve",
+    "g": 132.72,
+    "p": 168.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0721/4553/5280/files/vale-goat-ls-1.png?v=1783720377",
+    "u": "https://pieceslosangeles.com/products/vale-forever-goat-longsleeve-vintage-black",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP CONTRAST OPEN HEM SWEATPANT [HEATHER GREY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPCONTRASTOPENHEMPANT_LIGHTHEATHER_01.png?v=1756984952",
+    "u": "https://crtz.xyz/products/hmp-contrast-open-hem-sweatpant-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Kobe 4 Protro Draft Pack - Multicolor",
+    "c": "footwear",
+    "g": 158.0,
+    "p": 200.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IV6585-900_PHSYD200-2000_3e80867a-0a8f-42cd-ac61-a2b743fce8df.jpg?v=1782400211",
+    "u": "https://kith.com/products/nkiv6585-900",
+    "sc": 0,
+    "s": [
+     "7.5",
+     "8",
+     "8.5",
+     "9"
+    ]
+   }
+  },
+  "total": 564.77
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Polar Skate Co",
+    "t": "LS Tee |Tied Up - Chocolate",
+    "c": "longsleeve",
+    "g": 25.5,
+    "p": 30.0,
+    "cur": "EUR",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-W25-HG-LS-Tee-Tied-Up-1.png?v=1766480390",
+    "u": "https://polarskateco.com/products/ls-tee-tied-up-washed-chocolate",
+    "sc": 8,
+    "s": [
+     "XS",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "RS-100x ~ Relaxed Straight - Indigo Selvedge",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-11NOV23-MODEL-JEANS-FRONT_ONBODY.jpg?v=1784775404",
+    "u": "https://3sixteen.com/products/rs-100x-relaxed-straight-indigo-selvedge",
+    "sc": 2,
+    "s": [
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas x Bad Bunny F50 Ghost Sprint - Dark Marine / Light Blue / Clear Sky",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/https___hypebeast.com_image_2026_07_06_bad-bunny-adidas-f50-ghost-sprint-dark-marine-KI9450-release-info-001.jpg?v=1784315517",
+    "u": "https://kith.com/products/aaki9450",
+    "sc": 0,
+    "s": [
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8",
+     "8.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "MULTI STRIPE KNIT BEANIE [BROWN]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/RIBBEDMULTISTRIPEBEANIE_BROWN_01.png?v=1758185669",
+    "u": "https://crtz.xyz/products/multi-stripe-knit-beanie-brown",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 405.2
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "VETEMENT FXXX",
+    "t": "Recycled Mud Waffle Zip",
+    "c": "longsleeve",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0660/4449/3998/files/42560248-4A46-48E9-9AD6-C574F0FA41F7.png?v=1773443139",
+    "u": "https://vetementfxxx.com/products/recycled-mud-waffle-zip",
+    "sc": 9,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL"
+    ]
+   },
+   "bottom": {
+    "b": "Crysp Denim",
+    "t": "Cena Denim Shorts (Grey Washed)",
+    "c": "shorts",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1020/3975/files/20260616_CRYSP_SUM26_Product_Shots_CRY-SP226-0__0005.jpg?v=1782459418",
+    "u": "https://cryspdenim.com/products/cena-denim-shorts-grey-washed",
+    "sc": 8,
+    "s": [
+     "28",
+     "30",
+     "32",
+     "34",
+     "36",
+     "38",
+     "40",
+     "42"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS x EMPTY BEHAVIOR Hypersync - White / Silver",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/Previews_AI1203B146-100AsicsEmptyBehaviorHypersync_326.jpg?v=1783524446",
+    "u": "https://kith.com/products/ai1203b146-100",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "8.5",
+     "9.5",
+     "10"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "GABRIEL MOSES NEW ERA 59FIFTY FITTED CAP [BLACK]",
+    "c": "headwear",
+    "g": 50.0,
+    "p": 50.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/RGANEWERAFITTEDCAP_BLACK_01_1.png?v=1778663617",
+    "u": "https://crtz.xyz/products/gabriel-moses-new-era-59fifty-fitted-cap-black",
+    "sc": 2,
+    "s": [
+     "7",
+     "7 1/8",
+     "7 1/4",
+     "7 3/8",
+     "7 1/2",
+     "7 5/8",
+     "7 3/4",
+     "7 7/8"
+    ]
+   }
+  },
+  "total": 287.0
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Saint Michael",
+    "t": "Saint Michael Sean Wotherspoon Target Longsleeve",
+    "c": "longsleeve",
+    "g": 355.5,
+    "p": 450.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0721/4553/5280/files/target-1.png?v=1761262288",
+    "u": "https://pieceslosangeles.com/products/saint-michael-x-sean-wotherspoon-target-longsleeve",
+    "sc": 6,
+    "s": [
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Born X Raised",
+    "t": "MICRO ROCKER BOARDSHORT: BLACK",
+    "c": "shorts",
+    "g": 71.1,
+    "p": 90.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0214/2344/files/MICROROCKERBOARDSHORTS03.jpg?v=1783558067",
+    "u": "https://bornxraised.com/products/micro-rocker-boardshort-black",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL",
+     "3XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 1906E - Amber Haze / Black",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u1906596_2.jpg?v=1783612400",
+    "u": "https://kith.com/products/nbu1906596",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11.5",
+     "12"
+    ]
+   },
+   "hat": {
+    "b": "3sixteen",
+    "t": "Trail Hat ~ Grey/Black",
+    "c": "headwear",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_HAT_BLACK_GREY_PURPLE_FRONT.jpg?v=1779906049",
+    "u": "https://3sixteen.com/products/pace-hat-grey-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 600.4
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 1890A - Morel / Black",
+    "c": "footwear",
+    "g": 157.99,
+    "p": 199.99,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u18907p8_nb_02_i.jpg?v=1784053806",
+    "u": "https://kith.com/products/nbu18907p8",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8.5"
+    ]
+   },
+   "layer": {
+    "b": "yeseyesee",
+    "t": "Y.E.S Thumb Hole Half Zip",
+    "c": "windrunner",
+    "g": 35.55,
+    "p": 45.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0664/0776/0035/files/15_YESThumbHoleHalfZip_BK_1.png?v=1728037224",
+    "u": "https://yeseyesee.com/products/y-e-s-thumb-hole-half-zip-black",
+    "sc": 9,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Alo Yoga",
+    "t": "Alo Yoga Accolade Straight Leg Black Sweatpants",
+    "c": "sweats",
+    "g": 115.0,
+    "p": 115.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1626/5391/files/alo-yoga-accolade-straight-leg-black-sweatpant-front.webp?v=1770133389",
+    "u": "https://crepslocker.com/products/alo-yoga-accolade-straight-leg-black-sweatpants",
+    "sc": 6,
+    "s": [
+     "M"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "REMINDER TEE [WOODLAND CAMO]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/REMINDERTEE_WOODLANDCAMO.png?v=1782748437",
+    "u": "https://crtz.xyz/products/reminder-tee-woodland-camo",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   }
+  },
+  "total": 348.54
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Track Jacket",
+    "c": "windrunner",
+    "g": 156.42,
+    "p": 198.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Track_Jacket_Brown-1_1a37421a-8e96-42be-9852-619b76a0b594.jpg?v=1739486162",
+    "u": "https://ericemanuel.com/products/ee-r-track-jacket-20250214-2",
+    "sc": 0,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "OG ISLAND LS TEE [BLACK]",
+    "c": "longsleeve",
+    "g": 50.0,
+    "p": 50.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/OGISLANDLSBLACK.png?v=1764249334",
+    "u": "https://crtz.xyz/products/og-island-ls-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Polar Skate Co",
+    "t": "Raphael Track Pants | Black",
+    "c": "sweats",
+    "g": 46.75,
+    "p": 55.0,
+    "cur": "EUR",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-W24-Raphael-Track-Pants-Blk-1.png?v=1730897461",
+    "u": "https://polarskateco.com/products/raphael-track-pants-black-f24",
+    "sc": 2,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Clarks Wallabee RB - Dark Green",
+    "c": "footwear",
+    "g": 134.3,
+    "p": 170.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/CK26185656-Front.jpg?v=1774633585",
+    "u": "https://kith.com/products/ck26185656",
+    "sc": 0,
+    "s": [
+     "8",
+     "10",
+     "10.5",
+     "11.5"
+    ]
+   }
+  },
+  "total": 387.47
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "RENTAL RAGLAN LS [GREEN]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CORTEIZRAGLANLS_CREAMGREEN_01_1.png?v=1766065493",
+    "u": "https://crtz.xyz/products/rental-raglan-ls-green",
+    "sc": 2,
+    "s": [
+     "L"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "CREST CHAINSTITCH DENIM JACKET [TAN]",
+    "c": "jeans",
+    "g": 140.0,
+    "p": 140.0,
+    "cur": "GBP",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CREST_CHAINSTITCH_DENIM_TRUCKER_TAN_1.png?v=1761864856",
+    "u": "https://crtz.xyz/products/crest-chainstitch-denim-jacket-tan",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Saddle Loafer ~ Black Calf",
+    "c": "footwear",
+    "g": 391.05,
+    "p": 495.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-03MAR26_3SxSANDERS_LOAFER_SIDE.jpg?v=1773930457",
+    "u": "https://3sixteen.com/products/saddle-loafer-black-leather",
+    "sc": 2,
+    "s": [
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "2 TONE RIBBED KNIT BEANIE [GREEN]",
+    "c": "headwear",
+    "g": 35.0,
+    "p": 35.0,
+    "cur": "GBP",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/2TONERIBBEDKNITBEANIE_GREEN_01_21894234-73fd-4bab-91f5-cf2e962461b2.png?v=1772020448",
+    "u": "https://crtz.xyz/products/2-tone-ribbed-knit-beanie-green",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 641.05
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance ABZORB 1890 - Nordic Green / Wakame / Outfield",
+    "c": "footwear",
+    "g": 150.1,
+    "p": 190.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/New-Balance-ABZORB-1890-Nordic-Green-U18907BP-03.jpg?v=1783687156",
+    "u": "https://kith.com/products/nbu18907bp",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "layer": {
+    "b": "Paraphernalia 97",
+    "t": "HALF-ZIP ANORAK [BLACK]",
+    "c": "windrunner",
+    "g": 130.35,
+    "p": 165.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/D568FEE4-D766-4391-A942-0D3C1CF0228E.png?v=1762998795",
+    "u": "https://paraphernalia.world/products/untitled-nov12_16-52",
+    "sc": 2,
+    "s": [
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "GHINI SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 115.0,
+    "p": 115.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/GHINISWEATPANT_BLACK_01.png?v=1772733422",
+    "u": "https://crtz.xyz/products/ghini-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "OG ISLAND TEE [BLACK]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/islandtblack.png?v=1757948094",
+    "u": "https://crtz.xyz/products/og-island-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 435.45
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 1954R - Slate Grey / Castlerock",
+    "c": "footwear",
+    "g": 150.09,
+    "p": 189.99,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/new-balance-1954r-1.jpg?v=1784053785",
+    "u": "https://kith.com/products/nbu195438r",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Zip Hoody ~ Oatmeal",
+    "c": "windrunner",
+    "g": 154.05,
+    "p": 195.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-ZIP-HOODY-OATMEAL-FRONT_CROPPED_B_ONBODY.jpg?v=1771618999",
+    "u": "https://3sixteen.com/products/heavyweight-hoody-oatmeal",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "bottom": {
+    "b": "Polar Skate Co",
+    "t": "Ivan Fleece Sweatpants - Grey Blue",
+    "c": "sweats",
+    "g": 42.5,
+    "p": 50.0,
+    "cur": "EUR",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-W25-Ivan-Fleece-Sweatpants-Grey-Blue-1.png?v=1761641883",
+    "u": "https://polarskateco.com/products/ivan-fleece-sweatpants-grey-blue",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "REMINDER TEE [BLACK]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/breaduptodayblacktee.png?v=1756985161",
+    "u": "https://crtz.xyz/products/reminder-tee-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 386.64
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Windbreaker",
+    "c": "windrunner",
+    "g": 195.92,
+    "p": 248.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_MLB_NewYork_Mets_Jacket-1_87887835-ebac-43ca-a4b9-86b0e7eea8e5.jpg?v=1711665486",
+    "u": "https://ericemanuel.com/products/ee-r-mlb-winbreaker-20240329-8",
+    "sc": 0,
+    "s": [
+     "S",
+     "M",
+     "XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "STENCIL RAGLAN LS [ORANGE/BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/STENCILRAGLANLS_ORANGEBLACK_01_c0b3da5f-0dee-48ed-b5f9-61e460591023.png?v=1777544935",
+    "u": "https://crtz.xyz/products/stencil-raglan-ls-orange-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "Sweatpants ~ Heather Grey",
+    "c": "sweats",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/20181120-3sixteen-sweatpant-00001.jpg?v=1544129078",
+    "u": "https://3sixteen.com/products/sweatpants-heather-grey",
+    "sc": 2,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Sneaker Law Vol. 2",
+    "c": "footwear",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/SL-EDT2-FRONT.jpg?v=1730825248",
+    "u": "https://kith.com/products/sl-edt2",
+    "sc": 0,
+    "s": []
+   }
+  },
+  "total": 535.57
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Polar Skate Co",
+    "t": "Raphael Track Jacket - Ultramarine",
+    "c": "windrunner",
+    "g": 157.25,
+    "p": 185.0,
+    "cur": "EUR",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-SP26-Raphael-Track-Jacket-Ultramarine-1.png?v=1771497656",
+    "u": "https://polarskateco.com/products/raphael-track-jacket-ultramarine",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "GRIDIRON LS [BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/GRIDIRONLS_BLACK_01.png?v=1777541080",
+    "u": "https://crtz.xyz/products/gridiron-ls-black",
+    "sc": 2,
+    "s": [
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP V2 SWEATPANT [HEATHER GREY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPV2SWEATPANT_HEATHERGREY_01_658cb1f1-314b-47f3-b2d5-6af97b6cd5fa.png?v=1769605520",
+    "u": "https://crtz.xyz/products/hmp-v2-sweatpant-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Shoes Master Headline Magazine",
+    "c": "footwear",
+    "g": 19.75,
+    "p": 25.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/SM024-033-HEADLINE-FRONT.jpg?v=1736291782",
+    "u": "https://kith.com/products/sm024-033-headline",
+    "sc": 0,
+    "s": []
+   }
+  },
+  "total": 372.0
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Nylon Windbreaker",
+    "c": "windrunner",
+    "g": 132.72,
+    "p": 168.0,
+    "cur": "USD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Track_Jacket_Burgundy-1_ce7709b5-b852-4efd-b44e-a7005677adc6.jpg?v=1778252957",
+    "u": "https://ericemanuel.com/products/ee-r-jacket-20260508-3",
+    "sc": 0,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "ROYALE HEAVYWEIGHT TEE LS [BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ROYALEHEAVYWEIGHTBLACK.png?v=1756984931",
+    "u": "https://crtz.xyz/products/royale-heavyweight-tee-ls-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "Sweatpants ~ Black",
+    "c": "sweats",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/20181120-3sixteen-sweatpant-00005.jpg?v=1544128197",
+    "u": "https://3sixteen.com/products/sweatpants-black",
+    "sc": 2,
+    "s": [
+     "XS",
+     "S",
+     "XL",
+     "2X"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ERL Camino Low Skate Sneakers - Brown",
+    "c": "footwear",
+    "g": 367.35,
+    "p": 465.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/ERL10SH01-2ERLCaminoLowSkateSneakersBrown_21.jpg?v=1775759220",
+    "u": "https://kith.com/products/erl10sh01-2",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "13"
+    ]
+   }
+  },
+  "total": 721.22
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Icecream Europe",
+    "t": "Running Dog Layered LS T-Shirt",
+    "c": "longsleeve",
+    "g": 63.2,
+    "p": 80.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0739/3265/files/ICLT26251_BLACK_01.png?v=1777475783",
+    "u": "https://bbcicecream.com/products/running-dog-layered-ls-t-shirt-iclt26251-black",
+    "sc": 8,
+    "s": [
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "RS-203x ~ Relaxed Straight ~ Black Selvedge",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-05MAY26_FW26_DENIM_RS-203_FRONT_CROPPED_A_ONBODY.jpg?v=1778781017",
+    "u": "https://3sixteen.com/products/rs-203x-relaxed-straight-black-white",
+    "sc": 5,
+    "s": [
+     "30",
+     "31",
+     "32",
+     "33",
+     "34",
+     "36",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Veja",
+    "t": "V-82",
+    "c": "footwear",
+    "g": 96.43,
+    "p": 113.45,
+    "cur": "EUR",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/5514/2847/files/VE3321697B_1.jpg?v=1774932006",
+    "u": "https://overkillshop.com/products/veja-v-82-ve3321697b-white-natural-kaki",
+    "sc": 9,
+    "s": [
+     "41",
+     "42",
+     "42.5",
+     "43",
+     "43.5",
+     "44",
+     "45",
+     "46"
+    ]
+   },
+   "hat": {
+    "b": "Don Metimur",
+    "t": "HOME TEAM CAP (Black)",
+    "c": "headwear",
+    "g": 59.25,
+    "p": 75.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0051/0392/files/don_metimur_home_team_cap_black_HTBK-01_003.jpg?v=1779926295",
+    "u": "https://unionlosangeles.com/products/home-team-cap-black",
+    "sc": 6,
+    "s": [
+     "7",
+     "7 1/8",
+     "7 1/4",
+     "7 3/8",
+     "7 1/2",
+     "7 5/8",
+     "7 3/4",
+     "7 7/8"
+    ]
+   }
+  },
+  "total": 432.18
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Ultraweight Pullover ~ Black",
+    "c": "windrunner",
+    "g": 173.8,
+    "p": 220.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-02FEB26-HOODIE_BLACK_FRONT_CROPPED_ONBODY.jpg?v=1771437375",
+    "u": "https://3sixteen.com/products/ultraweight-pullover-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "top": {
+    "b": "Reigning Champ",
+    "t": "Heavyweight Jersey Relaxed Long Sleeve",
+    "c": "longsleeve",
+    "g": 61.62,
+    "p": 78.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1499/3122/files/FW25_RC-2326_BLACK_T-SHIRT_off_jp.jpg?v=1755809494",
+    "u": "https://reigningchamp.com/products/heavyweight-jersey-relaxed-long-sleeve-black",
+    "sc": 8,
+    "s": [
+     "LARGE",
+     "EXTRA LARGE"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "HMP OPEN HEM SWEATPANT [HEATHER GREY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/HMPOPENHEMSWEATPANT_HEATHERGREY_01.png?v=1769604814",
+    "u": "https://crtz.xyz/products/hmp-open-hem-sweatpant-heather-grey",
+    "sc": 2,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance Gator Run - Pink Chalk / Pink Granite",
+    "c": "footwear",
+    "g": 102.7,
+    "p": 130.0,
+    "cur": "USD",
+    "col": "pink",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/NewBalance-Footwear-Low-Ugtr2b7Pink-UGTR2B7-20260612123417_1.jpg?v=1783434845",
+    "u": "https://kith.com/products/nbugtr2b7",
+    "sc": 0,
+    "s": [
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5",
+     "12"
+    ]
+   }
+  },
+  "total": 458.12
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "No Problemo",
+    "t": "No Problemo Striped LS Tee",
+    "c": "longsleeve",
+    "g": 77.0,
+    "p": 77.0,
+    "cur": "GBP",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0208/0184/7345/files/NP40216.06_RED-STRIPE-LS_TEE_1_eaaa51e2-3275-402b-b827-d5b867ac8efc.png?v=1783589746",
+    "u": "https://ariesarise.com/products/np006-no-problemo-striped-ls-tee-red",
+    "sc": 6,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "RS-120x ~ Relaxed Straight - Shadow Selvedge",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_DENIM_RS-120X_FRONT_CROPPED_A_ONBODY.jpg?v=1776110308",
+    "u": "https://3sixteen.com/products/rs-120x-relaxed-straight-shadow-selvedge",
+    "sc": 2,
+    "s": [
+     "36",
+     "38"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Boot Sock ~ Marled Slate",
+    "c": "footwear",
+    "g": 27.65,
+    "p": 35.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-10OCT25-MARLED-BOOT-SOCKS-B_b1bcbb00-3c7f-426f-8682-9a2ef5996602.jpg?v=1760022034",
+    "u": "https://3sixteen.com/products/boot-sock-marled-slate",
+    "sc": 2,
+    "s": []
+   },
+   "hat": {
+    "b": "Warren Lotas",
+    "t": "Stars and Stripes Bat Reaper Hat - Red",
+    "c": "headwear",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/1430/1974/files/BatReaperHatRed.png?v=1720041528",
+    "u": "https://warrenlotas.com/products/stars-and-stripes-bat-reaper-hat-red",
+    "sc": 0,
+    "s": [
+     "6 7/8",
+     "7",
+     "7 1/8",
+     "7 1/4",
+     "7 3/8",
+     "7 1/2",
+     "7 5/8",
+     "7 3/4"
+    ]
+   }
+  },
+  "total": 365.35
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "LION RAGLAN LS [ROYAL BLUE]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LIONRAGLANLS_ROYALBLUE_01.png?v=1782135841",
+    "u": "https://crtz.xyz/products/lion-raglan-ls-royal-blue",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CT-120xk ~ Classic Tapered - Rinsed Shadow Kibata",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-02FEB25-SS25-ON-MODEL-DENIM-CT-120XK-FRONT_5b1cc6f8-dec3-422c-b9db-4e74214231a7.jpg?v=1741722219",
+    "u": "https://3sixteen.com/products/ct-120xk-classic-tapered-rinsed-shadow-kibata",
+    "sc": 2,
+    "s": [
+     "28",
+     "30"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Constructs Hiker Boot ~ Pebbled Wheat",
+    "c": "footwear",
+    "g": 434.5,
+    "p": 550.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-11NOV24-BROWN-HIKERS-SIDE.jpg?v=1730931398",
+    "u": "https://3sixteen.com/products/contructs-hiker-boot-pebbled-wheat",
+    "sc": 2,
+    "s": [
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8.5",
+     "9",
+     "13",
+     "14"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORK QUATTRO CAP [ROYAL BLUE]",
+    "c": "headwear",
+    "g": 35.0,
+    "p": 35.0,
+    "cur": "GBP",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LITEWORKQUATTROCAP_ROYALBLUE_01.png?v=1782818043",
+    "u": "https://crtz.xyz/products/litework-quattro-cap-royal-blue",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 773.6
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "CORTEIZ",
+    "t": "EAGLE HYBRID THERMAL LS [WOODLAND]",
+    "c": "longsleeve",
+    "g": 85.0,
+    "p": 85.0,
+    "cur": "GBP",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/EagleCamoThermalLSTee_Green_01_1.png?v=1756984989",
+    "u": "https://crtz.xyz/products/eagle-hybrid-thermal-ls-woodland",
+    "sc": 11,
+    "s": [
+     "L"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "CREST CHAINSTITCH DENIM JACKET [WASHED BLACK]",
+    "c": "jeans",
+    "g": 140.0,
+    "p": 140.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CRESTCHAINSTITCHDENIMTRUCKER_WASHEDBLACK_01.png?v=1756984867",
+    "u": "https://crtz.xyz/products/crest-chainstitch-denim-jacket-washed-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Square Toe Side Zip Boot ~ Black Calf Leather",
+    "c": "footwear",
+    "g": 434.5,
+    "p": 550.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-07JULY26_SIDE_ZIP_BOOT_BLACK_LEATHER_SIDE.jpg?v=1783445059",
+    "u": "https://3sixteen.com/products/square-toe-side-zip-boot-black-calf-leather",
+    "sc": 2,
+    "s": [
+     "6.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "14"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORK QUATTRO CAP [GREEN]",
+    "c": "headwear",
+    "g": 35.0,
+    "p": 35.0,
+    "cur": "GBP",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LITEWORKQUATTROCAP_GREEN_01.png?v=1782818012",
+    "u": "https://crtz.xyz/products/litework-quattro-cap-green",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 694.5
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Butter Goods",
+    "t": "Terrain Anorak, Red Gingham",
+    "c": "windrunner",
+    "g": 140.37,
+    "p": 269.95,
+    "cur": "AUD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/TerrainAnorakRedGingham1.png?v=1778556837",
+    "u": "https://buttergoods.com/products/terrain-anorak-red-gingham-red-gingham-q226",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Born X Raised",
+    "t": "PARANOIA CREST LONGSLEEVE: VINTAGE BLACK",
+    "c": "longsleeve",
+    "g": 71.1,
+    "p": 90.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0214/2344/files/PARANOIALS-01_1_20e79a04-063e-4c3d-b625-91e030fc9175.jpg?v=1778126002",
+    "u": "https://bornxraised.com/products/paranoia-crest-l-s-vintage-black",
+    "sc": 3,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL",
+     "3XL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "ALCATRAZ SWEATPANT [TRIPLE BLACK]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ALCATRAZSWEATPANTS2025_BLACK_01.png?v=1756984938",
+    "u": "https://crtz.xyz/products/alcatraz-sweatpant-triple-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Air Max 95 Big Bubble - White / Purple Dynasty / Pearl Gray / Light Charcoal",
+    "c": "footwear",
+    "g": 150.1,
+    "p": 190.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IB3695-100_PHSRH000-2000.jpg?v=1782231151",
+    "u": "https://kith.com/products/nkib3695-100",
+    "sc": 0,
+    "s": [
+     "7.5",
+     "10",
+     "10.5",
+     "11"
+    ]
+   }
+  },
+  "total": 471.57
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Cole Buxton",
+    "t": "MOTORCROSS LONG SLEEVE",
+    "c": "longsleeve",
+    "g": 135.0,
+    "p": 135.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0055/1023/4230/files/290495_Cole_Buxton8736_1.png?v=1779196743",
+    "u": "https://colebuxton.com/products/motorcross-long-sleeve-navy-ss26smls330-420",
+    "sc": 11,
+    "s": [
+     "LARGE",
+     "XLARGE",
+     "XXLARGE"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "DUAL STRIPE DENIM JACKET [OFF WHITE]",
+    "c": "jeans",
+    "g": 140.0,
+    "p": 140.0,
+    "cur": "GBP",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/DUELSTRIPETRUCKERJACKET_OFFWHITE_01.png?v=1773352061",
+    "u": "https://crtz.xyz/products/dual-stripe-denim-jacket-off-white",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas Gazelle Indoor - Off White / Preloved Brown / Gum",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/KH9693_1_FOOTWEAR_Photography_SideLateralCenterView_white.jpg?v=1783346510",
+    "u": "https://kith.com/products/aakh9693",
+    "sc": 3,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "PRECISION KNIT BEANIE [NAVY]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/3TONEKNITBEANIE_NAVY_01.png?v=1769104502",
+    "u": "https://crtz.xyz/products/precision-knit-beanie-navy",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 409.8
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Zoom Skylon 11 - Volt / Black / Light Smoke Grey / Metallic Silver",
+    "c": "footwear",
+    "g": 106.65,
+    "p": 135.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IU1869-700_PHSRH000-2000.jpg?v=1783957943",
+    "u": "https://kith.com/products/nkiu1869-700",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11"
+    ]
+   },
+   "layer": {
+    "b": "Butter Goods",
+    "t": "Terrain Anorak, Black",
+    "c": "windrunner",
+    "g": 135.17,
+    "p": 259.95,
+    "cur": "AUD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/TerrainAnorakBlack1.png?v=1778556797",
+    "u": "https://buttergoods.com/products/terrain-anorak-black-black-q226",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Warren Lotas",
+    "t": "Serenity Baggy Cargo Sweatpants - Heather Grey",
+    "c": "sweats",
+    "g": 376.83,
+    "p": 477.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1430/1974/files/SerenityBaggyCargoSweatpants-HeatherGreyfront.png?v=1762367829",
+    "u": "https://warrenlotas.com/products/fleece-baggy-cargo-pants-vintage-heather",
+    "sc": 3,
+    "s": [
+     "S",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "OG ISLAND TEE [HEATHER GREY]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/OGISLANDTEEHEATHER.png?v=1763649955",
+    "u": "https://crtz.xyz/products/og-island-tee-heather-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 658.65
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Summit Fleece ~ Ecru/Midnight",
+    "c": "windrunner",
+    "g": 173.8,
+    "p": 220.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S_11NOV25_ACTIVEWEAR_ON_MODEL_SHERPA_JACKET_CREAM_FRONT_CROPBODY_ONBODY.jpg?v=1763343437",
+    "u": "https://3sixteen.com/products/summit-fleece-ecru-midnight",
+    "sc": 2,
+    "s": [
+     "S",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "top": {
+    "b": "Billionaire Boys Club Japan",
+    "t": "Cotton LS T-Shirt Helmet",
+    "c": "longsleeve",
+    "g": 67.15,
+    "p": 85.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0739/3265/files/BBCJP261T002_BLACK_001.png?v=1773193934",
+    "u": "https://bbcicecream.com/products/cotton-ls-t-shirt-helmet-bbcjp261t002-black",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "CREST ARCH TRACK PANT [TRIPLE BLACK]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/CRESTARCHTRACKPANT_TRIPLEBLACK_01.png?v=1763033472",
+    "u": "https://crtz.xyz/products/crest-arch-track-pant-triple-black",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "adidas Y-3 Adios Pro 4 - Chalk White / Silver Metallic / Light Solid Grey",
+    "c": "footwear",
+    "g": 260.7,
+    "p": 330.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/Y-3_ADIOS_PRO_4_Shoes_White_KZ9045_01_00_standard.jpg?v=1783346490",
+    "u": "https://kith.com/products/y3kz9045",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   }
+  },
+  "total": 621.65
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "On Running Cloudtilt - Olive / Desert",
+    "c": "footwear",
+    "g": 134.3,
+    "p": 170.0,
+    "cur": "USD",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/8582903f6946db1841a8ab063399fd7bff74fc4f.jpg?v=1783693433",
+    "u": "https://kith.com/products/onr3me10104843",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "12"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "SPECIALE TRACK JACKET [BURGUNDY]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "burgundy",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SCRIPTTRICOTTRACKJACKET_BURGUNDY_01.png?v=1766057357",
+    "u": "https://crtz.xyz/products/speciale-track-jacket-burgundy",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "GIAPPONESE OPEN HEM SWEATPANT [BLACK]",
+    "c": "sweats",
+    "g": 110.0,
+    "p": 110.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/JPNFLEECEOPENHEMPANT_BLACK_01.png?v=1768822025",
+    "u": "https://crtz.xyz/products/giapponese-open-hem-sweatpant-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Training Cutoff Tee ~ White/Brown Ringer",
+    "c": "tee",
+    "g": 43.45,
+    "p": 55.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_TRAINNING_CUTOFF_TEE_NATURAL_FRONT_CROPPED_ONBODY.jpg?v=1779481508",
+    "u": "https://3sixteen.com/products/training-cutoff-tee-white-brown-ringer",
+    "sc": 2,
+    "s": [
+     "M",
+     "XL",
+     "2X"
+    ]
+   }
+  },
+  "total": 417.75
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "SOUTH OF HEAVEN\u00ae",
+    "t": "COLD SHIVERS - Thermal Longsleeve",
+    "c": "longsleeve",
+    "g": 53.72,
+    "p": 68.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0527/9540/8553/files/coldshiverslongsleevefront.jpg?v=1780389071",
+    "u": "https://southofheaven.us/products/cold-shivers-thermal-longsleeve",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL"
+    ]
+   },
+   "bottom": {
+    "b": "Icecream Europe",
+    "t": "Running Dog Basketball Shorts",
+    "c": "shorts",
+    "g": 90.85,
+    "p": 115.0,
+    "cur": "USD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0739/3265/files/ICJS26217_NAVY_01.png?v=1778001852",
+    "u": "https://bbcicecream.com/products/running-dog-basketball-shorts-icjs26217-navy",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance x JJJJound 1890 - Black / White",
+    "c": "footwear",
+    "g": 157.99,
+    "p": 199.99,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u18907dn_2.jpg?v=1782760552",
+    "u": "https://kith.com/products/nbu18907dn",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "2 TONE RIBBED KNIT BEANIE [BLACK]",
+    "c": "headwear",
+    "g": 35.0,
+    "p": 35.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/2TONERIBBEDKNITBEANIE_BLACK_01_0043c294-53ad-47b7-8632-f48a27b6ff59.png?v=1772020322",
+    "u": "https://crtz.xyz/products/2-tone-ribbed-knit-beanie-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 337.56
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Spring 2026",
+    "t": "Sailing USA Long Sleeve T-Shirt",
+    "c": "longsleeve",
+    "g": 40.29,
+    "p": 51.0,
+    "cur": "USD",
+    "col": "cream",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0920/5284/files/Only_NY_Sailing_USA_Long_Sleeve_T_Shirt_Natural_01.jpg?v=1783888012",
+    "u": "https://onlyny.com/products/sailing-usa-long-sleeve-t-shirt",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CS-220x ~ Classic Straight - Double Black",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/20230110-3sixteen-pants-black-01.jpg?v=1673489881",
+    "u": "https://3sixteen.com/products/cs-220x-classic-straight-double-black",
+    "sc": 2,
+    "s": [
+     "28",
+     "29",
+     "30",
+     "31",
+     "32",
+     "34",
+     "36",
+     "38"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Rick Owens Vintage Sneaks - Black / Milk",
+    "c": "footwear",
+    "g": 876.9,
+    "p": 1110.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/w2000_q60_74bfc272-9777-4e55-bde1-6a153c2e6caf.jpg?v=1784729522",
+    "u": "https://kith.com/products/ricru02f4897lvslco91",
+    "sc": 0,
+    "s": [
+     "40",
+     "41",
+     "42",
+     "45"
+    ]
+   },
+   "hat": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Mets New Era\u00ae Hat",
+    "c": "headwear",
+    "g": 53.72,
+    "p": 68.0,
+    "cur": "USD",
+    "col": "cream",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Mets_NewEra_White-1.jpg?v=1783622204",
+    "u": "https://ericemanuel.com/products/ee-r-mets-cap-20260710-2",
+    "sc": 0,
+    "s": [
+     "7 3/8",
+     "7 1/2",
+     "7 5/8",
+     "7 3/4",
+     "7 7/8",
+     "8"
+    ]
+   }
+  },
+  "total": 1184.21
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Eric Emanuel",
+    "t": "EE\u00ae Nylon Windbreaker",
+    "c": "windrunner",
+    "g": 132.72,
+    "p": 168.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0708/1301/files/EE_Track_Jacket_Green-1_fe9b8a09-4dda-43c0-bf65-64988474ec29.jpg?v=1778251529",
+    "u": "https://ericemanuel.com/products/ee-r-jacket-20260508-1",
+    "sc": 0,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "RTW STAR RAGLAN LS [NAVY/RED]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/RTWSTARRAGLANLS_CREAMREDBLACK_01.png?v=1766058456",
+    "u": "https://crtz.xyz/products/rtw-star-raglan-ls-navy-red",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Butter Goods",
+    "t": "Lines Track Pants, Navy",
+    "c": "sweats",
+    "g": 77.97,
+    "p": 149.95,
+    "cur": "AUD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/LinesTrackPantsNavy1.png?v=1778556789",
+    "u": "https://buttergoods.com/products/lines-track-pants-navy-navy-q226",
+    "sc": 2,
+    "s": [
+     "M"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ERL Camino Low Skate Sneakers - Black",
+    "c": "footwear",
+    "g": 367.35,
+    "p": 465.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/ERL10SH01-1ERLCaminoLowSkateSneakersBlack_57.jpg?v=1775759216",
+    "u": "https://kith.com/products/erl10sh01-1",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "13"
+    ]
+   }
+  },
+  "total": 653.04
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Paraphernalia 97",
+    "t": "MAGAZINE [LONGSLEEVE]",
+    "c": "longsleeve",
+    "g": 63.2,
+    "p": 80.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/F0C8E6C0-7992-47A9-B20B-AD0D419196FE.png?v=1777525212",
+    "u": "https://paraphernalia.world/products/magazine-longsleeve",
+    "sc": 8,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Crysp Denim",
+    "t": "Cena Denim Shorts (Black Wax)",
+    "c": "shorts",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1020/3975/files/20260616_CRYSP_SUM26_Product_Shots_CRY-SUM26-024_0001.jpg?v=1782458628",
+    "u": "https://cryspdenim.com/products/cena-denim-shorts-black-wax",
+    "sc": 8,
+    "s": [
+     "28",
+     "30",
+     "32",
+     "34",
+     "36",
+     "38",
+     "40",
+     "42"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS x EMPTY BEHAVIOR Hypersync - Black / Pink",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/ASIC_0_4573690048691_1.jpg?v=1782941889",
+    "u": "https://kith.com/products/ai1203b146-001",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7.5",
+     "8",
+     "8.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "PRECISION KNIT BEANIE [BLACK]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/3TONEKNITBEANIE_BLACK_01.png?v=1770645789",
+    "u": "https://crtz.xyz/products/precision-knit-beanie-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 245.4
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "PARAPHERNALIA 97",
+    "t": "\u2117  [LONG SLEEVE]",
+    "c": "longsleeve",
+    "g": 39.5,
+    "p": 50.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/EACE0176-CBEA-4FBA-8A7B-E2716956F267.png?v=1760813705",
+    "u": "https://paraphernalia.world/products/long-sleeve-1",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Butter Goods",
+    "t": "Equipt Shorts, Black",
+    "c": "shorts",
+    "g": 51.97,
+    "p": 99.95,
+    "cur": "AUD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1428/9764/files/EquiptShortsBlack1_e18f496e-aa7a-4b55-a2b3-bd205b7ba6cf.png?v=1778557185",
+    "u": "https://buttergoods.com/products/equipt-shorts-blackq126",
+    "sc": 11,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Air Force 1 '07 - White / Fir / Cool Grey",
+    "c": "footwear",
+    "g": 98.75,
+    "p": 125.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IX0349-100_PHSRH000-2000.jpg?v=1783693429",
+    "u": "https://kith.com/products/nkix0349-100",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND OUTLINE TRUCKER HAT [BLACK]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ALCATRAZCONTRASTSTITCHTRUCKERHAT_BLACK_01.png?v=1779880535",
+    "u": "https://crtz.xyz/products/island-outline-trucker-hat-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 230.22
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "Born X Raised",
+    "t": "LIL DEVIL WINDBREAKER: BLUE / GREY",
+    "c": "windrunner",
+    "g": 110.6,
+    "p": 140.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0214/2344/files/LILDEVILWINDBREAKER-02.jpg?v=1774333261",
+    "u": "https://bornxraised.com/products/lil-devil-windbreaker-blue-grey",
+    "sc": 0,
+    "s": [
+     "L",
+     "XL",
+     "2XL",
+     "3XL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "ISLAND WAFFLE THERMAL [BLACK]",
+    "c": "longsleeve",
+    "g": 75.0,
+    "p": 75.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDTHERMALLS_BLACK_01_977aaa2f-42f9-4f38-8b23-0a1dc8d2773d.png?v=1763984613",
+    "u": "https://crtz.xyz/products/island-waffle-thermal-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Polar Skate Co",
+    "t": "Raphael Track Pants | Grey Blue",
+    "c": "sweats",
+    "g": 46.75,
+    "p": 55.0,
+    "cur": "EUR",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0631/7129/files/Polar-Skate-Co-W24-Raphael-Track-Pants-GBlu-1.png?v=1730897473",
+    "u": "https://polarskateco.com/products/raphael-track-pants-grey-blue",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Clarks Wallabee Boot - Orange",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "orange",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/CK26185643-Front.jpg?v=1774036674",
+    "u": "https://kith.com/products/ck26185643",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   }
+  },
+  "total": 358.75
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 1906E - Black",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u19069br_nb_02_i.jpg?v=1784053788",
+    "u": "https://kith.com/products/nbu19069br",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "12"
+    ]
+   },
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Pullover Hoody ~ Oatmeal",
+    "c": "windrunner",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-HOODY-OATMEAL-FRONT_CROPPED_B_ONBODY.jpg?v=1771622424",
+    "u": "https://3sixteen.com/products/heavyweight-pullover-hoody-oatmeal",
+    "sc": 5,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "bottom": {
+    "b": "Avirex",
+    "t": "Avirex Script Jogger - Black",
+    "c": "sweats",
+    "g": 140.62,
+    "p": 178.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0214/7974/files/Sneaker-Politics-AVIREX-ScriptJoggerBlack-AVF241B51-WB-1.jpg?v=1758228176",
+    "u": "https://sneakerpolitics.com/products/avirex-script-jogger-black",
+    "sc": 6,
+    "s": [
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "REMINDER TEE [WHITE]",
+    "c": "tee",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/breaduptodaywhitetee.png?v=1756985162",
+    "u": "https://crtz.xyz/products/reminder-tee-white",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 453.17
+ },
+ {
+  "formula": "Windrunner Run",
+  "note": "Shell over a longsleeve with sweats \u2014 the lane you asked to go deeper on, assembled so the shell is the only loud piece.",
+  "items": {
+   "layer": {
+    "b": "3sixteen",
+    "t": "Heavyweight Pullover Hoody ~ Indigo",
+    "c": "windrunner",
+    "g": 146.15,
+    "p": 185.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN26_FLEECE-HEAVYWEIGHT-HOODY-INDIGO-FRONT_CROPPED_B_ONBODY.jpg?v=1771622504",
+    "u": "https://3sixteen.com/products/heavyweight-pullover-hoody-indigo",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2X"
+    ]
+   },
+   "top": {
+    "b": "Mill-tex",
+    "t": "7358 Panther Temple L/S T-Shirt Black",
+    "c": "longsleeve",
+    "g": 50.0,
+    "p": 50.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/2384/8447/files/ss26_m_7358_black_10_53979081-1985-4099-be38-4811c93f5f47.jpg?v=1772711608",
+    "u": "https://maharishistore.com/products/7358-panther-temple-l-s-t-shirt-black",
+    "sc": 6,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "CONSIGLIERE TRACK PANT [GREY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/PIPING_TRICOT_TRACK_PANT_GREY_1.png?v=1761865694",
+    "u": "https://crtz.xyz/products/consigliere-track-pant-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Nike Moon Shoe OG - Cacao Wow / Gum Light Brown / Sail",
+    "c": "footwear",
+    "g": 82.95,
+    "p": 105.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AURORA_IX3952-200_PHSRH000-2000.jpg?v=1783346490",
+    "u": "https://kith.com/products/nkix3952-200",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   }
+  },
+  "total": 399.1
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Corteiz",
+    "t": "MONDE KNIT LS JERSEY [RED]",
+    "c": "longsleeve",
+    "g": 95.0,
+    "p": 95.0,
+    "cur": "GBP",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/MONDEKNITLSJERSEY1_7e030ef2-1fb6-4813-a20a-36c6ba0c1b30.png?v=1769527114",
+    "u": "https://crtz.xyz/products/monde-knit-ls-jersey-red",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "Shop Jacket ~ Brown Denim",
+    "c": "jeans",
+    "g": 158.0,
+    "p": 200.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-01JAN25-FW25-SHOP-JACKET-BROWN-DENIM_FRONT_CROPPED_ONBODY.jpg?v=1755897941",
+    "u": "https://3sixteen.com/products/shop-jacket-brown-denim",
+    "sc": 2,
+    "s": [
+     "S",
+     "M"
+    ]
+   },
+   "shoe": {
+    "b": "3sixteen",
+    "t": "Lug Chelsea Boot ~ Snuff Suede",
+    "c": "footwear",
+    "g": 434.5,
+    "p": 550.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-11NOV24-BROWN-CHELSEA-SIDE.jpg?v=1730931267",
+    "u": "https://3sixteen.com/products/lug-chelsea-boot-snuff-suede",
+    "sc": 2,
+    "s": [
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5"
+    ]
+   },
+   "hat": {
+    "b": "6PM Season",
+    "t": "TECHNICAL LOGO BEANIE WINE RED",
+    "c": "headwear",
+    "g": 15.01,
+    "p": 19.0,
+    "cur": "USD",
+    "col": "red",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0071/1465/3762/files/6PM_25-07-11_000952.jpg?v=1752246258",
+    "u": "https://6pmseason.com/products/technical-logo-beanie-wine-red",
+    "sc": 0,
+    "s": []
+   }
+  },
+  "total": 702.51
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "VLONE",
+    "t": "Bulldozer L/S T-Shirt",
+    "c": "longsleeve",
+    "g": 176.96,
+    "p": 224.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0500/4568/1826/files/5_01ba739d-c3d7-4101-b7b2-942696200de3.png?v=1754879971",
+    "u": "https://livevlonedievlone.com/products/bulldozer-l-s-t-shirt",
+    "sc": 6,
+    "s": [
+     "2XL"
+    ]
+   },
+   "bottom": {
+    "b": "Bossi Sportswear",
+    "t": "Mesh Shorts - Black",
+    "c": "shorts",
+    "g": 177.75,
+    "p": 225.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0355/8293/5175/files/IMG_3273-_Flat-Lay.png?v=1784414917",
+    "u": "https://bossisportswear.com/products/mesh-shorts-black",
+    "sc": 6,
+    "s": [
+     "SMALL",
+     "LARGE",
+     "X-LARGE",
+     "2X-LARGE",
+     "3X-LARGE"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance Ellipse - North Sea / Black",
+    "c": "footwear",
+    "g": 126.4,
+    "p": 160.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/melps8xa_2.jpg?v=1783612403",
+    "u": "https://kith.com/products/nbmelps8xa",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "11",
+     "11.5",
+     "12"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT TRUCKER HAT [BLACK]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDPUFFPRINTTRUCKERHAT_BLACK_2_01.png?v=1761921743",
+    "u": "https://crtz.xyz/products/island-puff-print-trucker-hat-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 521.11
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Holiday 2025",
+    "t": "Snowy Owl Pocket Long Sleeve T-Shirt",
+    "c": "longsleeve",
+    "g": 28.44,
+    "p": 36.0,
+    "cur": "USD",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0920/5284/files/Only_NY_Snowy_Owl_Pocket_Long_Sleeve_T_Shirt_Dark_Olive_01.jpg?v=1783888076",
+    "u": "https://onlyny.com/products/snowy-owl-pocket-long-sleeve-t-shirt",
+    "sc": 6,
+    "s": [
+     "M"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CT-222x ~ Classic Tapered - Lightweight Double Black",
+    "c": "jeans",
+    "g": 197.5,
+    "p": 250.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/3sixteen-jean-CT-222x-1_ONBODY.jpg?v=1784775601",
+    "u": "https://3sixteen.com/products/ct-222x-classic-tapered-lightweight-double-black",
+    "sc": 2,
+    "s": [
+     "28",
+     "29",
+     "36",
+     "38",
+     "40"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance Made in UK 991v2 - Mahogany Rose / Silver",
+    "c": "footwear",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u991rb2_nb_02_i.jpg?v=1784648620",
+    "u": "https://kith.com/products/nbu991rb2",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "10",
+     "10.5",
+     "11",
+     "11.5",
+     "12"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND PUFF PRINT TRUCKER HAT [OLIVE]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "olive",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ISLANDCAP_KHAKI_01.png?v=1763031540",
+    "u": "https://crtz.xyz/products/island-puff-print-trucker-hat-olive",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 479.24
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 1954R - Sea Salt",
+    "c": "footwear",
+    "g": 150.09,
+    "p": 189.99,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/new-balance-1954-sea-salt-u19541r3-1.jpg?v=1784231790",
+    "u": "https://kith.com/products/nbu19541r3",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "layer": {
+    "b": "Paraphernalia 97",
+    "t": "HALF-ZIP ANORAK [IVORY]",
+    "c": "windrunner",
+    "g": 130.35,
+    "p": 165.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0528/7041/4536/files/99ABEC1D-A501-459E-8AC8-72D6030C5ED1.png?v=1763015610",
+    "u": "https://paraphernalia.world/products/half-zip-anorak-ivory",
+    "sc": 11,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "CHERRY LA",
+    "t": "American Classic Parachute Sweatpants (Vintage Black)",
+    "c": "sweats",
+    "g": 156.42,
+    "p": 198.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/2362/2159/files/260011-BLK_AMERICAN_CLASSIC_PARACHUTE_SWEATPANTS-VINTAGE_BLACK_1.jpg?v=1776983339",
+    "u": "https://cherrylosangeles.com/products/american-classic-parachute-sweatpants-vintage-black",
+    "sc": 9,
+    "s": [
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "Aries Arise",
+    "t": "Temple SS Tee",
+    "c": "tee",
+    "g": 80.0,
+    "p": 80.0,
+    "cur": "GBP",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0208/0184/7345/files/AR60000.05A_TEMPLE_SS_TEE_GREY_MARL_M.png_1.png?v=1781269681",
+    "u": "https://ariesarise.com/products/pre-aw26-temple-ss-tee-grey-marl",
+    "sc": 9,
+    "s": [
+     "BABY",
+     "XXS",
+     "XS",
+     "S",
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   }
+  },
+  "total": 516.86
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Saucony x Engineered Garments Shadow Original Wingtip - Black / White",
+    "c": "footwear",
+    "g": 142.2,
+    "p": 180.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/0002_S71046-4_19ec7d37-8821-42c3-b2e6-08ec33743104.jpg?v=1783693455",
+    "u": "https://kith.com/products/sas71046-4",
+    "sc": 0,
+    "s": [
+     "7",
+     "8",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "layer": {
+    "b": "Corteiz",
+    "t": "PISTA VELOUR TRACK JACKET [NAVY/RED]",
+    "c": "windrunner",
+    "g": 130.0,
+    "p": 130.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SCRIPTVELOURTRACKJACKET_REDNAVY_01_1.png?v=1772023799",
+    "u": "https://crtz.xyz/products/pista-velour-track-jacket-navy-red",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "Corteiz",
+    "t": "PISTA VELOUR TRACK PANT [NAVY]",
+    "c": "sweats",
+    "g": 120.0,
+    "p": 120.0,
+    "cur": "GBP",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SCRIPTVELOURTRACKPANT_NAVY_01.png?v=1772023679",
+    "u": "https://crtz.xyz/products/pista-velour-track-pant-navy",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL",
+     "XXL"
+    ]
+   },
+   "top": {
+    "b": "3sixteen",
+    "t": "Track Tee ~ Purple/Grey",
+    "c": "tee",
+    "g": 69.52,
+    "p": 88.0,
+    "cur": "USD",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-04APR26_ACTIVE_MESH_TEE_PURPLE_FRONT_CROPPED_A_ONBODY.jpg?v=1779482691",
+    "u": "https://3sixteen.com/products/mesh-training-tee-purple-grey",
+    "sc": 2,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   }
+  },
+  "total": 461.72
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Vestaire Studios",
+    "t": "Tactical Thermal",
+    "c": "longsleeve",
+    "g": 51.35,
+    "p": 65.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0921/1075/0067/files/IMG_3222.png?v=1779553757",
+    "u": "https://vestairestudios.com/products/tactical-thermal",
+    "sc": 6,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "Club Extc",
+    "t": "Black 'Racer' Shorts",
+    "c": "shorts",
+    "g": 43.45,
+    "p": 55.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0836/1984/0290/files/gergrg.png?v=1781300698",
+    "u": "https://clubextc.com/products/black-racer-jacket-copy",
+    "sc": 6,
+    "s": [
+     "XS",
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "XL"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 204L - Arid Stone / Thunder Brown",
+    "c": "footwear",
+    "g": 94.8,
+    "p": 120.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u204l3gd_2.jpg?v=1783612402",
+    "u": "https://kith.com/products/nbu204l3gd",
+    "sc": 0,
+    "s": [
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "LITEWORKY CAP [BLACK]",
+    "c": "headwear",
+    "g": 28.0,
+    "p": 28.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/LiteworkCap_Black_01.png?v=1756984980",
+    "u": "https://crtz.xyz/products/liteworky-cap-black",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 217.6
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "3sixteen",
+    "t": "Long Sleeve Knit T-Shirt ~ Vintage Blue",
+    "c": "longsleeve",
+    "g": 193.55,
+    "p": 245.0,
+    "cur": "USD",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S_SS26_LS_KNIT_TEE-VINTAGE_BLUE_FRONT_CROPPED_B_ONBODY.jpg?v=1774043698",
+    "u": "https://3sixteen.com/products/long-sleeve-knit-t-shirt-vintage-blue",
+    "sc": 2,
+    "s": [
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CS-120xk ~ Classic Straight - Rinsed Shadow Kibata",
+    "c": "jeans",
+    "g": 229.1,
+    "p": 290.0,
+    "cur": "USD",
+    "col": "tan",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/files/3S-02FEB25-SS25-ON-MODEL-DENIM-CS-120XK-FRONT_83e7f4a7-f1a4-489d-9846-9dd07e1d1c55.jpg?v=1741722120",
+    "u": "https://3sixteen.com/products/cs-120xk-classic-straight-rinsed-shadow-kibata",
+    "sc": 2,
+    "s": [
+     "28",
+     "31"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "ASICS x Kiko Kostadinov Ilargi FF II - Sage Frost / Tatami Green",
+    "c": "footwear",
+    "g": 181.7,
+    "p": 230.0,
+    "cur": "USD",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/AI1203B111-300ILARGIFFIISAGEFROSTTATAMIGREEN_3800.jpg?v=1784838143",
+    "u": "https://kith.com/products/ai1203b111-300",
+    "sc": 0,
+    "s": [
+     "7",
+     "7.5",
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "ISLAND OUTLINE TRUCKER HAT [BLUE]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "blue",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/ALCATRAZCONTRASTSTITCHTRUCKERHAT_ROYALEBLUE_01.png?v=1779880393",
+    "u": "https://crtz.xyz/products/island-outline-trucker-hat-blue",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 644.35
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "Jordan Air Jordan 7 Retro - White / Metallic Gold / Sport Red / Varsity Royal",
+    "c": "footwear",
+    "g": 201.45,
+    "p": 255.0,
+    "cur": "USD",
+    "col": "white",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/f22c9e250e8c0f5d0e1759c0b15e6b3d_c9ef2cdb-47c9-4fa7-9f37-77dc4fb1d725.jpg?v=1783614875",
+    "u": "https://kith.com/products/jbiq6573-100",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9"
+    ]
+   },
+   "layer": {
+    "b": "by Parra",
+    "t": "The wind dunes anorak",
+    "c": "windrunner",
+    "g": 165.08,
+    "p": 194.21,
+    "cur": "EUR",
+    "col": "green",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/1327/2947/files/54160-02.jpg?v=1753261730",
+    "u": "https://byparra.com/products/the-wind-dunes-anorak-54160",
+    "sc": 11,
+    "s": [
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "XLARGE",
+     "XXLARGE"
+    ]
+   },
+   "bottom": {
+    "b": "Pop Trading Company",
+    "t": "Pop Cargo Track Pant Charcoal",
+    "c": "sweats",
+    "g": 73.95,
+    "p": 87.0,
+    "cur": "EUR",
+    "col": "grey",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0859/3598/0892/files/34.1pop-trading-company-ss25-drop-1-cargo-track-pants-charcoal.jpg?v=1756908185",
+    "u": "https://poptradingcompany.com/products/pop-cargo-track-pant-charcoal",
+    "sc": 9,
+    "s": [
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "X-LARGE"
+    ]
+   },
+   "top": {
+    "b": "Avirex",
+    "t": "Avirex Goth Tee - Black",
+    "c": "tee",
+    "g": 69.52,
+    "p": 88.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0214/7974/files/Sneaker-Politics-AVIREX-Goth50thTeeBlack-AVF251T28-WB-1.jpg?v=1761214692",
+    "u": "https://sneakerpolitics.com/products/avirex-goth-tee-black",
+    "sc": 6,
+    "s": [
+     "M"
+    ]
+   }
+  },
+  "total": 510.0
+ },
+ {
+  "formula": "Cap Match",
+  "note": "Hat colour mirrors the top; bottom stays quiet so the pairing reads. Straight from @fitz2kickz, who runs a matching cap in every single fit.",
+  "items": {
+   "top": {
+    "b": "Iron & Resin",
+    "t": "Eat My Dust Longsleeve",
+    "c": "longsleeve",
+    "g": 32.59,
+    "p": 41.25,
+    "cur": "USD",
+    "col": "cream",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0767/3853/files/EatMyDustRagland-Natural-Front-2.jpg?v=1771460558",
+    "u": "https://ironandresin.com/products/eat-my-dust-longsleeve",
+    "sc": 9,
+    "s": [
+     "SMALL",
+     "MEDIUM",
+     "LARGE",
+     "XL",
+     "XXL"
+    ]
+   },
+   "bottom": {
+    "b": "3sixteen",
+    "t": "CT-220x ~ Classic Tapered - Double Black",
+    "c": "jeans",
+    "g": 213.3,
+    "p": 270.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0028/6132/products/3sixteen-jean-CT-220x-1.jpg?v=1534365800",
+    "u": "https://3sixteen.com/products/ct-220x-classic-tapered-double-black",
+    "sc": 2,
+    "s": [
+     "28",
+     "29",
+     "30",
+     "34",
+     "36",
+     "38",
+     "40",
+     "42"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "Pennon High Boots Low - Dark Brown",
+    "c": "footwear",
+    "g": 308.1,
+    "p": 390.0,
+    "cur": "USD",
+    "col": "brown",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/PNN241-09-LODKPennonHIGHBOOTSLOWDARKBROWN_141.jpg?v=1784733703",
+    "u": "https://kith.com/products/pnn241-09-lodk",
+    "sc": 0,
+    "s": [
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "hat": {
+    "b": "Corteiz",
+    "t": "GIANNI KNIT BEANIE  [CREAM]",
+    "c": "headwear",
+    "g": 40.0,
+    "p": 40.0,
+    "cur": "GBP",
+    "col": "cream",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/SCRIPTRIBBEDKNITBEANIE_CREAM_01.png?v=1766058368",
+    "u": "https://crtz.xyz/products/gianni-knit-beanie-cream",
+    "sc": 2,
+    "s": []
+   }
+  },
+  "total": 593.99
+ },
+ {
+  "formula": "Shoe-First Technical Set",
+  "note": "Shoe chosen first, then a tonal technical set built around it \u2014 the @trendz4sportswear method, where the caption names the trainer before the clothes.",
+  "items": {
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance RC56 - Silver Metallic / NB Navy",
+    "c": "footwear",
+    "g": 118.5,
+    "p": 150.0,
+    "cur": "USD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/new-balance-rc56-_urc569rw_-blue-100933-2.jpg?v=1784053788",
+    "u": "https://kith.com/products/nburc569rw",
+    "sc": 0,
+    "s": [
+     "8",
+     "8.5",
+     "9",
+     "9.5",
+     "10",
+     "10.5",
+     "11",
+     "11.5"
+    ]
+   },
+   "layer": {
+    "b": "Willy Chavarria",
+    "t": "BAD BOY TRACK JACKET - BLACK BEAUTY",
+    "c": "windrunner",
+    "g": 671.5,
+    "p": 850.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0815/1914/9336/files/SPSU26-WILLY-FLATS-1718_f2490cd5-c53d-47d3-a930-5e671622994c.jpg?v=1773675800",
+    "u": "https://willychavarria.com/products/bad-boy-track-jacket",
+    "sc": 9,
+    "s": [
+     "S",
+     "M",
+     "L",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "032c",
+    "t": "032c ''OUTLAW'' OVERSIZED SWEATPANTS",
+    "c": "sweats",
+    "g": 91.79,
+    "p": 107.99,
+    "cur": "EUR",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/2718/4356/files/032c-outlaw-oversized-sweatpants-faded-black-s25-urc-0721-050-apparel_20_3E_20pants.jpg?v=1739876892",
+    "u": "https://afew-store.com/products/032c-outlaw-oversized-sweatpants-faded-black",
+    "sc": 6,
+    "s": [
+     "L"
+    ]
+   },
+   "top": {
+    "b": "Corteiz",
+    "t": "PIRATE RADIO HEAVYWEIGHT TEE [BLACK]",
+    "c": "tee",
+    "g": 70.0,
+    "p": 70.0,
+    "cur": "GBP",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0001/8192/7990/files/PIRATERADIOPHOTOTEE_BLACK_01.png?v=1772023416",
+    "u": "https://crtz.xyz/products/pirate-radio-heavyweight-tee-black",
+    "sc": 2,
+    "s": [
+     "M",
+     "L"
+    ]
+   }
+  },
+  "total": 951.79
+ },
+ {
+  "formula": "Heavy Graphic + Short",
+  "note": "Loud graphic up top, short underneath, shoe picks up an accent from the print. @arsnlnc's core shape, and it matches your saves \u2014 shorts are your second-biggest lane.",
+  "items": {
+   "top": {
+    "b": "Who Decides War",
+    "t": "PRECONDITION WINGED BORO LONG SLEEVE",
+    "c": "longsleeve",
+    "g": 513.5,
+    "p": 650.0,
+    "cur": "USD",
+    "col": "unknown",
+    "neu": false,
+    "i": "https://cdn.shopify.com/s/files/1/0054/4492/7601/files/WDW_1181.jpg?v=1745701744",
+    "u": "https://whodecideswar.com/products/precondition-winged-boro-long-sleeve",
+    "sc": 3,
+    "s": [
+     "XS",
+     "XL"
+    ]
+   },
+   "bottom": {
+    "b": "6PM",
+    "t": "TWO TONE SWEAT SHORTS BLACK",
+    "c": "shorts",
+    "g": 46.61,
+    "p": 59.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0071/1465/3762/files/26-05-08_6PM_0501.jpg?v=1780497043",
+    "u": "https://6pmseason.com/products/two-tone-sweat-shorts-black",
+    "sc": 6,
+    "s": [
+     "XXS",
+     "XS",
+     "S",
+     "M",
+     "L"
+    ]
+   },
+   "shoe": {
+    "b": "Kith",
+    "t": "New Balance 204L - Sea Salt / Silver Metallic / NB Navy",
+    "c": "footwear",
+    "g": 86.89,
+    "p": 109.99,
+    "cur": "USD",
+    "col": "navy",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/0094/2252/files/u204lpc_2.jpg?v=1783612399",
+    "u": "https://kith.com/products/nbu204lpc",
+    "sc": 0,
+    "s": [
+     "4.5",
+     "5",
+     "5.5",
+     "6",
+     "6.5",
+     "7",
+     "7.5",
+     "8"
+    ]
+   },
+   "hat": {
+    "b": "Warren Lotas",
+    "t": "Stars and Stripes Bat Reaper Hat - Black",
+    "c": "headwear",
+    "g": 47.4,
+    "p": 60.0,
+    "cur": "USD",
+    "col": "black",
+    "neu": true,
+    "i": "https://cdn.shopify.com/s/files/1/1430/1974/files/BatReaperHatBlack.png?v=1720041500",
+    "u": "https://warrenlotas.com/products/stars-and-stripes-bat-reaper-hat-black",
+    "sc": 0,
+    "s": [
+     "7 1/8",
+     "7 1/4",
+     "7 3/8",
+     "7 1/2",
+     "7 5/8",
+     "7 3/4",
+     "8"
+    ]
+   }
+  },
+  "total": 694.4
+ }
+]
