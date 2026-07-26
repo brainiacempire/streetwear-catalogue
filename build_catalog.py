@@ -249,6 +249,8 @@ while len(picked) < budget and progress:
             if lst and perdom[d] < dcap:
                 picked.append(lst.pop(0)); perdom[d] += 1; catcount[c] += 1; progress = True
                 break
+_picked_urls = set(r["u"] for r in picked)
+leftover = [r for r in pool if r["u"] not in _picked_urls]
 rows = protected + picked
 
 best = {}
@@ -280,6 +282,17 @@ prices  = [r["g"] for r in rows if r["g"] > 0]
 npend   = sum(1 for r in rows if r["n"])
 nvid    = sum(1 for r in rows if r["v"])
 
+CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", "12000"))
+_seen_dt = set((r["d"], r["t"].lower()) for r in rows)
+_lb = {}
+for r in leftover:
+    k = (r["d"], r["t"].lower())
+    if k in _seen_dt or k in _lb: continue
+    _lb[k] = r
+leftover = sorted(_lb.values(), key=lambda r: (not r["a"], r["sm"], -(r.get("sc") or 0), -(r["g"] or 0)))
+_nid = len(rows)
+for r in leftover: r["id"] = _nid; _nid += 1
+EXTRA = [leftover[i:i+CHUNK_SIZE] for i in range(0, len(leftover), CHUNK_SIZE)]
 DATA   = json.dumps(rows, separators=(",", ":"), ensure_ascii=False)
 STATUS = json.dumps(sorted(status.values(), key=lambda o: (o.get("status",""), o.get("domain",""))),
                     separators=(",", ":"), ensure_ascii=False)
@@ -627,6 +640,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  </div>
  <div class="empty" id="empty" hidden>Nothing matches those filters.</div>
  <button class="more" id="more" hidden>Show more</button>
+ <button class="more loadmore" id="loadmore" hidden></button>
  <details class="health"><summary>Source health &mdash; which stores worked, which didn't</summary>
   <table id="htab"><thead><tr><th>Store</th><th>Status</th><th>Products</th><th>Note</th></tr></thead><tbody></tbody></table>
  </details>
@@ -640,11 +654,13 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 <script>
 const __ENC__=__ENCBLOB__;
 const __PLAIN__=__PLAINDATA__;
+const __CHUNKS__=__CHUNKSJSON__;
 async function _dk(pw,salt,it){var kb=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:it,hash:'SHA-256'},kb,{name:'AES-GCM',length:256},false,['decrypt']);}
 function _b64(x){var b=atob(x),a=new Uint8Array(b.length),i;for(i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
-async function _unlock(pw){var k=await _dk(pw,_b64(__ENC__.salt),__ENC__.it);var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(__ENC__.iv)},k,_b64(__ENC__.ct));return JSON.parse(new TextDecoder().decode(pt));}
-function startApp(data){
+async function _unlock(pw){var k=await _dk(pw,_b64(__ENC__.salt),__ENC__.it);var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(__ENC__.iv)},k,_b64(__ENC__.ct));return {data:JSON.parse(new TextDecoder().decode(pt)), key:k};}
+function startApp(data, _KEY){
 const D=data.D, CATS=__CATS__, ST=data.ST, OUT=data.OUT;
+let _chunkNext=0;
 const PAGE=120; let shown=PAGE, active=new Set(), showPend=false, showFav=false, showVid=false, showBW=false, showND=false;
 const KEY='streetwear-catalog-saved-v1';
 // Saves are keyed by product URL, not row id, so they survive rebuilds where ids shift.
@@ -842,6 +858,49 @@ let outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
 let activeSlot='top', pkShown=60, builderReady=false;
 
 const byCat={}; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
+// ----- Load more pieces: merge extra encrypted chunks into the same catalogue -----
+function reindex(){
+ const counts={}; D.forEach(r=>counts[r.c]=(counts[r.c]||0)+1);
+ $('chips').innerHTML = CATS.filter(([k])=>counts[k]).map(([k,l])=>
+   `<button class="chip${active.has(k)?' on':''}" data-c="${k}">${l}<span class="n">${counts[k]}</span></button>`).join('');
+ $('collections').innerHTML =
+   `<button class="chip special${showPend?' on':''}" data-x="pend">&#9733; Best of<span class="n">${D.filter(r=>r.n).length}</span></button>`+
+   `<button class="chip nd${showND?' on':''}" data-x="nd">&#9889; New Drops<span class="n">${D.filter(r=>r.nd).length}</span></button>`+
+   `<button class="chip vid${showVid?' on':''}" data-x="vid">Videos<span class="n">${D.filter(r=>r.v).length}</span></button>`+
+   `<button class="chip bw${showBW?' on':''}" data-x="bw">B/W Tees<span class="n">${D.filter(r=>(r.c==='tee'||r.c==='longsleeve')&&(r.col==='black'||r.col==='white')).length}</span></button>`+
+   `<button class="chip favc${showFav?' on':''}" data-x="fav">&#9829; Saved<span class="n" id="favn">0</span></button>`;
+ const cb=$('brand').value;
+ const bl=[...new Set(D.map(r=>r.b))].sort((a,b)=>a.localeCompare(b));
+ $('brand').innerHTML='<option value="">All brands</option>'+bl.map(b=>`<option>${esc(b)}</option>`).join(''); $('brand').value=cb;
+ const cc=$('colf').value;
+ const cols=[...new Set(D.map(r=>r.col).filter(c=>c&&c!=='unknown'))].sort();
+ $('colf').innerHTML='<option value="">Any colour</option>'+cols.map(c=>`<option value="${c}">${c[0].toUpperCase()+c.slice(1)}</option>`).join(''); $('colf').value=cc;
+ for(const k in byCat) delete byCat[k]; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
+ D.forEach(r=>{ if(savedUrls.has(r.u)) favs.add(r.id); });
+ render();
+}
+function updateLoadMore(){ const btn=$('loadmore'); if(!btn) return;
+ if(_chunkNext>=__CHUNKS__.length){ btn.hidden=true; }
+ else { btn.hidden=false; btn.textContent='\u002b Load more pieces'; } }
+let _loadingChunk=false;
+async function loadMore(){
+ const btn=$('loadmore');
+ if(_loadingChunk || _chunkNext>=__CHUNKS__.length){ updateLoadMore(); return; }
+ _loadingChunk=true; if(btn){ btn.disabled=true; btn.textContent='Loading\u2026'; }
+ try{
+   const raw=await fetch(__CHUNKS__[_chunkNext],{cache:'force-cache'}).then(r=>r.json());
+   let pieces;
+   if(_KEY){ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(raw.iv)},_KEY,_b64(raw.ct)); pieces=JSON.parse(new TextDecoder().decode(pt)).D; }
+   else { pieces=raw.D; }
+   for(const r of pieces) D.push(r);
+   _chunkNext++;
+   reindex();
+   toast('Loaded '+pieces.length+' more pieces');
+ }catch(e){ toast('Could not load more pieces'); }
+ _loadingChunk=false; if(btn) btn.disabled=false; updateLoadMore();
+}
+async function loadAllChunks(){ while(_chunkNext<__CHUNKS__.length){ await loadMore(); } }
+{const lb=$('loadmore'); if(lb) lb.onclick=loadMore;}
 const cvTotal=()=>Object.values(outfit).reduce((a,b)=>a+(b?b.g:0),0);
 
 const locked={};
@@ -1214,6 +1273,7 @@ $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  const isFits=b.dataset.v==='fits';
  $('fits').hidden=!isFits; $('grid').hidden=isFits;
  $('more').style.display=isFits?'none':'';
+ $('loadmore').style.display=isFits?'none':''; if(!isFits) updateLoadMore();
  document.getElementById('chips').style.display=isFits?'none':'';
  document.querySelector('.bar').style.display=isFits?'none':'';
  if(isFits) setFitSub('build');
@@ -1225,13 +1285,14 @@ $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
  <td>${s.product_count??''}</td><td>${esc(String(s.note||s.platform||'').slice(0,150))}</td></tr>`;
 }).join('');
 render();
+updateLoadMore();
 saveStockState();
 }
 (function(){var GK='cat-gate-pw';
- if(!__ENC__){ var g0=document.getElementById('gate'); if(g0)g0.remove(); startApp(__PLAIN__); return; }
+ if(!__ENC__){ var g0=document.getElementById('gate'); if(g0)g0.remove(); startApp(__PLAIN__, null); return; }
  var ov=document.getElementById('gate'),inp=document.getElementById('gpw'),btn=document.getElementById('gbtn'),err=document.getElementById('gerr');
  ov.hidden=false;
- function go(pw,fromSaved){ err.textContent=fromSaved?'':'Checking\u2026'; _unlock(pw).then(function(data){ try{localStorage.setItem(GK,pw);}catch(e){} ov.remove(); startApp(data); }).catch(function(){ try{localStorage.removeItem(GK);}catch(e){} if(!fromSaved){ err.textContent='Wrong password'; inp.value=''; } inp.focus(); }); }
+ function go(pw,fromSaved){ err.textContent=fromSaved?'':'Checking\u2026'; _unlock(pw).then(function(res){ try{localStorage.setItem(GK,pw);}catch(e){} ov.remove(); startApp(res.data, res.key); }).catch(function(){ try{localStorage.removeItem(GK);}catch(e){} if(!fromSaved){ err.textContent='Wrong password'; inp.value=''; } inp.focus(); }); }
  btn.onclick=function(){ if(inp.value) go(inp.value,false); };
  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'&&inp.value) go(inp.value,false); });
  var saved=null; try{saved=localStorage.getItem(GK);}catch(e){}
@@ -1241,21 +1302,38 @@ saveStockState();
 
 pmax = int(max(prices)) if prices else 100
 _pw = os.environ.get("SITE_PASSWORD","").strip()
+_outdir = os.path.dirname(OUT) or "."
+_chunk_files = []
 if _pw:
     from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-    _payload = '{"D":'+DATA+',"OUT":'+OUTJSON+',"ST":'+STATUS+'}'
     _salt = os.urandom(16); _it = 200000
     _key = hashlib.pbkdf2_hmac("sha256", _pw.encode("utf-8"), _salt, _it, 32)
-    _nonce = os.urandom(12)
-    _ct = AESGCM(_key).encrypt(_nonce, _payload.encode("utf-8"), None)
-    ENCBLOB = json.dumps({"salt":base64.b64encode(_salt).decode(),"iv":base64.b64encode(_nonce).decode(),"ct":base64.b64encode(_ct).decode(),"it":_it})
+    _aes = AESGCM(_key)
+    def _enc(js):
+        n = os.urandom(12); ct = _aes.encrypt(n, js.encode("utf-8"), None)
+        return base64.b64encode(n).decode(), base64.b64encode(ct).decode()
+    _payload = '{"D":'+DATA+',"OUT":'+OUTJSON+',"ST":'+STATUS+'}'
+    _iv0, _ct0 = _enc(_payload)
+    ENCBLOB = json.dumps({"salt":base64.b64encode(_salt).decode(),"iv":_iv0,"ct":_ct0,"it":_it})
     PLAINDATA = "null"
-    _gate_note = "ENCRYPTED \u2014 password gate ON"
+    for _idx, _ch in enumerate(EXTRA, start=1):
+        _cj = '{"D":'+json.dumps(_ch, separators=(",",":"), ensure_ascii=False)+'}'
+        _iv, _ct = _enc(_cj)
+        _fn = "chunk-%d.json" % _idx
+        json.dump({"iv":_iv,"ct":_ct}, open(os.path.join(_outdir,_fn),"w"))
+        _chunk_files.append(_fn)
+    _gate_note = "ENCRYPTED \u2014 password gate ON, %d load-more chunk(s)" % len(EXTRA)
 else:
     ENCBLOB = "null"
     PLAINDATA = '{"D":'+DATA+',"OUT":'+OUTJSON+',"ST":'+STATUS+'}'
-    _gate_note = "OPEN \u2014 no SITE_PASSWORD set"
+    for _idx, _ch in enumerate(EXTRA, start=1):
+        _fn = "chunk-%d.json" % _idx
+        json.dump({"D":_ch}, open(os.path.join(_outdir,_fn),"w"))
+        _chunk_files.append(_fn)
+    _gate_note = "OPEN \u2014 no SITE_PASSWORD set, %d load-more chunk(s)" % len(EXTRA)
+CHUNKSJSON = json.dumps(_chunk_files)
 out = (tpl.replace("__ENCBLOB__", ENCBLOB).replace("__PLAINDATA__", PLAINDATA)
+          .replace("__CHUNKSJSON__", CHUNKSJSON)
           .replace("__CATS__", CATJSON)
           .replace("__NROWS__", f"{len(rows):,}").replace("__NINSTOCK__", f"{instock:,}")
           .replace("__NBRANDS__", str(len(brands)))
