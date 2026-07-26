@@ -535,6 +535,14 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .varhd{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--dim);margin-bottom:8px}
 .varhd b{color:#fff}.varhd .act{margin-left:auto}
 .varpcs{display:flex;gap:10px;flex-wrap:wrap}
+.varctrl{grid-column:1/-1;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.varctrlh{font-size:12.5px;color:var(--dim);margin-bottom:10px}
+.varlocks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.varlock{background:var(--panel2);border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:7px 10px;font-size:11.5px;cursor:pointer;text-align:left}
+.varlock.on{border-color:#ff5c8a;color:#fff}
+.varlock .vlx{display:block;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--dim)}
+.varlock.on .vlx{color:#ff5c8a}
+.varlock .vlk{text-transform:capitalize;font-weight:600;color:#fff}
 .vpiece{width:118px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .vpiece.lkd{border-color:#ff5c8a}
 .vpiece img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
@@ -1024,6 +1032,11 @@ function styleOf(r){ const t=((r.b||'')+' '+(r.t||'')).toLowerCase();
  for(const k in STYLE_RE){ if(STYLE_RE[k].test(t)) return k; } return 'street'; }
 function outfitStyle(){ const c={}; SLOTORDER.forEach(k=>{ if(outfit[k]){ const st=styleOf(outfit[k]); c[st]=(c[st]||0)+1; }});
  let best='',n=0; for(const st in c){ if(c[st]>n){ n=c[st]; best=st; } } return best; }
+const NEUTC=new Set(['black','white','grey','cream','tan','brown','navy','beige','charcoal','ecru']);
+function fitAccents(){ const a=new Set(); SLOTORDER.forEach(k=>{const r=outfit[k]; if(r&&r.col&&r.col!=='unknown'&&!NEUTC.has(r.col)&&!r.neu)a.add(r.col);}); return a; }
+// colour harmony vs the pieces already placed: neutral base + at most one accent, or tonal
+function harmC(r,acc){ if(!r.col||r.col==='unknown')return 0; if(NEUTC.has(r.col)||r.neu)return 3;
+ if(acc.has(r.col))return 5; if(acc.size===0)return 2; return -6; }
 function rndFrom(cats,filt,k,style){
  let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
  if(filt)pool=pool.filter(filt);
@@ -1031,12 +1044,14 @@ function rndFrom(cats,filt,k,style){
  const ub=usedBrands(k);
  const fresh=pool.filter(r=>!ub.has((r.b||'').toLowerCase()));
  if(fresh.length) pool=fresh;
- // reason about STYLE first (goes-together), then quality, then colour, then price
+ const acc=fitAccents();
+ // reason: COLOUR HARMONY with what's placed, then STYLE (goes-together), then quality, then price
  pool.sort((a,b)=>
-   (style?((styleOf(b)===style?1:0)-(styleOf(a)===style?1:0)):0)
+   (harmC(b,acc)-harmC(a,acc))
+   ||(style?((styleOf(b)===style?1:0)-(styleOf(a)===style?1:0)):0)
    ||(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
    ||((a.col==='unknown'?1:0)-(b.col==='unknown'?1:0))||(a.g-b.g));
- const head=pool.slice(0,Math.max(16,Math.floor(pool.length*0.24)));
+ const head=pool.slice(0,Math.max(12,Math.floor(pool.length*0.18)));
  return head[Math.floor(Math.random()*head.length)];
 }
 const catsOf=k=>CVSLOTS.find(s=>s.k===k).cats;
@@ -1224,38 +1239,56 @@ function openPreview(items,title,total){
  $('pvtitle').textContent=title||'Outfit'; $('pvtotal').textContent=gbp(total||0);
  $('pvslots').innerHTML=slots; $('pvwrap').hidden=false; _pvBase=items;
 }
-let _pvBase=null, _pvVars=[];
-// remix one variation: keep the liked (saved) pieces, re-pick the rest with the style engine
-function buildVariation(base){
+let _pvBase=null, _pvVars=[], _pvLocks={};
+// remix: KEEP the locked pieces exactly, re-pick the unlocked ones so they COORDINATE with what's kept
+function buildVariation(base, locks){
  const keep={}; SLOTORDER.forEach(k=>keep[k]=outfit[k]);
  SLOTORDER.forEach(k=>outfit[k]=null);
- SLOTORDER.forEach(k=>{ if(base[k]) outfit[k]=D.find(x=>x.u===base[k].u)||base[k]; });
- SLOTORDER.forEach(k=>{ const cur=outfit[k]; if(cur && !savedUrls.has(cur.u)){ outfit[k]=coordPick(k,heroColour())||cur; } });
+ // place the kept (locked) pieces first so re-picks harmonise around them
+ SLOTORDER.forEach(k=>{ if(base[k] && locks[k]) outfit[k]=D.find(x=>x.u===base[k].u)||base[k]; });
+ SLOTORDER.forEach(k=>{ if(base[k] && !locks[k]){ outfit[k]=coordPick(k,heroColour())||base[k]; } });
  const snap={}; SLOTORDER.forEach(k=>{ if(outfit[k]) snap[k]=outfit[k]; });
  SLOTORDER.forEach(k=>outfit[k]=keep[k]);
  return snap;
 }
-function showVariations(){
- if(!_pvBase) return;
- const anyLiked=Object.values(_pvBase).some(p=>p&&savedUrls.has(p.u));
- _pvVars=[]; const seen=new Set();
- for(let t=0;t<12 && _pvVars.length<3;t++){
-   const v=buildVariation(_pvBase);
+function genVariations(){
+ _pvVars=[]; const seen=new Set(); const base=_pvBase;
+ const anyChange=SLOTORDER.some(k=>base[k]&&!_pvLocks[k]);
+ for(let t=0;t<20 && _pvVars.length<3;t++){
+   const v=anyChange?buildVariation(base,_pvLocks):Object.assign({},base);
    const sig=SLOTORDER.map(k=>v[k]?v[k].u:'').join('|');
-   if(seen.has(sig))continue; seen.add(sig); _pvVars.push(v);
+   if(seen.has(sig)){ if(!anyChange)break; continue; } seen.add(sig); _pvVars.push(v);
  }
- $('pvtitle').textContent='Variations'+(anyLiked?' — liked pieces kept':'');
- $('pvtotal').textContent='';
- $('pvslots').innerHTML=_pvVars.map((v,i)=>{
+ renderVariations();
+}
+function renderVariations(){
+ const base=_pvBase;
+ const ctrl=SLOTORDER.filter(k=>base[k]).map(k=>{const r=base[k], on=_pvLocks[k];
+   return `<button class="varlock${on?' on':''}" data-varlock="${esc(k)}">`+
+     `<span class="vlx">${on?'&#128274; keep':'&#8646; change'}</span>`+
+     `<span class="vlk">${esc(k)}</span> &middot; ${esc(r.b)}</button>`;}).join('');
+ const rows=_pvVars.map((v,i)=>{
    const tot=SLOTORDER.filter(k=>v[k]).reduce((a,k)=>a+v[k].g,0);
-   const pcs=SLOTORDER.filter(k=>v[k]).map(k=>{const r=v[k], lk=savedUrls.has(r.u);
-     return `<div class="vpiece${lk?' lkd':''}"><img loading="lazy" src="${esc(r.i)}" onerror="this.style.opacity=.15">`+
+   const pcs=SLOTORDER.filter(k=>v[k]).map(k=>{const r=v[k], kept=_pvLocks[k];
+     return `<div class="vpiece${kept?' lkd':''}"><img loading="lazy" src="${esc(r.i)}" onerror="this.style.opacity=.15">`+
        `<div class="vpt"><span class="vb">${esc(r.b)}</span>${esc(r.t.slice(0,22))}<span class="vg">${gbp(r.g)}</span></div></div>`;}).join('');
    return `<div class="varrow"><div class="varhd">Variation ${i+1} <b>${gbp(tot)}</b>`+
      `<button class="act sm" data-usevar="${i}">Use this</button></div><div class="varpcs">${pcs}</div></div>`;
- }).join('') || '<div class="empty">Not enough stock to vary this one.</div>';
+ }).join('') || '<div class="empty">Lock fewer pieces \u2014 not enough left to vary.</div>';
+ $('pvtitle').textContent='Variations';
+ $('pvtotal').textContent='';
+ $('pvslots').innerHTML=`<div class="varctrl"><div class="varctrlh">Tap a piece to keep or change it \u2014 the rest are rebuilt to match. &#128274; = kept.</div>`+
+   `<div class="varlocks">${ctrl}</div><button class="act sm prim" id="pvregen">&#8646; New variations</button></div>`+rows;
+}
+function showVariations(){
+ if(!_pvBase) return;
+ _pvLocks={}; SLOTORDER.forEach(k=>{ if(_pvBase[k]) _pvLocks[k]=savedUrls.has(_pvBase[k].u); }); // liked kept by default
+ genVariations();
 }
 document.addEventListener('click',e=>{
+ const vl=e.target.closest('[data-varlock]');
+ if(vl){ const k=vl.dataset.varlock; _pvLocks[k]=!_pvLocks[k]; genVariations(); return; }
+ if(e.target.id==='pvregen'){ genVariations(); return; }
  const uv=e.target.closest('[data-usevar]');
  if(uv){ const v=_pvVars[+uv.dataset.usevar]; if(!v)return;
    outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};

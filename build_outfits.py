@@ -168,17 +168,28 @@ def pool(cats, colour=None, neutral=None, hero=False, limit=600):
             out.append(r)
     return out[:limit]
 
-def pick(cands, fit_urls, fit_brands, allow_same_brand=False):
-    """Best coordinating piece: fresh brand, low recurrence, high curation score."""
+def harmony(col, fit_cols):
+    """Does this colour coordinate with the fit so far? Neutral base + at most ONE accent, or tonal."""
+    if col in NEUTRALS:            return 3       # neutrals always coordinate
+    if col == "unknown":           return 0
+    accents = fit_cols - NEUTRALS
+    if col in accents:             return 5       # tonal — same accent already in the fit
+    if not accents:                return 2       # this piece becomes the single accent
+    return -6                                      # a second, clashing accent — avoid
+
+def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False):
+    """Best coordinating piece: colour-harmonious first, then fresh brand, low recurrence, curation."""
     if not cands: return None
     poolc = [r for r in cands if r["u"] not in fit_urls]
     if not poolc: return None
     if not allow_same_brand:
         fresh = [r for r in poolc if r["b"].lower() not in fit_brands]
         if fresh: poolc = fresh
-    # spread across the catalogue: least-used piece, then least-used brand, then curation score
-    poolc.sort(key=lambda r: (usage[r["u"]], brand_usage[r["b"].lower()], -r["sc"]))
-    head = poolc[:max(40, len(poolc)//3)]
+    fc = fit_cols or set()
+    # colour harmony leads, then variety (least-used piece/brand), then curation score
+    poolc.sort(key=lambda r: (-harmony(r["col"], fc), usage[r["u"]], brand_usage[r["b"].lower()], -r["sc"]))
+    # tighter head = more curated (best pieces), still enough for variety across rebuilds
+    head = poolc[:max(12, len(poolc)//7)]
     random.shuffle(head)
     return head[0] if head else None
 
@@ -186,23 +197,32 @@ outfits = []
 seen = set()
 def build(name, blurb, slots):
     """slots: list of (slotname, candidate_list). Brands are forced distinct."""
-    fit, fit_urls, fit_brands = {}, set(), set()
+    fit, fit_urls, fit_brands, fit_cols = {}, set(), set(), set()
     for slot, cands in slots:
-        r = pick(cands, fit_urls, fit_brands)
+        r = pick(cands, fit_urls, fit_brands, fit_cols)
         if r is None:
             # last resort: allow same brand rather than drop the whole fit
-            r = pick(cands, fit_urls, fit_brands, allow_same_brand=True)
+            r = pick(cands, fit_urls, fit_brands, fit_cols, allow_same_brand=True)
         if r is None:
             return None
         fit[slot] = r; fit_urls.add(r["u"]); fit_brands.add(r["b"].lower())
+        if r["col"] and r["col"] != "unknown": fit_cols.add(r["col"])
     sig = tuple(sorted(fit_urls))
     if sig in seen:
         return None
     seen.add(sig)
     for v in fit.values(): usage[v["u"]] += 1; brand_usage[v["b"].lower()] += 1
     brands = {v["b"] for v in fit.values()}
+    _cols = [v["col"] for v in fit.values() if v["col"] and v["col"]!="unknown"]
+    _accents = set(c for c in _cols if c not in NEUTRALS)
+    _shoe = fit.get("shoe")
+    coord = 0
+    if len(_accents) <= 1: coord += 3            # disciplined palette (neutral base + <=1 accent)
+    if _shoe and SNEAKER_RE.search(_shoe["t"]) and not CASUAL_SHOE_RE.search(_shoe["t"]): coord += 2  # clean trainer
+    coord += sum(1 for v in fit.values() if v["u"] in favs or v["u"] in picks)   # built on liked pieces
+    coord += len(fit)                            # fuller, more-styled fits
     return {"formula": name, "note": blurb, "items": fit,
-            "brands": len(brands),
+            "brands": len(brands), "cs": coord,
             "total": round(sum(v["g"] for v in fit.values()), 2)}
 
 OUTFIT_MULT = 2.2   # scale every formula up — far more variety across the whole catalogue
