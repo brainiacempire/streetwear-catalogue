@@ -81,6 +81,10 @@ if os.path.exists("video_picks.json"):
         if p.get("url"):
             vidpicks[p["url"]] = p.get("src", "From a video")
 
+# Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
+BOOT_RE = re.compile(r"\bboots?\b|chelsea|combat boot|hiking|wellington|\bwellies?\b|"
+    r"\bheels?\b|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform heel|"
+    r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 rows, bad = [], 0
 # rows/ = fresh scraped data (refreshed daily by CI); root *.jsonl = permanent
 # snapshots that always render: _saved.jsonl (saves), satoshinakamoto/laced (reference).
@@ -122,6 +126,7 @@ for f in _rowfiles:
             if _g < 5:                 continue   # junk: stickers, samples, £0.13 noise
             if not o.get("image"):     continue   # an imageless card can't be shopped
         if not _saved and _g > 8000:   continue   # £8k+ ceiling: only YOUR saves are ever exempt (kills mislabels/errors)
+        if cat=="footwear" and not _saved and BOOT_RE.search(tl): continue   # trainers/sneakers/loafers/vans only
         rows.append({
             "b": (o.get("brand") or o.get("domain") or "?").strip(),
             "d": o.get("domain") or "",
@@ -427,7 +432,23 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .cvslot .inc.on{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
 .cvslot.skip{opacity:.45}
 .cvslot.skip .cvadd{text-decoration:line-through}
-.savedhead{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:2px 0 12px;color:var(--dim)}
+.savedhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:2px 0 12px;color:var(--dim)}
+.savedsearch{background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:#fff;padding:6px 10px;font-size:13px;min-width:200px;flex:1}
+.pvwrap{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.pvbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:1120px;width:100%;max-height:90vh;overflow:auto;padding:18px 20px}
+.pvhead{display:flex;align-items:center;gap:14px;margin-bottom:14px;position:sticky;top:0}
+.pvhead h3{margin:0;font-size:18px}
+.pvx{margin-left:auto;background:none;border:none;color:var(--dim);font-size:26px;cursor:pointer;line-height:1}
+.pvx:hover{color:#fff}
+.pvslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.pvslot{background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.pvslot img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
+.pvlab{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim2);padding:7px 10px 0}
+.pvm{padding:6px 10px 12px}
+.pvm .bb{font-size:11px;color:var(--dim2);text-transform:uppercase;letter-spacing:.03em}
+.pvm .tt{font-size:13px;margin:2px 0 4px}
+.pvm .pp{font-size:14px;font-weight:700}
+.pvm .go{display:inline-block;margin-top:6px;font-size:12px;color:var(--acc)}
 </style></head><body>
 <header><div class="wrap">
  <div class="top">
@@ -477,6 +498,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
       <div class="cvbtns">
        <button class="act sm prim" id="bfill">&#10022; Fill the rest</button>
        <button class="act sm" id="brandom">Surprise me</button>
+       <button class="act sm" id="bpreview">&#128065; Preview</button>
        <button class="act sm" id="bcopy">Copy fit</button>
        <button class="act sm" id="bclear">Clear</button>
        <button class="act sm prim" id="bsave">&#9829; Save outfit</button>
@@ -490,6 +512,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
       <input type="search" id="pkq" placeholder="Search this slot&hellip;">
       <select id="pkcol"><option value="">Any colour</option></select>
       <label class="tog"><input type="checkbox" id="pkfit" checked> fits me</label>
+      <label class="tog"><input type="checkbox" id="pksaved"> saved only</label>
      </div>
      <div class="pkgrid" id="pkgrid"></div>
      <button class="more" id="pkmore" hidden>Show more</button>
@@ -510,6 +533,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
   </div>
   <div id="savedmode" hidden>
    <div class="savedhead"><span id="savedcount">No saved outfits yet</span>
+    <input type="search" id="savedq" placeholder="Search saved outfits&hellip;" class="savedsearch">
     <button class="act sm" id="savedclear" hidden>Clear all</button></div>
    <div id="savedlist"></div>
   </div>
@@ -520,6 +544,9 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
   <table id="htab"><thead><tr><th>Store</th><th>Status</th><th>Products</th><th>Note</th></tr></thead><tbody></tbody></table>
  </details>
 </main>
+<div id="pvwrap" class="pvwrap" hidden><div class="pvbox">
+ <div class="pvhead"><h3 id="pvtitle">Outfit</h3><span id="pvtotal" class="cost"></span><button id="pvclose" class="pvx" title="Close">&times;</button></div>
+ <div id="pvslots" class="pvslots"></div></div></div>
 <div id="toast"></div>
 <script>
 const D=__DATA__, CATS=__CATS__, ST=__STATUS__, OUT=__OUTFITS__;
@@ -740,9 +767,9 @@ function renderCanvas(){
 }
 function pickerPool(){
  const s=CVSLOTS.find(x=>x.k===activeSlot);
- const q=$('pkq').value.trim().toLowerCase(), col=$('pkcol').value, fit=$('pkfit').checked;
+ const q=$('pkq').value.trim().toLowerCase(), col=$('pkcol').value, fit=$('pkfit').checked, sv=$('pksaved').checked;
  let out=[]; s.cats.forEach(c=>(byCat[c]||[]).forEach(r=>out.push(r)));
- out=out.filter(r=>r.a && r.i && (!fit||!r.sm) && (!col||r.col===col) &&
+ out=out.filter(r=>r.a && r.i && (!fit||!r.sm) && (!col||r.col===col) && (!sv||favs.has(r.id)) &&
    (!q||r.t.toLowerCase().includes(q)||r.b.toLowerCase().includes(q)));
  out.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||(a.g-b.g));
  return out;
@@ -795,23 +822,36 @@ $('pkgrid').addEventListener('click',e=>{
  const nextEmpty=rot.find(k=>!outfit[k]);
  if(nextEmpty) setSlot(nextEmpty); else renderPicker();
 });
-['pkq','pkcol','pkfit'].forEach(id=>$(id).addEventListener('input',()=>{pkShown=60;renderPicker();}));
+['pkq','pkcol','pkfit','pksaved'].forEach(id=>$(id).addEventListener('input',()=>{pkShown=60;renderPicker();}));
 $('pkmore').onclick=()=>{pkShown+=60;renderPicker();};
 
-// ---- curated, cross-brand, colour-coordinated selection ----
+// ---- curated, cross-brand, STYLE- and colour-coordinated selection ----
 function usedBrands(exceptK){ const s=new Set(); SLOTORDER.forEach(k=>{ if(k!==exceptK && outfit[k]) s.add((outfit[k].b||'').toLowerCase()); }); return s; }
-function rndFrom(cats,filt,k){
+// style families — a fit reads right when its pieces share a lane
+const STYLE_RE={
+ tech:/gore|shell|windrun|technical|nylon|cargo|salomon|arc.?teryx|acronym|trail|packable|softshell|gorp|\bhpc\b|3\.?l\b/i,
+ work:/carhartt|dickies|chore|workwear|waxed|canvas|\bduck\b|flannel|painter|utility|hickory|\bwork\b/i,
+ clean:/selvedge|raw denim|\bchino|trouser|loafer|oxford shirt|knit|cashmere|merino|pleated|tailored|\bwool\b|mohair|\bsilk\b|suit\b/i,
+ skate:/skate|\bvans\b|polar|thrasher|palace|baker|emerica|krooked|spitfire|\bhuf\b|\bdc\b/i,
+ sport:/\btrack\b|jersey|\bsport|running|athletic|\bgym\b|warm.?up|\bnike\b|adidas|reebok|new balance|\basics\b|jordan|\bpuma\b/i
+};
+function styleOf(r){ const t=((r.b||'')+' '+(r.t||'')).toLowerCase();
+ for(const k in STYLE_RE){ if(STYLE_RE[k].test(t)) return k; } return 'street'; }
+function outfitStyle(){ const c={}; SLOTORDER.forEach(k=>{ if(outfit[k]){ const st=styleOf(outfit[k]); c[st]=(c[st]||0)+1; }});
+ let best='',n=0; for(const st in c){ if(c[st]>n){ n=c[st]; best=st; } } return best; }
+function rndFrom(cats,filt,k,style){
  let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
  if(filt)pool=pool.filter(filt);
  if(!pool.length)return null;
- // never repeat a brand already in the fit (the cross-brand rule) when we can avoid it
  const ub=usedBrands(k);
  const fresh=pool.filter(r=>!ub.has((r.b||'').toLowerCase()));
  if(fresh.length) pool=fresh;
- // quality first: your saves, then Best-of picks, then video pieces, then known-colour, then sane price
- pool.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
+ // reason about STYLE first (goes-together), then quality, then colour, then price
+ pool.sort((a,b)=>
+   (style?((styleOf(b)===style?1:0)-(styleOf(a)===style?1:0)):0)
+   ||(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
    ||((a.col==='unknown'?1:0)-(b.col==='unknown'?1:0))||(a.g-b.g));
- const head=pool.slice(0,Math.max(18,Math.floor(pool.length*0.28)));
+ const head=pool.slice(0,Math.max(16,Math.floor(pool.length*0.24)));
  return head[Math.floor(Math.random()*head.length)];
 }
 const catsOf=k=>CVSLOTS.find(s=>s.k===k).cats;
@@ -824,14 +864,14 @@ function heroColour(){
 }
 // pick a coordinating piece for one slot given the hero colour
 function coordPick(k,hero){
- const c=catsOf(k);
- if(k==='top')   return rndFrom(c,r=>!r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>!r.neu,k)||rndFrom(c,null,k);
- if(k==='bottom')return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
- if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero,k))||rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
- // footwear: a clean, coordinating sneaker — neutral & known-colour first, then hero-match, never random junk
- if(k==='shoe')  return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||(hero&&rndFrom(c,r=>r.col===hero,k))||rndFrom(c,r=>r.neu,k)||rndFrom(c,r=>r.col!=='unknown',k)||rndFrom(c,null,k);
- if(k==='layer') return rndFrom(c,r=>r.neu&&r.col!=='unknown',k)||rndFrom(c,r=>r.neu,k)||rndFrom(c,null,k);
- return rndFrom(c,r=>r.col!=='unknown',k)||rndFrom(c,null,k);
+ const c=catsOf(k), st=outfitStyle();
+ if(k==='top')   return rndFrom(c,r=>!r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>!r.neu,k,st)||rndFrom(c,null,k,st);
+ if(k==='bottom')return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
+ if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero,k,st))||rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
+ // footwear: a clean, coordinating sneaker that matches the fit's style — never random
+ if(k==='shoe')  return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||(hero&&rndFrom(c,r=>r.col===hero,k,st))||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,r=>r.col!=='unknown',k,st)||rndFrom(c,null,k,st);
+ if(k==='layer') return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
+ return rndFrom(c,r=>r.col!=='unknown',k,st)||rndFrom(c,null,k,st);
 }
 // FILL THE REST: fill only the slots you've INCLUDED and haven't locked, coordinated around your picks
 $('bfill').onclick=()=>{
@@ -863,6 +903,7 @@ $('bcopy').onclick=()=>{
  if(!parts.length){toast('Nothing placed yet');return;}
  navigator.clipboard.writeText(parts.join('\n')).then(()=>toast('Outfit copied'),()=>toast('Copy failed'));
 };
+$('bpreview').onclick=()=>{ if(SLOTORDER.some(k=>outfit[k])) openPreview(outfit,'Your fit',cvTotal()); else toast('Nothing placed yet'); };
 // ===== STARTER LOOKS (load into builder) =====
 const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,items:Object.assign({},o.items)}));
 const fitTotal=f=>Object.values(f.items).reduce((a,b)=>a+b.g,0);
@@ -879,6 +920,7 @@ function fitHtml(f){
  return `<div class="fit" id="fit${f.i}">
    <div class="fh"><div><h3>${esc(f.formula)}</h3><div class="blurb">${esc(f.note)}</div></div>
     <div class="fr"><span class="cost">${gbp(fitTotal(f))}</span>
+     <button class="act sm" data-preview="${f.i}" title="See it bigger">&#128065; View</button>
      <button class="act sm" data-savelook="${f.i}" title="Save whole outfit">&#9829; Save</button>
      <button class="act sm" data-use="${f.i}">Use &amp; edit</button></div></div>
    <div class="slots">${slots}</div></div>`;
@@ -926,10 +968,12 @@ document.addEventListener('click',e=>{
 function renderSaved(){
  updateSavedCount();
  const box=$('savedlist'), cnt=$('savedcount'), clr=$('savedclear');
+ const q=($('savedq')?$('savedq').value.trim().toLowerCase():'');
  if(!savedFits.length){ box.innerHTML='<div class="empty">No saved outfits yet — build a fit and hit \u201cSave outfit\u201d, or save a starter look.</div>';
    cnt.textContent='No saved outfits yet'; if(clr)clr.hidden=true; return; }
  cnt.textContent=savedFits.length+' saved outfit'+(savedFits.length>1?'s':''); if(clr)clr.hidden=false;
  box.innerHTML=savedFits.map((f,idx)=>{
+  if(q){ const hay=((f.note||'')+' '+Object.values(f.items).map(p=>p.b+' '+p.t).join(' ')).toLowerCase(); if(!hay.includes(q)) return ''; }
   const slots=SLOTORDER.filter(k=>f.items[k]).map(k=>{const r=f.items[k];
     return `<div class="slotw"><button class="sfav${savedUrls.has(r.u)?' on':''}" data-sfav="${esc(r.u)}" title="Save this piece">&#9829;</button>`+
      `<a class="slot" href="${esc(r.u)}" target="_blank" rel="noopener"><div class="lab">${k}</div>`+
@@ -938,11 +982,33 @@ function renderSaved(){
   }).join('');
   return `<div class="fit"><div class="fh"><div><h3>${esc(f.note||'Saved outfit')}</h3></div>`+
     `<div class="fr"><span class="cost">${gbp(f.total)}</span>`+
+    `<button class="act sm" data-preview-saved="${idx}" title="See it bigger">&#128065; View</button>`+
     `<button class="act sm" data-loadsaved="${idx}">Load</button>`+
     `<button class="act sm" data-delsaved="${idx}">Remove</button></div></div>`+
     `<div class="slots">${slots}</div></div>`;
- }).join('');
+ }).join('') || '<div class="empty">No saved outfits match that search.</div>';
 }
+{const sq=$('savedq'); if(sq) sq.addEventListener('input',renderSaved);}
+// preview (see a fit bigger) — starter looks + saved outfits
+function openPreview(items,title,total){
+ const slots=SLOTORDER.filter(k=>items[k]).map(k=>{const r=items[k];
+   return `<div class="pvslot"><div class="pvlab">${k}</div>`+
+     `<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.style.opacity=.15">`+
+     `<div class="pvm"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>`+
+     `<div class="pp">${gbp(r.g)}${r.col&&r.col!=='unknown'?' \u00b7 '+esc(r.col):''}</div>`+
+     `<a class="go" href="${esc(r.u)}" target="_blank" rel="noopener">View item &rarr;</a></div></div>`;}).join('');
+ $('pvtitle').textContent=title||'Outfit'; $('pvtotal').textContent=gbp(total||0);
+ $('pvslots').innerHTML=slots; $('pvwrap').hidden=false;
+}
+$('pvclose').onclick=()=>{$('pvwrap').hidden=true;};
+$('pvwrap').addEventListener('click',e=>{ if(e.target.id==='pvwrap')$('pvwrap').hidden=true; });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')$('pvwrap').hidden=true; });
+document.addEventListener('click',e=>{
+ const pv=e.target.closest('[data-preview]');
+ if(pv){ const f=FITS[+pv.dataset.preview]; if(f) openPreview(f.items,f.formula,fitTotal(f)); return; }
+ const ps=e.target.closest('[data-preview-saved]');
+ if(ps){ const f=savedFits[+ps.dataset.previewSaved]; if(f) openPreview(f.items,f.note,f.total); return; }
+});
 let _clrArm=false;
 document.addEventListener('DOMContentLoaded',()=>{});
 {const sc=$('savedclear'); if(sc) sc.onclick=()=>{

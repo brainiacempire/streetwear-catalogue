@@ -13,9 +13,14 @@ in every fit), @trendz4sportswear (shoe named first, set built around it), @arsn
 (loud graphic + short), @trendz — plus classic menswear rules (tonal, workwear,
 monochrome). Each formula targets a different TYPE of outing so the set spans a wardrobe.
 """
-import json, glob, random, collections, os
+import json, glob, random, collections, os, re
 
 random.seed(11)   # deterministic — no Date/random drift between rebuilds
+
+# Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
+BOOT_RE = re.compile(r"\bboots?\b|chelsea|combat boot|hiking|wellington|\bwellies?\b|"
+    r"\bheels?\b|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform heel|"
+    r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}
 HEROES   = {"red","blue","green","olive","burgundy","purple","orange","yellow","pink"}
@@ -84,6 +89,7 @@ for path in files:
         if not big: continue
         b = (o.get("brand") or "").strip()
         u = o["url"]
+        if o.get("category") == "footwear" and BOOT_RE.search(o.get("title","")): continue
         score = 1
         if u in favs:            score += 6
         if u in picks:           score += 3
@@ -299,6 +305,62 @@ add("Two-Accent",
     lambda: [("top", pool(["longsleeve","tee","hoodie_sweat"], hero=True)),
          ("bottom", pool(["jeans","pants"], neutral=True)),
          ("shoe", pool("footwear", hero=True) or pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 10)
+
+# 18) Skate Fit — baggy bottom, graphic tee, skate shoe, cap
+add("Skate Fit",
+    "Baggy bottom, graphic tee, low skate shoe and a cap — the skate-shop uniform, kept cross-brand.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=False)),
+         ("bottom", pool(["jeans","pants"], neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear"))], 12)
+
+# 19) Double Denim — done right, two washes, break with a knit/tee
+add("Double Denim",
+    "Two washes of denim tied together with a plain top and a clean sneaker — Canadian tuxedo, elevated.",
+    lambda: [("layer", pool("jacket_outerwear")),
+         ("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True))], 10)
+
+# 20) Smart Casual — loafers, trouser, fine knit
+add("Smart Casual",
+    "A loafer or clean low shoe with a trouser and a fine knit — dressed up without a suit.",
+    lambda: [("top", pool(["longsleeve","top","hoodie_sweat"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("layer", pool("jacket_outerwear", neutral=True))], 10)
+
+# 21) Gorpcore Trail — shell, technical pant, trail-ready runner
+add("Gorpcore Trail",
+    "Technical shell, a utility trouser and a trail-ready runner — the outdoors look worn in the city.",
+    lambda: [("layer", pool("windrunner")),
+         ("top", pool(["longsleeve","tee"], neutral=True)),
+         ("bottom", pool(["pants","sweats"], neutral=True)),
+         ("shoe", pool("footwear"))], 12)
+
+# 22) Monochrome White / Cream — the harder clean fit
+add("Off-White Monochrome",
+    "White and cream head to toe, one soft sneaker — the hardest colour to wear and the cleanest when it lands.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour="white") or pool(["tee","longsleeve"], colour="cream")),
+         ("bottom", pool(["pants","jeans"], colour="cream") or pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 8)
+
+# 23) Vest Layer — vest/gilet over a longsleeve
+add("Vest Layer",
+    "A vest or gilet over a longsleeve with a straight trouser — the transitional-weather layer piece.",
+    lambda: [("layer", pool("jacket_outerwear")),
+         ("top", pool("longsleeve", neutral=True)),
+         ("bottom", pool(["pants","jeans"], neutral=True)),
+         ("shoe", pool("footwear"))], 10)
+
+# 24) Statement Bottom — loud trouser, quiet everything else
+add("Statement Bottom",
+    "The trouser is the loud piece — everything above it neutral so the leg carries the fit.",
+    lambda: [("bottom", pool(["pants","jeans","sweats"], hero=True) or pool(["pants","sweats"], neutral=False)),
+         ("top", pool(["tee","longsleeve","hoodie_sweat"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 10)
 
 random.shuffle(outfits)
