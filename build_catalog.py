@@ -98,8 +98,8 @@ _CLS_RULES = [
  ("shorts",    r"\b(shorts|jorts?)\b"),
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
- ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
- ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d)\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|blazer(?! ?(low|mid|77)))\b"),
+ ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d|saucony|\basics\b|onitsuka|\bhoka\b|\bveja\b|superga|novesta|moonstar|\bautry\b|chuck taylor|jack purcell|reebok club|reebok classic)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
  ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
 ]
@@ -126,6 +126,33 @@ def classify(title, stored):
     if stored == "set" and _NOVELTY.search(t):
         return "other"      # scraper-labelled novelty 'set' isn't a clothing set
     return stored
+
+# colour from title when the scraper didn't tag one — feeds the coordination engine
+_COL_MAP = [
+ ("black", r"\b(black|jet ?black|onyx|noir|blackout)\b"),
+ ("white", r"\b(white|off.?white|blanc|optic white)\b"),
+ ("grey",  r"\b(grey|gray|charcoal|heather|slate|ash|graphite|cement|steel)\b"),
+ ("navy",  r"\b(navy|midnight)\b"),
+ ("blue",  r"\b(blue|indigo|cobalt|sky|teal|aqua|denim)\b"),
+ ("olive", r"\b(olive|khaki|army|military|sage|moss)\b"),
+ ("green", r"\b(green|forest|emerald|lime|hunter|pistachio)\b"),
+ ("burgundy", r"\b(burgundy|maroon|wine|oxblood|bordeaux|claret)\b"),
+ ("red",   r"\b(red|crimson|scarlet|cherry)\b"),
+ ("brown", r"\b(brown|chocolate|coffee|mocha|espresso|walnut|umber|choc)\b"),
+ ("tan",   r"\b(tan|camel|beige|sand|taupe|desert|stone|clay)\b"),
+ ("cream", r"\b(cream|oat|oatmeal|bone|natural|ecru|vanilla|ivory)\b"),
+ ("pink",  r"\b(pink|rose|blush|fuchsia|magenta|salmon)\b"),
+ ("purple",r"\b(purple|violet|lilac|lavender|plum)\b"),
+ ("orange",r"\b(orange|rust|terracotta|copper|apricot)\b"),
+ ("yellow",r"\b(yellow|mustard|gold|amber)\b"),
+]
+_COL_RX = [(k, re.compile(p, re.I)) for k, p in _COL_MAP]
+_NEUT_COLS = {"black","white","grey","navy","brown","tan","cream"}
+def colour_of(title, stored):
+    if stored and stored != "unknown": return stored
+    for k, rx in _COL_RX:
+        if rx.search(title or ""): return k
+    return "unknown"
 
 rows, bad = [], 0
 # rows/ = fresh scraped data (refreshed daily by CI); root *.jsonl = permanent
@@ -182,8 +209,8 @@ for f in _rowfiles:
             "n": picks.get(url, ""),                        # curated note => Best-of shelf
             "v": vidpicks.get(url, ""),                     # video-sourced => Videos shelf
             "f": 1 if url in favs else 0,                   # saved, restored from disk
-            "col": o.get("colour","unknown"),
-            "neu": 1 if o.get("neutral") else 0,
+            "col": (lambda _c: _c)(colour_of(t, o.get("colour","unknown"))),
+            "neu": 1 if (o.get("neutral") or colour_of(t, o.get("colour","unknown")) in _NEUT_COLS) else 0,
             "nd": 1 if (o.get("new") or (o.get("domain") or "") in NEWDROP_DOMAINS) else 0,
             "np": 1 if o.get("new") else 0,          # genuinely new arrival (published <= 7 days)
         })
@@ -523,6 +550,22 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .pvx:hover{color:#fff}
 .pvslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
 .pvslots:has(.varrow){display:block}
+.pvslots:has(.mqwrap){display:block}
+.mqwrap{display:flex;flex-direction:column;align-items:center}
+.mqstage{position:relative;width:300px;max-width:80vw;aspect-ratio:10/17;background:radial-gradient(130% 90% at 50% 12%,#1b1b24,#0c0c11);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:4px auto 0}
+.mqsil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.mqsil svg{height:96%;fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.09);stroke-width:.6}
+.mqz{position:absolute;left:50%;transform:translateX(-50%);border-radius:10px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.09);background:#15151c}
+.mqz img{width:100%;height:100%;object-fit:cover;display:block}
+.mqz.mqerr img{opacity:.15}
+.mqz .mqlab{position:absolute;left:0;right:0;bottom:0;font-size:8.5px;padding:2px 5px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.mq-hat{top:1.5%;width:23%;aspect-ratio:1.1;z-index:5}
+.mq-top{top:14%;width:43%;aspect-ratio:.82;z-index:3}
+.mq-layer{top:16%;left:27%;transform:none;width:30%;aspect-ratio:.72;z-index:2}
+.mq-bottom{top:45%;width:40%;aspect-ratio:.62;z-index:3}
+.mq-shoe{bottom:1.5%;width:37%;aspect-ratio:1.5;z-index:4}
+.mq-acc{top:22%;right:3%;left:auto;transform:none;width:19%;aspect-ratio:1;z-index:4}
+.mqcap{font-size:11.5px;color:var(--dim);max-width:320px;text-align:center;margin:12px auto 0;line-height:1.5}
 .pvslot{background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .pvslot img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#15151c}
 .pvlab{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim2);padding:7px 10px 0}
@@ -666,6 +709,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 </main>
 <div id="pvwrap" class="pvwrap" hidden><div class="pvbox">
  <div class="pvhead"><h3 id="pvtitle">Outfit</h3><span id="pvtotal" class="cost"></span>
+ <button id="pvbody" class="act sm" title="See the outfit on a figure">&#128100; On the body</button>
  <button id="pvvary" class="act sm" title="A few variations — your liked pieces stay">&#8646; Variations</button>
  <button id="pvclose" class="pvx" title="Close">&times;</button></div>
  <div id="pvslots" class="pvslots"></div></div></div>
@@ -749,7 +793,7 @@ const counts={}; D.forEach(r=>counts[r.c]=(counts[r.c]||0)+1);
 const nPend=D.filter(r=>r.n).length;
 $('collections').innerHTML =
   `<button class="chip special" data-x="pend">&#9733; Best of<span class="n">${nPend}</span></button>`+
-  `<button class="chip nd" data-x="nd">&#9889; New Drops<span class="n">${D.filter(r=>r.nd).length}</span></button>`+
+  `<button class="chip nd" data-x="nd">&#9889; New In<span class="n">${D.filter(r=>r.np).length}</span></button>`+
   `<button class="chip vid" data-x="vid">Videos<span class="n">${D.filter(r=>r.v).length}</span></button>`+
   `<button class="chip bw" data-x="bw">B/W Tees<span class="n">${D.filter(r=>(r.c==='tee'||r.c==='longsleeve')&&(r.col==='black'||r.col==='white')).length}</span></button>`+
   `<button class="chip favc" data-x="fav">&#9829; Saved<span class="n" id="favn">0</span></button>`;
@@ -786,7 +830,7 @@ function filtered(){
    (!fits||!r.sm) && (!showPend||r.n) && (!showVid||r.v) &&
    (!$('hidesaved').checked||showFav||!savedUrls.has(r.u)) &&
    (!showFav||favs.has(r.id)) &&
-   (!showND||r.nd) &&
+   (!showND||r.np) &&
    (!showBW||((r.c==='tee'||r.c==='longsleeve')&&(r.col==='black'||r.col==='white'))) &&
    r.g<=pm && r.g>=pn &&
    (!q||r.t.toLowerCase().includes(q)||r.b.toLowerCase().includes(q)));
@@ -897,7 +941,7 @@ function reindex(){
    `<button class="chip${active.has(k)?' on':''}" data-c="${k}">${l}<span class="n">${counts[k]}</span></button>`).join('');
  $('collections').innerHTML =
    `<button class="chip special${showPend?' on':''}" data-x="pend">&#9733; Best of<span class="n">${D.filter(r=>r.n).length}</span></button>`+
-   `<button class="chip nd${showND?' on':''}" data-x="nd">&#9889; New Drops<span class="n">${D.filter(r=>r.nd).length}</span></button>`+
+   `<button class="chip nd${showND?' on':''}" data-x="nd">&#9889; New In<span class="n">${D.filter(r=>r.np).length}</span></button>`+
    `<button class="chip vid${showVid?' on':''}" data-x="vid">Videos<span class="n">${D.filter(r=>r.v).length}</span></button>`+
    `<button class="chip bw${showBW?' on':''}" data-x="bw">B/W Tees<span class="n">${D.filter(r=>(r.c==='tee'||r.c==='longsleeve')&&(r.col==='black'||r.col==='white')).length}</span></button>`+
    `<button class="chip favc${showFav?' on':''}" data-x="fav">&#9829; Saved<span class="n" id="favn">0</span></button>`;
@@ -1229,15 +1273,36 @@ function renderSaved(){
 }
 {const sq=$('savedq'); if(sq) sq.addEventListener('input',renderSaved);}
 // preview (see a fit bigger) — starter looks + saved outfits
-function openPreview(items,title,total){
- const slots=SLOTORDER.filter(k=>items[k]).map(k=>{const r=items[k];
+function pvPieces(items){ return SLOTORDER.filter(k=>items[k]).map(k=>{const r=items[k];
    return `<div class="pvslot"><div class="pvlab">${k}</div>`+
      `<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.style.opacity=.15">`+
      `<div class="pvm"><div class="bb">${esc(r.b)}</div><div class="tt">${esc(r.t)}</div>`+
      `<div class="pp">${gbp(r.g)}${r.col&&r.col!=='unknown'?' \u00b7 '+esc(r.col):''}</div>`+
      `<a class="go" href="${esc(r.u)}" target="_blank" rel="noopener">View item &rarr;</a></div></div>`;}).join('');
+}
+function pvMannequin(items){
+ const z=(k,cls)=>{const r=items[k]; if(!r)return '';
+   return `<div class="mqz ${cls}" title="${esc(r.b)} \u2014 ${esc(r.t)}"><img loading="lazy" src="${esc(r.i)}" onerror="this.parentNode.classList.add('mqerr')"><span class="mqlab">${esc(k)}</span></div>`;};
+ const sil='<div class="mqsil"><svg viewBox="0 0 100 220" preserveAspectRatio="xMidYMid meet">'
+  +'<circle cx="50" cy="20" r="13"/>'
+  +'<path d="M30 36 L70 36 L75 60 L64 64 L64 122 L36 122 L36 64 L25 60 Z"/>'
+  +'<path d="M38 122 L48 122 L47 208 L39 208 Z"/>'
+  +'<path d="M52 122 L62 122 L61 208 L53 208 Z"/></svg></div>';
+ const tot=SLOTORDER.filter(k=>items[k]).reduce((a,k)=>a+items[k].g,0);
+ return `<div class="mqwrap"><div class="mqstage">${sil}`
+   +z('hat','mq-hat')+z('layer','mq-layer')+z('top','mq-top')+z('bottom','mq-bottom')+z('shoe','mq-shoe')+z('accessory','mq-acc')
+   +`</div><div class="mqcap">Head-to-toe on the figure \u2014 ${gbp(tot)}. Each piece sits where it's worn, so you can read how the fit stacks together.</div></div>`;
+}
+let _pvView='pieces';
+function renderPreview(){
+ if(!_pvBase)return;
+ $('pvslots').innerHTML = _pvView==='body' ? pvMannequin(_pvBase) : pvPieces(_pvBase);
+ const bb=$('pvbody'); if(bb) bb.innerHTML = _pvView==='body' ? '\uD83D\uDCC7 Pieces' : '\uD83D\uDC64 On the body';
+}
+function openPreview(items,title,total){
+ _pvBase=items; _pvView='pieces';
  $('pvtitle').textContent=title||'Outfit'; $('pvtotal').textContent=gbp(total||0);
- $('pvslots').innerHTML=slots; $('pvwrap').hidden=false; _pvBase=items;
+ renderPreview(); $('pvwrap').hidden=false;
 }
 let _pvBase=null, _pvVars=[], _pvLocks={};
 // remix: KEEP the locked pieces exactly, re-pick the unlocked ones so they COORDINATE with what's kept
@@ -1298,6 +1363,7 @@ document.addEventListener('click',e=>{
 });
 $('pvclose').onclick=()=>{$('pvwrap').hidden=true;};
 $('pvvary').onclick=showVariations;
+{const bb=$('pvbody'); if(bb) bb.onclick=()=>{ _pvView=_pvView==='body'?'pieces':'body'; renderPreview(); };}
 $('pvwrap').addEventListener('click',e=>{ if(e.target.id==='pvwrap')$('pvwrap').hidden=true; });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')$('pvwrap').hidden=true; });
 document.addEventListener('click',e=>{

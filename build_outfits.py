@@ -20,7 +20,7 @@ random.seed(11)   # deterministic — no Date/random drift between rebuilds
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
 BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwellies?\b|desert boot|work ?boot|moc.?toe|\bmoccasin|timberland|red ?wing|blundstone|\bugg\b|tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|\bheel|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform (heel|sandal)|oxford|thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 # outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
-SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics", re.I)
+SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics|saucony|onitsuka|\bhoka\b|\bveja\b|superga|novesta|converse", re.I)
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
 
 # Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
@@ -36,7 +36,7 @@ _CLS_RULES = [
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
  ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
- ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d)\b"),
+ ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d|saucony|\basics\b|onitsuka|\bhoka\b|\bveja\b|superga|novesta|moonstar|\bautry\b|chuck taylor|jack purcell)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
  ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
 ]
@@ -148,6 +148,21 @@ for path in files:
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
                      "i":o["image"], "u":u, "sc":score, "s":sizes[:8]})
 
+_COL_MAP2 = [("black",r"\b(black|jet ?black|onyx|noir)\b"),("white",r"\b(white|off.?white|blanc)\b"),
+ ("grey",r"\b(grey|gray|charcoal|heather|slate|graphite)\b"),("navy",r"\b(navy|midnight)\b"),
+ ("blue",r"\b(blue|indigo|cobalt|teal|aqua|denim)\b"),("olive",r"\b(olive|khaki|army|sage|moss)\b"),
+ ("green",r"\b(green|forest|emerald|hunter)\b"),("burgundy",r"\b(burgundy|maroon|wine|oxblood)\b"),
+ ("red",r"\b(red|crimson|scarlet|cherry)\b"),("brown",r"\b(brown|chocolate|coffee|mocha|walnut)\b"),
+ ("tan",r"\b(tan|camel|beige|sand|taupe|stone)\b"),("cream",r"\b(cream|oat|bone|natural|ecru|ivory)\b"),
+ ("pink",r"\b(pink|rose|blush|fuchsia)\b"),("purple",r"\b(purple|violet|lilac|lavender|plum)\b"),
+ ("orange",r"\b(orange|rust|terracotta|copper)\b"),("yellow",r"\b(yellow|mustard|gold|amber)\b")]
+_COL_RX2=[(k,re.compile(p,re.I)) for k,p in _COL_MAP2]
+_NEUTSET={"black","white","grey","navy","brown","tan","cream"}
+for r in rows:
+    if not r.get("col") or r["col"]=="unknown":
+        for k,rx in _COL_RX2:
+            if rx.search(r["t"] or ""): r["col"]=k; break
+    if r["col"] in _NEUTSET: r["neu"]=True
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
