@@ -27,6 +27,7 @@ CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.
 _CLS_RULES = [
  ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
  ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
+ ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
@@ -35,16 +36,27 @@ _CLS_RULES = [
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
  ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
- ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance \d|\d{3,4}v\d)\b"),
+ ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
  ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
 ]
+_FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sandals?|slides?|sliders?|mules?|clogs?|crocs?|plimsolls?|espadrilles?)\b", re.I)
+_APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
 _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
 def classify(title, stored):
     t = title or ""
+    if _FOOT_EXPLICIT.search(t):
+        return "footwear"                 # literally a shoe/sneaker/loafer/etc.
+    apparel = bool(_APPAREL_NOUN.search(t))
     for k, rx in _CLS:
+        if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
+            continue
         if rx.search(t):
             return k
+    if not apparel:
+        for k, rx in _CLS:
+            if k == "footwear" and rx.search(t):
+                return k
     return stored
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}
