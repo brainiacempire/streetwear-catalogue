@@ -553,6 +553,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div class="chips" id="viewtabs">
   <button class="chip vt on" data-v="grid">Catalog</button>
   <button class="chip vt" data-v="fits">Outfits<span class="n" id="fitn"></span></button>
+  <button class="chip vt" data-v="surprise">&#127922; Surprise</button>
   <span class="vtsep"></span>
   <span id="collections" class="collrow"></span>
  </div>
@@ -577,6 +578,14 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 </div></header>
 <main class="wrap">
  <div class="grid" id="grid"></div>
+ <div id="surprise" hidden>
+  <div class="tophead"><div class="toptitle">&#127922; Surprise me</div>
+   <div class="tophint">A fresh mix of standout pieces and full outfits every time — pure discovery, pulled at random from the whole catalogue. Hit the button for a new set.</div>
+   <button class="act sm prim" id="surpriseagain" style="margin-top:12px">&#127922; Surprise me again</button></div>
+  <div class="grid" id="surprisepieces"></div>
+  <h3 style="margin:26px 0 12px;font-size:16px;font-weight:700">Surprise outfits</h3>
+  <div id="surpriseouts"></div>
+ </div>
  <div id="fits" hidden>
   <div class="fitsub" id="fitsub">
    <button class="fsub on" data-fs="build">Build a fit</button>
@@ -807,7 +816,7 @@ function render(){
  $('more').hidden=f.length<=shown;
  $('more').textContent=`Show more (${f.length-shown} left)`;
 }
-$('grid').addEventListener('click',e=>{
+function _favClick(e){
  const b=e.target.closest('[data-fav]'); if(!b)return;
  e.preventDefault();
  const id=+b.dataset.fav;
@@ -818,7 +827,17 @@ $('grid').addEventListener('click',e=>{
  b.classList.toggle('on');
  updateFav();
  if(showFav) render();
-});
+}
+$('grid').addEventListener('click',_favClick);
+{const sp=$('surprisepieces'); if(sp) sp.addEventListener('click',_favClick);}
+function renderSurprise(){
+ const pool=D.filter(r=>r.a && r.i);
+ const pieces=[...pool].sort(()=>Math.random()-0.5).slice(0,24);
+ $('surprisepieces').innerHTML = pieces.length?pieces.map(card).join(''):'<div class="empty">Nothing to surprise you with yet.</div>';
+ const outs=[...FITS].sort(()=>Math.random()-0.5).slice(0,6);
+ $('surpriseouts').innerHTML = outs.length?outs.map(fitHtml).join(''):'';
+}
+{const sa=$('surpriseagain'); if(sa) sa.onclick=renderSurprise;}
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
 ['q','brand','sort','only','fitsme','colf','hidesaved'].forEach(id=>{const el=$(id); if(el) el.addEventListener('input',()=>{shown=PAGE;render()});});
@@ -1274,13 +1293,14 @@ document.getElementById('fitsub').addEventListener('click',e=>{const b=e.target.
 
 $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on')); b.classList.add('on');
- const isFits=b.dataset.v==='fits';
- $('fits').hidden=!isFits; $('grid').hidden=isFits;
- $('more').style.display=isFits?'none':'';
- $('loadmore').style.display=isFits?'none':''; if(!isFits) updateLoadMore();
- document.getElementById('chips').style.display=isFits?'none':'';
- document.querySelector('.bar').style.display=isFits?'none':'';
+ const v=b.dataset.v, isFits=v==='fits', isSurp=v==='surprise', isGrid=v==='grid';
+ $('fits').hidden=!isFits; $('surprise').hidden=!isSurp; $('grid').hidden=!isGrid;
+ $('more').style.display=isGrid?'':'none';
+ $('loadmore').style.display=isGrid?'':'none'; if(isGrid) updateLoadMore();
+ document.getElementById('chips').style.display=isGrid?'':'none';
+ document.querySelector('.bar').style.display=isGrid?'':'none';
  if(isFits) setFitSub('build');
+ if(isSurp) renderSurprise();
 };
 updateSavedCount();
 $('htab').querySelector('tbody').innerHTML=ST.map(s=>{
