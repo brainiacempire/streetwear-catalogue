@@ -82,11 +82,7 @@ if os.path.exists("video_picks.json"):
             vidpicks[p["url"]] = p.get("src", "From a video")
 
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
-BOOT_RE = re.compile(r"boots?|chukka|chelsea|combat|hiking|wellington|wellies?|"
-    r"desert boot|work ?boot|moc.?toe|moccasin|timberland|red ?wing|blundstone|ugg|"
-    r"tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|"
-    r"heel|stiletto|pumps?|ballet|mary.?jane|wedge|platform (heel|sandal)|oxford|"
-    r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
+BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwellies?\b|desert boot|work ?boot|moc.?toe|\bmoccasin|timberland|red ?wing|blundstone|\bugg\b|tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|\bheel|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform (heel|sandal)|oxford|thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 
 # Title-first classifier — the garment word wins over brand/model names.
 # Checked in priority order; footwear only matches real footwear words AND only after

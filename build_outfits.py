@@ -18,15 +18,9 @@ import json, glob, random, collections, os, re
 random.seed(11)   # deterministic — no Date/random drift between rebuilds
 
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
-BOOT_RE = re.compile(r"boots?|chukka|chelsea|combat|hiking|wellington|wellies?|"
-    r"desert boot|work ?boot|moc.?toe|moccasin|timberland|red ?wing|blundstone|ugg|"
-    r"tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|"
-    r"heel|stiletto|pumps?|ballet|mary.?jane|wedge|platform (heel|sandal)|oxford|"
-    r"thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
+BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwellies?\b|desert boot|work ?boot|moc.?toe|\bmoccasin|timberland|red ?wing|blundstone|\bugg\b|tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|\bheel|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform (heel|sandal)|oxford|thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 # outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
-SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|"
-    r"gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|"
-    r"\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics", re.I)
+SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics", re.I)
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
 
 # Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
