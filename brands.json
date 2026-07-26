@@ -493,5 +493,10 @@
 "domain": "dtmusa.myshopify.com",
 "brand": "Dtmusa",
 "cur": "USD"
+},
+{
+"domain": "satoshinakamoto.cloud",
+"brand": "SATOSHI NAKAMOTO",
+"cur": "USD"
 }
 ]

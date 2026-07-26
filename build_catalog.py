@@ -82,9 +82,10 @@ if os.path.exists("video_picks.json"):
             vidpicks[p["url"]] = p.get("src", "From a video")
 
 rows, bad = [], 0
-_rowfiles = sorted(glob.glob("rows/*.jsonl"))
-if os.path.exists("_saved.jsonl") and "_saved.jsonl" not in _rowfiles:
-    _rowfiles.append("_saved.jsonl")
+# rows/ = fresh scraped data (refreshed daily by CI); root *.jsonl = permanent
+# snapshots that always render: _saved.jsonl (saves), satoshinakamoto/laced (reference).
+_rowfiles = sorted(glob.glob("rows/*.jsonl")) + sorted(glob.glob("*.jsonl"))
+_seen_rf = set(); _rowfiles = [f for f in _rowfiles if not (f in _seen_rf or _seen_rf.add(f))]
 for f in _rowfiles:
     for line in open(f, encoding="utf-8"):
         line = line.strip()
@@ -180,7 +181,11 @@ for r in rows:
     k = (r["d"], r["t"].lower())
     cur = best.get(k)
     if cur is None or (r["a"] and not cur["a"]) or (r["a"] == cur["a"] and r["g"] < cur["g"]):
+        if cur is not None:                      # keep the better listing but never lose flags
+            r["f"] = r["f"] or cur["f"]; r["n"] = r["n"] or cur["n"]; r["v"] = r["v"] or cur["v"]
         best[k] = r
+    else:                                        # merge flags onto the survivor
+        cur["f"] = cur["f"] or r["f"]; cur["n"] = cur["n"] or r["n"]; cur["v"] = cur["v"] or r["v"]
 rows = sorted(best.values(), key=lambda r: (r["b"].lower(), r["t"].lower()))
 for i, r in enumerate(rows): r["id"] = i
 
