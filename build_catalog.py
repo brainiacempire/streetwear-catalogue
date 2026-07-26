@@ -561,7 +561,8 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
   <input type="search" id="q" placeholder="Search title or brand&hellip;">
   <select id="brand"><option value="">All brands</option></select>
   <select id="sort"><option value="rel">Sort: brand</option><option value="pa">Price: low to high</option>
-   <option value="pd">Price: high to low</option><option value="az">Name A&ndash;Z</option></select>
+   <option value="pd">Price: high to low</option><option value="az">Name A&ndash;Z</option><option value="rand">&#127922; Surprise order</option></select>
+  <button class="act sm" id="shuffle" title="Shuffle these results">&#127922; Shuffle</button>
   <select id="colf"><option value="">Any colour</option></select>
   <div class="rng">min&nbsp;£<span id="pvmin">0</span>
    <input type="range" id="pmin" min="0" max="600" value="0" step="5"></div>
@@ -662,6 +663,7 @@ function startApp(data, _KEY){
 const D=data.D, CATS=__CATS__, ST=data.ST, OUT=data.OUT;
 let _chunkNext=0;
 const PAGE=120; let shown=PAGE, active=new Set(), showPend=false, showFav=false, showVid=false, showBW=false, showND=false;
+let _seed=0.37; function _rnd(id){var x=Math.sin((id+1)*97.13+_seed*9973)*10000; return x-Math.floor(x);}
 const KEY='streetwear-catalog-saved-v1';
 // Saves are keyed by product URL, not row id, so they survive rebuilds where ids shift.
 // localStorage works when this file is opened locally; if a sandbox blocks it we fall
@@ -774,6 +776,7 @@ function filtered(){
  if(s==='pa')out=[...out].sort((a,b)=>a.g-b.g);
  else if(s==='pd')out=[...out].sort((a,b)=>b.g-a.g);
  else if(s==='az')out=[...out].sort((a,b)=>a.t.localeCompare(b.t));
+ else if(s==='rand')out=[...out].sort((a,b)=>_rnd(a.id)-_rnd(b.id));
  else out=[...out].sort((a,b)=>(b.n?1:0)-(a.n?1:0));
  return out;
 }
@@ -819,6 +822,7 @@ $('grid').addEventListener('click',e=>{
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
 ['q','brand','sort','only','fitsme','colf','hidesaved'].forEach(id=>{const el=$(id); if(el) el.addEventListener('input',()=>{shown=PAGE;render()});});
+{const sh=$('shuffle'); if(sh) sh.onclick=()=>{ _seed=Math.random(); $('sort').value='rand'; shown=PAGE; render(); toast('Shuffled \u2014 pick a Sort to go back'); };}
 $('pmax').addEventListener('input',e=>{$('pv').textContent=e.target.value;shown=PAGE;render()});
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');
  setTimeout(()=>t.classList.remove('show'),2200);}
