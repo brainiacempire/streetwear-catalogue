@@ -1327,23 +1327,28 @@ async function init3D(items,host,capEl){
  var dl2=new THREE.DirectionalLight(0x8899ff,.28); dl2.position.set(-4,2,-4); scene.add(dl2);
  var g=new THREE.Group(); scene.add(g);
  var skin=new THREE.MeshStandardMaterial({color:0xb8a08a,roughness:.95});
- function cyl(rt,rb,h,seg,mat){ return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||24,1),mat); }
+ function cyl(rt,rb,h,seg,mat){ return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||22,1),mat); }
+ function gtype(r,slot){ if(!r)return null; var t=(r.t||'').toLowerCase();
+   if(slot==='hat'){ if(/beanie|watch ?cap|skully|knit hat/.test(t))return 'beanie'; if(/bucket/.test(t))return 'bucket'; return 'cap'; }
+   if(slot==='top'){ if(/hood/.test(t)||r.c==='hoodie_sweat')return 'hood'; if(r.c==='tee'||/t-?shirt|\btee\b|s\/s|short ?sleeve|polo|tank|jersey/.test(t))return 'tee'; return 'ls'; }
+   if(slot==='bottom'){ if(r.c==='shorts'||/shorts|jorts/.test(t))return 'shorts'; return 'pants'; }
+   return slot; }
+ function armMesh(mat,side,frac,thick){ var len=1.8*frac; var m=cyl(thick,thick*.82,len,16,mat); m.position.set(side*1.02,2.62-len/2,0); m.rotation.z=side*0.12; return m; }
+ function legMesh(mat,side,frac,thick){ var len=2.0*frac; var m=cyl(thick,thick*.8,len,18,mat); m.position.set(side*0.34,0.98-len/2,0); return m; }
+ function torsoMesh(mat,rt,rb,h,y){ var m=cyl(rt,rb,h,30,mat); m.position.y=y; return m; }
  var head=new THREE.Mesh(new THREE.SphereGeometry(.5,28,28),skin); head.position.y=3.2; g.add(head);
- var neck=cyl(.18,.2,.3,16,skin); neck.position.y=2.85; g.add(neck);
- if(items.hat){ var hm=_matFor(items.hat); var hat=cyl(.58,.58,.42,26,hm); hat.position.y=3.62; g.add(hat);
-   var brim=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.05,26),hm); brim.position.y=3.4; g.add(brim); }
- var topMat=_matFor(items.top||items.layer);
- var torso=cyl(.92,.74,2.05,30,topMat); torso.position.y=1.75; g.add(torso);
- if(items.layer){ var lay=cyl(1.04,.84,2.1,30,_matFor(items.layer)); lay.position.y=1.75; g.add(lay); }
- var armMat=_matFor(items.layer||items.top);
- var aL=cyl(.17,.13,1.75,16,armMat); aL.position.set(-1.05,1.72,0); aL.rotation.z=.12; g.add(aL);
- var aR=cyl(.17,.13,1.75,16,armMat); aR.position.set(1.05,1.72,0); aR.rotation.z=-.12; g.add(aR);
- var botMat=_matFor(items.bottom);
- var lL=cyl(.35,.26,2.05,22,botMat); lL.position.set(-.34,-.02,0); g.add(lL);
- var lR=cyl(.35,.26,2.05,22,botMat); lR.position.set(.34,-.02,0); g.add(lR);
- var shoeMat=_matFor(items.shoe);
- var fL=new THREE.Mesh(new THREE.BoxGeometry(.44,.28,.9),shoeMat); fL.position.set(-.34,-1.2,.24); g.add(fL);
- var fR=new THREE.Mesh(new THREE.BoxGeometry(.44,.28,.9),shoeMat); fR.position.set(.34,-1.2,.24); g.add(fR);
+ var neck=cyl(.17,.2,.32,16,skin); neck.position.y=2.86; g.add(neck);
+ g.add(armMesh(skin,-1,1,.15)); g.add(armMesh(skin,1,1,.15));
+ g.add(legMesh(skin,-1,1,.28)); g.add(legMesh(skin,1,1,.28));
+ if(items.bottom){ var bm=_matFor(items.bottom); var bf=(gtype(items.bottom,'bottom')==='shorts')?0.5:1; g.add(legMesh(bm,-1,bf,.34)); g.add(legMesh(bm,1,bf,.34)); }
+ if(items.top){ var tm=_matFor(items.top); var tt=gtype(items.top,'top'); g.add(torsoMesh(tm,.95,.77,2.0,1.75)); var sf=(tt==='tee')?0.42:1; g.add(armMesh(tm,-1,sf,.185)); g.add(armMesh(tm,1,sf,.185));
+   if(tt==='hood'){ var hood=new THREE.Mesh(new THREE.SphereGeometry(.56,20,16,0,Math.PI*2,0,Math.PI*0.62),tm); hood.position.set(0,2.98,-.18); hood.rotation.x=-0.3; g.add(hood); } }
+ if(items.layer){ var lm=_matFor(items.layer); g.add(torsoMesh(lm,1.07,.87,2.06,1.75)); g.add(armMesh(lm,-1,1,.205)); g.add(armMesh(lm,1,1,.205)); }
+ if(items.hat){ var hm=_matFor(items.hat); var ht=gtype(items.hat,'hat');
+   if(ht==='beanie'){ var be=new THREE.Mesh(new THREE.SphereGeometry(.56,22,18,0,Math.PI*2,0,Math.PI*0.6),hm); be.position.set(0,3.32,0); g.add(be); }
+   else if(ht==='bucket'){ var bcr=cyl(.5,.6,.42,26,hm); bcr.position.y=3.55; g.add(bcr); var bbr=cyl(.62,.9,.22,26,hm); bbr.position.y=3.3; g.add(bbr); }
+   else { var crown=cyl(.55,.57,.4,26,hm); crown.position.y=3.55; g.add(crown); var brim=new THREE.Mesh(new THREE.CylinderGeometry(.86,.86,.05,26),hm); brim.position.set(0,3.4,.32); brim.scale.z=1.3; g.add(brim); } }
+ if(items.shoe){ var shm=_matFor(items.shoe); var fL=new THREE.Mesh(new THREE.BoxGeometry(.42,.26,.92),shm); fL.position.set(-.34,-1.16,.26); g.add(fL); var fR=new THREE.Mesh(new THREE.BoxGeometry(.42,.26,.92),shm); fR.position.set(.34,-1.16,.26); g.add(fR); }
  var sh=new THREE.Mesh(new THREE.CircleGeometry(1.25,32),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.32}));
  sh.rotation.x=-Math.PI/2; sh.position.y=-1.42; g.add(sh);
  g.position.y=-0.35;
