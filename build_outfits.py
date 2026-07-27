@@ -23,17 +23,17 @@ BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwell
 WOMENS_RE = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
     r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
-    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b|\bteddy\b"
+    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
     r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
-    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing\b|\bnurse\b"
-    r"|\bjeggings?\b|\bmaxi\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
-    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bheels?\b|\bpeep.?toe\b|\bmary.?janes?\b"
+    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b"
+    r"|\bjeggings?\b|\bleggings?\b|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
+    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b"
     r"|\bballet.?(?:flats?|pumps?)\b|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
     r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
     , re.I)
 KIDS_RE = re.compile(
-    r"\(gs\)|\bgs\b|\(ps\)|\(td\)|\(ts\)|\bbig kids?\b|\blittle kids?\b|\btoddlers?\b|\binfants?\b"
-    r"|\bjuniors?\b|\bgrade.?school\b|\bpre.?school\b|\byouth\b|\bboys?\b|\bkids?\b|\bchildren'?s?\b"
+    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
+    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
     , re.I)
 def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")

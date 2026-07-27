@@ -89,18 +89,19 @@ BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwell
 WOMENS_RE = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
     r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
-    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b|\bteddy\b"
+    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
     r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
-    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing\b|\bnurse\b"
-    r"|\bjeggings?\b|\bmaxi\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
-    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bheels?\b|\bpeep.?toe\b|\bmary.?janes?\b"
+    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b"
+    r"|\bjeggings?\b|\bleggings?\b|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
+    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b"
     r"|\bballet.?(?:flats?|pumps?)\b|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
     r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
     , re.I)
-# Kids / youth sneaker sizings (GS = grade-school, PS = pre-school, TD = toddler) and junior lines.
+# Kids sneaker sizings ONLY — precise so it never eats menswear or brand names
+# ("Grimy Kids", "KidSuper", "Boys Don't Cry", "Youth Machine" must all survive).
 KIDS_RE = re.compile(
-    r"\(gs\)|\bgs\b|\(ps\)|\(td\)|\(ts\)|\bbig kids?\b|\blittle kids?\b|\btoddlers?\b|\binfants?\b"
-    r"|\bjuniors?\b|\bgrade.?school\b|\bpre.?school\b|\byouth\b|\bboys?\b|\bkids?\b|\bchildren'?s?\b"
+    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
+    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
     , re.I)
 def clean_title(t):
     """Strip HTML tags / entities that leak into Shopify titles (<span>15 Ounce…</span>)."""
@@ -229,7 +230,8 @@ for f in _rowfiles:
         tl = t.lower()
         if re.fullmatch(r"(test\s*\d*|\d{1,3})", tl):      continue
         if "gift card" in tl:                              continue
-        if re.search(r"\bcrop(?:ped)?\b", tl):             continue   # Dave: no crop tees
+        if re.search(r"\bcrop(?:ped)?\s*(top|tee|t-?shirt|tank|cami|hoodie|sweat|jumper|knit|shirt)\b", tl):
+            continue   # Dave: no crop TOPS — but cropped/ankle trousers stay (menswear)
         if is_forbidden(t):                                continue   # women's / kids by title
         if women_tagged(o):                                continue   # women's by its own tags/type
         try:    price = float(o.get("price") or 0)
@@ -300,7 +302,7 @@ except Exception:
 PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "4000"))   # effectively uncapped for real brands
 FULL_CAP = int(os.environ.get("FULL_CAP", "6000"))       # loved/saved brands: full
 SUPERSTORE_CAP = int(os.environ.get("SUPERSTORE_CAP", "700"))   # the ONLY real cap: multi-brand shops
-MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "30000"))    # size of the EMBEDDED first paint; the rest streams
+MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "50000"))    # bigger first paint so counts read full immediately; rest streams
 SUPERSTORE_NAMES = {"stadiumgoods","italist","brownsfashion","cncpts","sneakerpolitics","packer",
  "notre","xhibition","slamjam","overkillshop","afew-store","extrabutterny","crepslocker",
  "socialstatuspgh","blue in green","naked copenhagen","civilized","corlection","hypedept",
