@@ -1086,14 +1086,26 @@ function renderSurprise(){
    const pool=D.filter(r=>r.a && r.i);
    pieces=[...pool].sort(()=>Math.random()-0.5).slice(0,24);
  } else {
-   // CURATED — a quality BACKBONE, but broad: curated best-of, video and strong pieces lead, taste is
-   // a gentle boost (never a gate), so similar brands/styles and pieces you've never seen all surface.
-   // Only genuine novelty (swim/underwear/socks/trinkets) is kept off this shelf.
+   // CURATED — tailored to YOUR taste: the styles, brands, colours and pieces you gravitate to lead,
+   // with a curated-quality backbone (best-of / video / high quality). Similar-style pieces and labels
+   // you haven't seen still surface — and a per-brand cap spreads it across MANY brands so more get a
+   // chance. Genuine novelty (swim/underwear/socks/trinkets) stays off this shelf. Pure curation.
+   const t=_taste();
+   const styleAff={};                                     // which STYLE lanes you gravitate to, from your saves
+   if(t.n){ D.forEach(r=>{ if(savedUrls.has(r.u)){ const s=styleOf(r); styleAff[s]=(styleAff[s]||0)+1; } }); }
    const pool=D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t) && r.g>=15);
-   const scored=pool.map(r=>({r, s:(r.n?6:0)+(r.v?4:0)+Math.min(8,(r.sc||0))+(_taste().n?tasteBoost(r):0)+((40<=r.g&&r.g<=600)?2:0)}))
-     .sort((a,b)=>b.s-a.s);
-   const head=scored.slice(0, Math.max(220, Math.floor(scored.length*0.55)));   // wide head = varied, not the same faces
-   pieces=[...head].sort(()=>Math.random()-0.5).slice(0,24).map(x=>x.r);
+   const scored=pool.map(r=>({r, s:
+       (r.n?5:0)+(r.v?3:0)+Math.min(6,(r.sc||0))                        // curated-quality backbone
+       + (t.n?tasteBoost(r)*2:0)                                        // your brands / categories / colours — weighted UP
+       + (styleAff[styleOf(r)]?Math.min(5,styleAff[styleOf(r)]):0)      // the STYLES you gravitate to
+       + ((40<=r.g&&r.g<=600)?1:0)
+     })).sort((a,b)=>b.s-a.s);
+   const head=scored.slice(0, Math.max(160, Math.floor(scored.length*0.45)));
+   const shuffled=[...head].sort(()=>Math.random()-0.5);
+   const perBrand={}; pieces=[];                          // brand-diversity: max 2 per label so many brands show
+   for(const x of shuffled){ const bk=(x.r.b||'').toLowerCase();
+     if((perBrand[bk]||0)>=2) continue; perBrand[bk]=(perBrand[bk]||0)+1; pieces.push(x.r); if(pieces.length>=24) break; }
+   if(pieces.length<24){ for(const x of shuffled){ if(pieces.indexOf(x.r)>=0) continue; pieces.push(x.r); if(pieces.length>=24) break; } }
  }
  $('surprisepieces').innerHTML = pieces.length?pieces.map(card).join(''):'<div class="empty">Nothing to surprise you with yet.</div>';
  const outs=[...FITS].sort(()=>Math.random()-0.5).slice(0,6);
