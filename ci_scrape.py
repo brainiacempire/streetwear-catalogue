@@ -27,8 +27,8 @@ WOMENS = re.compile(
     r"|\bdress(?:es)?\b(?!\s*(?:shirts?|pants?|trousers?|chinos?|shorts?|shoes?|boots?|socks?|coats?|blazers?|jackets?|vests?|cardigans?|belts?|rings?|slacks?|watch|down|up|code|form|age|maker))"
     , re.I)
 KIDS = re.compile(
-    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
-    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
+    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgs\b|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
+    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b|^\s*kids?\b"
     , re.I)
 # Women's-ONLY designer labels that leak via multi-brand retailers (Kith Women etc.).
 WOMENS_BRAND = re.compile(

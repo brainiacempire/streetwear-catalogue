@@ -1483,5 +1483,120 @@
   "domain": "almostsomeday.com",
   "brand": "Almost Someday",
   "cur": "USD"
+ },
+ {
+  "domain": "realbadman.com",
+  "brand": "Real Bad Man",
+  "cur": "USD"
+ },
+ {
+  "domain": "biancachandon.com",
+  "brand": "Bianca Chandon",
+  "cur": "USD"
+ },
+ {
+  "domain": "placesplusfaces.com",
+  "brand": "Places+Faces",
+  "cur": "GBP"
+ },
+ {
+  "domain": "perksandmini.com",
+  "brand": "Perks and Mini",
+  "cur": "AUD"
+ },
+ {
+  "domain": "scififantasy.co",
+  "brand": "Sci-Fi Fantasy",
+  "cur": "USD"
+ },
+ {
+  "domain": "frogskateboards.com",
+  "brand": "Frog Skateboards",
+  "cur": "USD"
+ },
+ {
+  "domain": "limosineskateboards.com",
+  "brand": "Limosine",
+  "cur": "USD"
+ },
+ {
+  "domain": "biancasaunders.com",
+  "brand": "Bianca Saunders",
+  "cur": "GBP"
+ },
+ {
+  "domain": "nicholasdaley.net",
+  "brand": "Nicholas Daley",
+  "cur": "GBP"
+ },
+ {
+  "domain": "ssdaley.com",
+  "brand": "SS Daley",
+  "cur": "GBP"
+ },
+ {
+  "domain": "charlesjeffreyloverboy.com",
+  "brand": "Charles Jeffrey Loverboy",
+  "cur": "GBP"
+ },
+ {
+  "domain": "camielfortgens.com",
+  "brand": "Camiel Fortgens",
+  "cur": "EUR"
+ },
+ {
+  "domain": "debonnefacture.fr",
+  "brand": "De Bonne Facture",
+  "cur": "EUR"
+ },
+ {
+  "domain": "sunflower.dk",
+  "brand": "Sunflower",
+  "cur": "EUR"
+ },
+ {
+  "domain": "arpenteur.fr",
+  "brand": "Arpenteur",
+  "cur": "EUR"
+ },
+ {
+  "domain": "cdlp.com",
+  "brand": "CDLP",
+  "cur": "USD"
+ },
+ {
+  "domain": "merzbschwanen.com",
+  "brand": "Merz b. Schwanen",
+  "cur": "EUR"
+ },
+ {
+  "domain": "ninelivesbrand.com",
+  "brand": "Nine Lives",
+  "cur": "USD"
+ },
+ {
+  "domain": "momotarojeans.com",
+  "brand": "Momotaro Jeans",
+  "cur": "USD"
+ },
+ {
+  "domain": "japanbluejeans.com",
+  "brand": "Japan Blue Jeans",
+  "cur": "USD"
+ },
+ {
+  "domain": "houdinisportswear.com",
+  "brand": "Houdini Sportswear",
+  "cur": "EUR"
+ },
+ {
+  "domain": "tetonbros.com",
+  "brand": "Teton Bros",
+  "cur": "USD"
+ },
+ {
+  "domain": "vollebak.com",
+  "brand": "Vollebak",
+  "cur": "USD"
  }
 ]

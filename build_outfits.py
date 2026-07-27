@@ -32,8 +32,8 @@ WOMENS_RE = re.compile(
     r"|\bdress(?:es)?\b(?!\s*(?:shirts?|pants?|trousers?|chinos?|shorts?|shoes?|boots?|socks?|coats?|blazers?|jackets?|vests?|cardigans?|belts?|rings?|slacks?|watch|down|up|code|form|age|maker))"
     , re.I)
 KIDS_RE = re.compile(
-    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
-    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
+    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgs\b|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
+    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b|^\s*kids?\b"
     , re.I)
 def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")
@@ -50,8 +50,11 @@ _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategor
 _M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
 _TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
 _TYPE_MU = re.compile(r"unisex|(^|[:/|>])\s*m[ae]n\b", re.I)
+_WMNS_SLUG = re.compile(r"wmns|womens|/women|-women|women-|/wmn/", re.I)
 def women_tagged(o):
     ptype = str(o.get("product_type") or "")
+    if _WMNS_SLUG.search(str(o.get("url") or "") + " " + str(o.get("image") or "")):
+        return True
     if _TYPE_W.search(ptype) and not _TYPE_MU.search(ptype):
         return True
     blob = (ptype + " " + " ".join(
@@ -100,6 +103,10 @@ def classify(title, stored):
             if k in ("jeans", "sweats", "shorts", "pants") and rx.search(t):
                 return k
         return "pants"
+    if _TOP_STRONG.search(t) and not _BOTTOM_STRONG.search(t):
+        for k, rx in _CLS:
+            if k in ("headwear", "set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
+                return k
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece ("Trainer Jacket")
             continue
@@ -220,7 +227,9 @@ for r in rows:
         if rx.search(r["t"] or ""): dc=k; break
     if dc: r["col"]=dc
     elif not r.get("col"): r["col"]="unknown"
-    r["neu"]=(r["col"] in _NEUTSET)
+    # raw/indigo denim is a wardrobe NEUTRAL — so jeans don't read as a loud accent and
+    # denim-based fits stop being penalised as "clashes".
+    r["neu"]=(r["col"] in _NEUTSET) or (r.get("c")=="jeans")
 # ---- styling intelligence: silhouette / formality / season, for deeper coordination reasoning ----
 _BAGGY   = re.compile(r"\b(baggy|wide|loose|balloon|relaxed|oversized|carpenter|skater|puddle|billow|voluminous)\b", re.I)
 _SLIM    = re.compile(r"\b(slim|skinny|tapered|fitted|slim.?fit|cropped|tailored)\b", re.I)

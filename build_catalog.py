@@ -100,8 +100,8 @@ WOMENS_RE = re.compile(
 # Kids sneaker sizings ONLY — precise so it never eats menswear or brand names
 # ("Grimy Kids", "KidSuper", "Boys Don't Cry", "Youth Machine" must all survive).
 KIDS_RE = re.compile(
-    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
-    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
+    r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgs\b|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
+    r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b|^\s*kids?\b"
     , re.I)
 def clean_title(t):
     """Strip HTML tags / entities that leak into Shopify titles (<span>15 Ounce…</span>)."""
@@ -126,8 +126,13 @@ _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategor
 _M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
 _TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
 _TYPE_MU = re.compile(r"unisex|(^|[:/|>])\s*m[ae]n\b", re.I)
+_WMNS_SLUG = re.compile(r"wmns|womens|/women|-women|women-|/wmn/", re.I)
 def women_tagged(o):
     ptype = str(o.get("product_type") or "")
+    # Women's colourway hiding in the URL slug / image filename (e.g. Balenciaga '…wmnss…')
+    # even when the retailer tags it 'mens' and the title has no gender word.
+    if _WMNS_SLUG.search(str(o.get("url") or "") + " " + str(o.get("image") or "")):
+        return True
     # An explicit "Women:Bottoms" style product_type is authoritative — drop even if a
     # stray cross-merchandised men tag exists (unless the type itself says men/unisex).
     if _TYPE_W.search(ptype) and not _TYPE_MU.search(ptype):
@@ -184,6 +189,12 @@ def classify(title, stored):
             if k in ("jeans", "sweats", "shorts", "pants") and rx.search(t):
                 return k
         return "pants"
+    # Symmetric TOP route: a clear top/outerwear noun + no bottom noun → route to top rules,
+    # so "Selvedge Denim JACKET" / "Denim SHIRT" / "Jordan TEE" can't be stolen by jeans/pants/footwear.
+    if _TOP_STRONG.search(t) and not _BOTTOM_STRONG.search(t):
+        for k, rx in _CLS:
+            if k in ("headwear", "set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
+                return k
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
             continue
@@ -761,6 +772,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
    <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
    <label class="tog fsubtog"><input type="checkbox" id="hidesavedfits"> hide saved outfits</label>
+   <select id="pcfilter" class="fsubtog" title="Filter fits by number of pieces"><option value="">All sizes</option><option value="3">3-piece</option><option value="4">4-piece</option><option value="5">5-piece</option></select>
    <span class="fithint">Pick each piece &middot; mix &amp; match &middot; Surprise Me for a starting point</span>
   </div>
   <div id="buildmode">
@@ -1339,9 +1351,10 @@ function fitHtml(f){
 function fitSig(f){ return SLOTORDER.map(k=>f.items[k]?f.items[k].u:"").join("|"); }
 function savedFitSigs(){ return new Set(savedFits.map(f=>SLOTORDER.map(k=>f.items[k]?f.items[k].u:"").join("|"))); }
 function hideSavedFitsOn(){ const el=$("hidesavedfits"); return !!(el&&el.checked); }
+function pcOk(f){ const v=$('pcfilter'); if(!v||!v.value) return true; return Object.keys(f.items).length===+v.value; }
 function fitsFiltered(){
  const fm=$('fformula').value, bud=+$('fbudget').value, srt=$('fsort').value;
- let out=FITS.filter(f=>(!fm||f.formula===fm)&&fitTotal(f)<=bud);
+ let out=FITS.filter(f=>(!fm||f.formula===fm)&&fitTotal(f)<=bud&&pcOk(f));
  if(hideSavedFitsOn()){ const sv=savedFitSigs(); out=out.filter(f=>!sv.has(fitSig(f))); }
  if(srt==='pa')out=[...out].sort((a,b)=>fitTotal(a)-fitTotal(b));
  else if(srt==='pd')out=[...out].sort((a,b)=>fitTotal(b)-fitTotal(a));
@@ -1386,8 +1399,8 @@ function fitScore(f, prefFormulas, taste){
 function renderTop(){
  const prefFormulas=new Set(savedFits.map(x=>x.note));
  const taste=tasteProfile();
- let pool=FITS;
- if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=FITS.filter(f=>!sv.has(fitSig(f))); }
+ let pool=FITS.filter(pcOk);
+ if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=pool.filter(f=>!sv.has(fitSig(f))); }
  const scored=pool.map(f=>fitScore(f,prefFormulas,taste))
    .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
  const top=scored.slice(0,60);
@@ -1404,7 +1417,7 @@ function renderTop(){
 function renderFresh(){
  const prefFormulas=new Set(savedFits.map(x=>x.note));
  const taste=tasteProfile();
- let pool=FITS.filter(f=>f.fresh);
+ let pool=FITS.filter(f=>f.fresh).filter(pcOk);
  if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=pool.filter(f=>!sv.has(fitSig(f))); }
  const scored=pool.map(f=>fitScore(f,prefFormulas,taste))
    .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
@@ -1675,6 +1688,11 @@ function setFitSub(which){
 }
 document.getElementById('fitsub').addEventListener('click',e=>{const b=e.target.closest('.fsub'); if(b) setFitSub(b.dataset.fs);});
 {const hsf=$('hidesavedfits'); if(hsf) hsf.addEventListener('change',()=>{ if($('topmode')&&!$('topmode').hidden) renderTop(); else if($('looksmode')&&!$('looksmode').hidden) renderFits(); });}
+{const pcf=$('pcfilter'); if(pcf) pcf.addEventListener('change',()=>{ // re-render whichever fit list is visible
+   if($('freshmode')&&!$('freshmode').hidden) renderFresh();
+   else if($('topmode')&&!$('topmode').hidden) renderTop();
+   else if($('looksmode')&&!$('looksmode').hidden) renderFits();
+   else renderTop(); });}
 
 $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on')); b.classList.add('on');
