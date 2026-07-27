@@ -72,12 +72,13 @@ newdrops = set(); total = 0
 status_rows = []                                  # per-brand health -> status.jsonl (feeds the on-site health table)
 health = {"ok": 0, "thin": 0, "dead": 0}
 for b in BRANDS:
-    dom = b["domain"]; rows = []
+    dom = b["domain"]; rows = []; saw_products = False
     try:
         for page in range(1, 21):   # max out full catalogues (up to 5000/brand; small brands early-exit)
             data = json.loads(get(f"https://{dom}/products.json?limit=250&page={page}"))
             prods = data.get("products", [])
             if not prods: break
+            saw_products = True   # endpoint is alive and returning product (before men's filtering)
             for p in prods:
                 title = clean_title(p.get("title",""))
                 if not title: continue
@@ -125,9 +126,12 @@ for b in BRANDS:
                 "product_count": len(rows), "note": "" if _st == "ok" else "few pieces in stock"})
             health[_st] += 1
         else:
-            print(f"  {dom}: 0 (empty)")
+            # accurate health: a live endpoint whose product is all women's/kids/filtered is not the
+            # same as a truly dead store — label it honestly so weekly curation targets the right ones.
+            _note = "returned product but none were men's / in-filter" if saw_products else "no products returned"
+            print(f"  {dom}: 0 ({'filtered' if saw_products else 'empty'})")
             status_rows.append({"domain": dom, "brand": b.get("brand") or dom, "status": "dead",
-                "product_count": 0, "note": "no products returned"})
+                "product_count": 0, "note": _note})
             health["dead"] += 1
     except Exception as e:
         print(f"  {dom}: skip ({type(e).__name__})")

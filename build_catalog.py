@@ -768,8 +768,12 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div class="grid" id="grid"></div>
  <div id="surprise" hidden>
   <div class="tophead"><div class="toptitle">&#127922; Surprise me</div>
-   <div class="tophint">A fresh mix of standout pieces and full outfits every time — pure discovery, pulled at random from the whole catalogue. Hit the button for a new set.</div>
-   <button class="act sm prim" id="surpriseagain" style="margin-top:12px">&#127922; Surprise me again</button></div>
+   <div class="tophint" id="surprisehint">Curated: a quality-led mix — standout and similar-in-style pieces, including ones you haven’t seen. Everything: a pure randomiser across the whole in-stock catalogue. Hit the button for a new set.</div>
+   <div class="fitsub" style="padding-top:12px">
+    <button class="fsub on" data-sm="curated">&#10024; Curated</button>
+    <button class="fsub" data-sm="all">&#127922; Everything</button>
+    <button class="act sm prim" id="surpriseagain">&#127922; Surprise me again</button>
+   </div></div>
   <div class="grid" id="surprisepieces"></div>
   <h3 style="margin:26px 0 12px;font-size:16px;font-weight:700">Surprise outfits</h3>
   <div id="surpriseouts"></div>
@@ -1074,22 +1078,31 @@ function planFromProduct(id){
 }
 document.addEventListener('click',e=>{ const pb=e.target.closest('[data-plan]');
  if(pb){ e.preventDefault(); e.stopPropagation(); planFromProduct(+pb.dataset.plan); }});
+let surpMode='curated';   // 'curated' (quality backbone) or 'all' (everything randomiser)
 function renderSurprise(){
- // HEIGHTS OF FASHION, not randomness: Surprise draws from genuinely ELEVATED pieces — curated
- // best-of, video-sourced, high server-quality, and the brands you save from — and never novelty
- // (swimwear, underwear, socks, trinkets). If there aren't enough elevated pieces yet, it widens
- // to the clean pool, still excluding novelty.
- const elite=D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t) && (r.n||r.v||(r.sc||0)>=6||(_taste().n&&tasteBoost(r)>=3)));
- const pool = elite.length>=40 ? elite : D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t));
- const scored=pool.map(r=>({r, s:(_taste().n?tasteBoost(r)*2:0)+(r.n?6:0)+(r.v?4:0)+Math.min(6,(r.sc||0))+(r.f?2:0)}))
-   .sort((a,b)=>b.s-a.s);
- const head=scored.slice(0, Math.max(60, Math.floor(scored.length*0.35)));
- const pieces=[...head].sort(()=>Math.random()-0.5).slice(0,24).map(x=>x.r);
+ let pieces;
+ if(surpMode==='all'){
+   // EVERYTHING randomiser — the whole in-stock catalogue, nothing held back, all levels included
+   const pool=D.filter(r=>r.a && r.i);
+   pieces=[...pool].sort(()=>Math.random()-0.5).slice(0,24);
+ } else {
+   // CURATED — a quality BACKBONE, but broad: curated best-of, video and strong pieces lead, taste is
+   // a gentle boost (never a gate), so similar brands/styles and pieces you've never seen all surface.
+   // Only genuine novelty (swim/underwear/socks/trinkets) is kept off this shelf.
+   const pool=D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t) && r.g>=15);
+   const scored=pool.map(r=>({r, s:(r.n?6:0)+(r.v?4:0)+Math.min(8,(r.sc||0))+(_taste().n?tasteBoost(r):0)+((40<=r.g&&r.g<=600)?2:0)}))
+     .sort((a,b)=>b.s-a.s);
+   const head=scored.slice(0, Math.max(220, Math.floor(scored.length*0.55)));   // wide head = varied, not the same faces
+   pieces=[...head].sort(()=>Math.random()-0.5).slice(0,24).map(x=>x.r);
+ }
  $('surprisepieces').innerHTML = pieces.length?pieces.map(card).join(''):'<div class="empty">Nothing to surprise you with yet.</div>';
  const outs=[...FITS].sort(()=>Math.random()-0.5).slice(0,6);
  $('surpriseouts').innerHTML = outs.length?outs.map(fitHtml).join(''):'';
 }
 {const sa=$('surpriseagain'); if(sa) sa.onclick=renderSurprise;}
+{const smb=document.querySelectorAll('#surprise [data-sm]');
+ smb.forEach(b=>b.addEventListener('click',()=>{ surpMode=b.dataset.sm;
+   smb.forEach(x=>x.classList.toggle('on',x.dataset.sm===surpMode)); renderSurprise(); }));}
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
 ['q','brand','sort','only','fitsme','colf','hidesaved'].forEach(id=>{const el=$(id); if(el) el.addEventListener('input',()=>{shown=PAGE;render()});});
@@ -1606,7 +1619,7 @@ document.addEventListener('click',e=>{
  const sf=e.target.closest('[data-sfav]');
  if(sf){ e.preventDefault(); e.stopPropagation(); const on=togglePiece(sf.dataset.sfav); sf.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); return; }
  const sl=e.target.closest('[data-savelook]');
- if(sl){ e.preventDefault(); const f=fitById(sl.dataset.savelook); const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
+ if(sl){ e.preventDefault(); const f=fitById(sl.dataset.savelook); if(!f||!f.items){ toast('Could not load that outfit'); return; } const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
  const ld=e.target.closest('[data-loadsaved]');
  if(ld){ const f=savedFits[+ld.dataset.loadsaved]; if(!f)return;
    outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
