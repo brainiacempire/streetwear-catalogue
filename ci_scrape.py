@@ -55,10 +55,13 @@ for b in BRANDS:
                     dt = datetime.datetime.fromisoformat(created.replace("Z","+00:00"))
                     is_new = (NOW - dt).days <= 7
                 except Exception: pass
-                blob=(title+" "+" ".join(p.get("tags") if isinstance(p.get("tags"),list) else [])).lower()
+                _tags=" ".join(p.get("tags") if isinstance(p.get("tags"),list) else [])
                 colour="unknown"
-                for cw in ["black","white","grey","gray","cream","tan","brown","navy","blue","green","olive","red","burgundy","pink","purple","orange","yellow"]:
-                    if cw in blob: colour={"gray":"grey"}.get(cw,cw); break
+                # word-boundary match (no "Stan"->tan / "shredded"->red substring hits), title before tags
+                for _src in (title.lower(), _tags.lower()):
+                    for cw in ["black","white","grey","gray","cream","tan","brown","navy","blue","green","olive","red","burgundy","pink","purple","orange","yellow"]:
+                        if re.search(r"\b"+cw+r"\b", _src): colour={"gray":"grey"}.get(cw,cw); break
+                    if colour!="unknown": break
                 neutral=colour in ("black","white","grey","cream","tan","brown","navy")
                 rows.append({"brand": b.get("brand") or p.get("vendor") or dom,
                     "domain": dom, "title": title, "category": cat(title, p.get("product_type")),

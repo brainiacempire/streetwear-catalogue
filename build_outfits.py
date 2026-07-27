@@ -35,12 +35,12 @@ _CLS_RULES = [
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
- ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
+ ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?|pantalon)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
- ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blazer(?! ?(low|mid|77)))\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|veste|manteau|doudoune|blazer(?! ?(low|mid|77)))\b"),
  ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d|saucony|\basics\b|onitsuka|\bhoka\b|\bveja\b|superga|novesta|moonstar|\bautry\b|chuck taylor|jack purcell)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
- ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
+ ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down|chemise|maille)\b"),
 ]
 _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sandals?|slides?|sliders?|mules?|clogs?|crocs?|plimsolls?|espadrilles?)\b", re.I)
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
@@ -161,10 +161,16 @@ _COL_MAP2 = [("black",r"\b(black|jet ?black|onyx|noir)\b"),("white",r"\b(white|o
 _COL_RX2=[(k,re.compile(p,re.I)) for k,p in _COL_MAP2]
 _NEUTSET={"black","white","grey","navy","brown","tan","cream"}
 for r in rows:
-    if not r.get("col") or r["col"]=="unknown":
-        for k,rx in _COL_RX2:
-            if rx.search(r["t"] or ""): r["col"]=k; break
-    if r["col"] in _NEUTSET: r["neu"]=True
+    # Title-derived colour (word-boundary) is AUTHORITATIVE — overrides the scraper's noisy
+    # colour (which matched substrings like "Stan"->tan, or a stray tag colour). Neutrality is
+    # then computed STRICTLY from the corrected colour, both directions — so a loud piece
+    # (e.g. kelly-green) can never be mis-flagged neutral and clash inside a coordinated fit.
+    dc=None
+    for k,rx in _COL_RX2:
+        if rx.search(r["t"] or ""): dc=k; break
+    if dc: r["col"]=dc
+    elif not r.get("col"): r["col"]="unknown"
+    r["neu"]=(r["col"] in _NEUTSET)
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])

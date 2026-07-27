@@ -98,12 +98,12 @@ _CLS_RULES = [
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
- ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?)\b"),
+ ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?|pantalon)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
- ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|blazer(?! ?(low|mid|77)))\b"),
+ ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|veste|manteau|doudoune|blazer(?! ?(low|mid|77)))\b"),
  ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d|saucony|\basics\b|onitsuka|\bhoka\b|\bveja\b|superga|novesta|moonstar|\bautry\b|chuck taylor|jack purcell|reebok club|reebok classic)\b"),
  ("tee",       r"\b(t-?shirts?|tees?|s/s|short ?sleeve|jersey|polo)\b"),
- ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down)\b"),
+ ("top",       r"\b(shirt|top|knit|sweater|button[- ]?up|button[- ]?down|chemise|maille)\b"),
 ]
 _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sandals?|slides?|sliders?|mules?|clogs?|crocs?|plimsolls?|espadrilles?)\b", re.I)
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
@@ -151,9 +151,13 @@ _COL_MAP = [
 _COL_RX = [(k, re.compile(p, re.I)) for k, p in _COL_MAP]
 _NEUT_COLS = {"black","white","grey","navy","brown","tan","cream"}
 def colour_of(title, stored):
-    if stored and stored != "unknown": return stored
+    # Title-derived colour (word-boundary) is AUTHORITATIVE — the scraper's colour is a
+    # substring/tag guess (matched "Stan"->tan, "shredded"->red, or a stray tag colour),
+    # which mis-flags pieces and breaks outfit coordination. Fall back to it only if the
+    # title yields nothing.
     for k, rx in _COL_RX:
         if rx.search(title or ""): return k
+    if stored and stored != "unknown": return stored
     return "unknown"
 
 rows, bad = [], 0
@@ -211,8 +215,10 @@ for f in _rowfiles:
             "n": picks.get(url, ""),                        # curated note => Best-of shelf
             "v": vidpicks.get(url, ""),                     # video-sourced => Videos shelf
             "f": 1 if url in favs else 0,                   # saved, restored from disk
-            "col": (lambda _c: _c)(colour_of(t, o.get("colour","unknown"))),
-            "neu": 1 if (o.get("neutral") or colour_of(t, o.get("colour","unknown")) in _NEUT_COLS) else 0,
+            "col": colour_of(t, o.get("colour","unknown")),
+            # neutrality from the CORRECTED colour only — never the scraper's flag, which
+            # mis-marked loud pieces (e.g. kelly-green) as neutral and let them clash in outfits.
+            "neu": 1 if colour_of(t, o.get("colour","unknown")) in _NEUT_COLS else 0,
             "nd": 1 if (o.get("new") or (o.get("domain") or "") in NEWDROP_DOMAINS) else 0,
             "np": 1 if o.get("new") else 0,          # genuinely new arrival (published <= 7 days)
         })
