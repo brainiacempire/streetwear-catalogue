@@ -919,8 +919,10 @@ function persistFits(){ try{localStorage.setItem(OKEY,JSON.stringify(savedFits))
 function updateSavedCount(){ const el=$('savedn'); if(el)el.textContent=savedFits.length; }
 function updateFav(){ const n=favs.size; const tot=D.filter(r=>favs.has(r.id)).reduce((a,r)=>a+r.g,0);
  const fc=$('favcount'); if(fc)fc.textContent=n+' saved'+(n?' \u00b7 '+gbp(tot):''); const fn=$('favn'); if(fn)fn.textContent=n;
- const fyn=$('foryoun'); if(fyn)fyn.textContent=n;                    // For You badge tracks saved count
- try{ const fym=$('foryoumode'); if(fym && !fym.hidden && typeof renderForYou==='function') renderForYou(); }catch(e){} }
+ const fyn=$('foryoun'); if(fyn)fyn.textContent=savedUrls.size;        // badge = saved pieces (single source of truth)
+ // only rebuild For You when it's actually on screen (Outfits view AND its tab) — never off-screen work
+ try{ const fym=$('foryoumode'), fv=$('fits');
+   if(fym && !fym.hidden && fv && !fv.hidden && typeof renderForYou==='function') renderForYou(); }catch(e){} }
 function togglePiece(u){ const row=D.find(x=>x.u===u);
  if(savedUrls.has(u)){ savedUrls.delete(u); if(row)favs.delete(row.id); }
  else { savedUrls.add(u); if(row)favs.add(row.id); }
@@ -1574,7 +1576,13 @@ function fitAroundAnchor(anchor){
  SLOTORDER.forEach(k=>outfit[k]=keep[k]);
  return Object.keys(items).length>=3 ? items : null;
 }
+let _foryouSig=null;
 function buildForYou(){
+ // cache by the exact set of saved pieces: same saves -> same shelf (stable order, so Back returns you
+ // to the very same fits & scroll). Only when you save/unsave something does it rebuild and re-rotate.
+ const _sig=[...savedUrls].sort().join('|');
+ if(_sig===_foryouSig && FORYOU.length) return FORYOU;
+ _foryouSig=_sig;
  FORYOU=[]; const seen=new Set();
  const anchors=D.filter(r=>savedUrls.has(r.u) && r.i && r.a)        // your saved, in-stock, shoppable pieces
    .sort(()=>Math.random()-0.5);                                   // rotate the whole wardrobe so every save gets its turn
@@ -1619,7 +1627,7 @@ function switchView(v){
  document.getElementById('chips').style.display=isGrid?'':'none';
  const _bar=document.querySelector('.bar'); if(_bar) _bar.style.display=isGrid?'':'none';
 }
-function _currentFitSub(){ const on=document.querySelector('.fsub.on'); return on?on.dataset.fs:'build'; }
+function _currentFitSub(){ const on=document.querySelector('#fitsub .fsub.on'); return on?on.dataset.fs:'build'; }
 function rememberReturn(){ _returnTo={v:_currentView(), y:window.scrollY||window.pageYOffset||0, sub:_currentFitSub()}; const bb=$('backbtn'); if(bb) bb.hidden=false; }
 function goBack(){ if(!_returnTo)return; const t=_returnTo; _returnTo=null; const bb=$('backbtn'); if(bb) bb.hidden=true;
  switchView(t.v);
@@ -1628,6 +1636,9 @@ function goBack(){ if(!_returnTo)return; const t=_returnTo; _returnTo=null; cons
  requestAnimationFrame(()=>window.scrollTo(0, t.y||0)); }
 {const bb=$('backbtn'); if(bb) bb.onclick=goBack;}
 function goBuilder(){
+ // fresh load: clear any leftover lock/skip state so Fill / Surprise never silently skip a slot
+ Object.keys(locked).forEach(k=>locked[k]=false);
+ include.hat=true; include.layer=false; include.top=true; include.bottom=true; include.shoe=true; include.accessory=false;
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on'));
  const vt=document.querySelector('.vt[data-v="fits"]'); if(vt) vt.classList.add('on');
  if($('fits')) $('fits').hidden=false;
@@ -1847,6 +1858,7 @@ document.addEventListener('click',e=>{
  const uv=e.target.closest('[data-usevar]');
  if(uv){ const v=_pvVars[+uv.dataset.usevar]; if(!v)return;
    outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
+   Object.keys(locked).forEach(k=>locked[k]=false);                  // fresh load: no leftover locks
    SLOTORDER.forEach(k=>{ if(v[k]) outfit[k]=v[k]; });
    $('pvwrap').hidden=true; document.querySelector('.vt[data-v="fits"]').click(); setFitSub('build');
    initBuilder(); renderCanvas(); setSlot('top'); toast('Loaded that variation'); }
@@ -1868,7 +1880,7 @@ document.addEventListener('DOMContentLoaded',()=>{});
   if(!_clrArm){_clrArm=true; sc.textContent='Sure? Clear all'; setTimeout(()=>{_clrArm=false;sc.textContent='Clear all';},3000); return;}
   savedFits=[]; persistFits(); renderSaved(); toast('Saved outfits cleared'); };}
 function setFitSub(which){
- document.querySelectorAll('.fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
+ document.querySelectorAll('#fitsub .fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
  $('buildmode').hidden=which!=='build';
  $('foryoumode').hidden=which!=='foryou';
  $('freshmode').hidden=which!=='fresh';
