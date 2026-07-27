@@ -80,24 +80,32 @@ _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sa
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
 _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
 _NOVELTY = re.compile(r"\b(postcards?|stickers?|magnets?|sponges?|keychains?|earrings?|pins?|badges?|posters?|incense|candles?|mugs?|cups?|saucers?|bowls?|coasters?|plates?|glass|tumblers?|trays?|dish(es)?|ramen|towels?|rugs?|blankets?|ashtrays?|lighters?|air ?fresh|puzzles?|figurines?|keyrings?|ornaments?)\b", re.I)
+_BOTTOM_STRONG = re.compile(r"\b(trousers?|chinos?|cargos?|slacks?|joggers?|sweat ?pants?|track ?pants?|pants?|leggings?|jorts?)\b|\bshorts?\b(?!\s*sleeve)", re.I)
+_TOP_STRONG = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat ?shirt|sweatshirts?|crew ?neck|crewneck|jumper|pullover|sweater|jackets?|coats?|parka|bomber|gilet|vest|cardigan|overshirt|shacket|polo|jersey|long ?sleeve|longsleeve|henley|tank)\b", re.I)
 def classify(title, stored):
     t = title or ""
-    if _FOOT_EXPLICIT.search(t):
-        return "footwear"                 # literally a shoe/sneaker/loafer/etc.
     apparel = bool(_APPAREL_NOUN.search(t))
+    foot = bool(_FOOT_EXPLICIT.search(t))
+    if foot and not apparel:              # a real shoe with no competing garment noun
+        return "footwear"
+    # Clear bottom + no top noun → bottom rule, so "EE Thermal Pant"/"Fleece Jogger"
+    # can't be misfiled as a longsleeve/tee by a fabric word.
+    if _BOTTOM_STRONG.search(t) and not _TOP_STRONG.search(t):
+        for k, rx in _CLS:
+            if k in ("jeans", "sweats", "shorts", "pants") and rx.search(t):
+                return k
+        return "pants"
     for k, rx in _CLS:
-        if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
+        if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece ("Trainer Jacket")
             continue
         if rx.search(t):
-            if k == "set" and _NOVELTY.search(t):   # a postcard/sticker "set" is not a clothing set
+            if k == "set" and _NOVELTY.search(t):
                 continue
             return k
-    if not apparel:
-        for k, rx in _CLS:
-            if k == "footwear" and rx.search(t):
-                return k
+    if foot:                              # apparel noun present but nothing matched → trust foot word
+        return "footwear"
     if stored == "set" and _NOVELTY.search(t):
-        return "other"      # scraper-labelled novelty 'set' isn't a clothing set
+        return "other"
     return stored
 
 NEUTRALS = {"black","white","grey","cream","tan","brown","navy"}
@@ -215,6 +223,7 @@ _ELEVATED= re.compile(r"\b(trouser|tailored|pleated|oxford|loafer|blazer|wool|su
 _GYMSHOE = re.compile(r"\b(slide|slider|sandal|mule|croc|clog|flip.?flop|pool)\b", re.I)
 _HEAVY   = re.compile(r"\b(puffer|down|parka|heavy|wool ?coat|shearling|padded|quilted|sherpa|fleece|overcoat|duffle)\b", re.I)
 _SUMMER  = re.compile(r"\b(shorts?|jorts?|tank|linen|swim|board ?short|mesh)\b", re.I)
+_WINTERHAT = re.compile(r"\b(beanie|wool ?hat|knit ?hat|watch ?cap|fur|cowhide|shearling|balaclava|trapper|ushanka)\b", re.I)
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
@@ -332,6 +341,9 @@ def build(name, blurb, slots):
         coord -= 4                                # puffer/parka over shorts — seasons don't match
     if _layer and _shoefit and _HEAVY.search(_layer["t"]) and _GYMSHOE.search(_shoefit["t"]):
         coord -= 2                                # heavy outerwear with pool slides
+    _hat = fit.get("hat")
+    if _hat and _bottom and _WINTERHAT.search(_hat["t"]) and _SUMMER.search(_bottom["t"]):
+        coord -= 4                                # wool beanie over summer shorts — seasons clash
     _fresh = any(v.get("new") for v in fit.values())   # contains a recent drop → Fresh Fits
     return {"formula": name, "note": blurb, "items": fit,
             "brands": len(brands), "cs": coord, "fresh": _fresh,

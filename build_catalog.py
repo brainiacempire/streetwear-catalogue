@@ -156,6 +156,10 @@ _FOOT_EXPLICIT = re.compile(r"\b(sneakers?|trainers?|shoes?|footwear|loafers?|sa
 _APPAREL_NOUN = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat|sweats|sweatshirts?|crew ?neck|crewneck|jumper|pullover|pants?|trousers?|chinos?|cargos?|joggers?|shorts?|jorts?|jeans|denim|jacket|coat|parka|bomber|puffer|gilet|vest|cardigan|overshirt|shacket|caps?|hats?|beanies?|socks?|jersey|polo|knit|sweater|longsleeve|long ?sleeve|thermal|henley)\b", re.I)
 _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
 _NOVELTY = re.compile(r"\b(postcards?|stickers?|magnets?|sponges?|keychains?|earrings?|pins?|badges?|posters?|incense|candles?|mugs?|cups?|saucers?|bowls?|coasters?|plates?|glass|tumblers?|trays?|dish(es)?|ramen|towels?|rugs?|blankets?|ashtrays?|lighters?|air ?fresh|puzzles?|figurines?|keyrings?|ornaments?)\b", re.I)
+# Unambiguous BOTTOM vs TOP nouns — so a fabric word (thermal/waffle/fleece/knit) can't drag
+# a bottom into a top slot ("EE Thermal Pant" is a sweatpant, not a longsleeve).
+_BOTTOM_STRONG = re.compile(r"\b(trousers?|chinos?|cargos?|slacks?|joggers?|sweat ?pants?|track ?pants?|pants?|leggings?|jorts?)\b|\bshorts?\b(?!\s*sleeve)", re.I)
+_TOP_STRONG = re.compile(r"\b(t-?shirts?|tees?|shirts?|hoodie|hooded|sweat ?shirt|sweatshirts?|crew ?neck|crewneck|jumper|pullover|sweater|jackets?|coats?|parka|bomber|gilet|vest|cardigan|overshirt|shacket|polo|jersey|long ?sleeve|longsleeve|henley|tank)\b", re.I)
 def classify(title, stored):
     t = title or ""
     apparel = bool(_APPAREL_NOUN.search(t))
@@ -165,6 +169,13 @@ def classify(title, stored):
     # foot word ("trainer"/"runner"/"slide") must NOT steal them into the shoe slot.
     if foot and not apparel:
         return "footwear"
+    # Clear bottom + no top noun → route to the bottom rule, so fabric/sleeve words
+    # (thermal, waffle, fleece, knit) can't misfile a pant/short as a longsleeve/tee.
+    if _BOTTOM_STRONG.search(t) and not _TOP_STRONG.search(t):
+        for k, rx in _CLS:
+            if k in ("jeans", "sweats", "shorts", "pants") and rx.search(t):
+                return k
+        return "pants"
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
             continue
