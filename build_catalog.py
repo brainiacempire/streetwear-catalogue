@@ -746,7 +746,9 @@ function loadSaved(){
  try{ const raw=localStorage.getItem(KEY); _hadSaved=(raw!=null); return raw? new Set(JSON.parse(raw)) : new Set(); }
  catch(e){ STORE_OK=false; return new Set(); }
 }
+let _tasteCache=null;   // taste profile (brands/cats/cols you save from); rebuilt after each save
 function persist(){
+ _tasteCache=null;      // your taste changed -> recompute similarity next time
  try{ localStorage.setItem(KEY, JSON.stringify([...savedUrls])); }
  catch(e){ STORE_OK=false; }
 }
@@ -1124,6 +1126,13 @@ function fitAccents(){ const a=new Set(); SLOTORDER.forEach(k=>{const r=outfit[k
 // colour harmony vs the pieces already placed: neutral base + at most one accent, or tonal
 function harmC(r,acc){ if(!r.col||r.col==='unknown')return 0; if(NEUTC.has(r.col)||r.neu)return 3;
  if(acc.has(r.col))return 5; if(acc.size===0)return 2; return -6; }
+// taste-similarity boost used across fills (_tasteCache is declared+invalidated up in persist())
+function _taste(){ return _tasteCache || (_tasteCache = tasteProfile()); }
+function tasteBoost(r){ const t=_taste(); if(!t.n) return 0; let x=0;
+ if(t.brands.has(r.b)) x+=3;                                   // brand you save from
+ const cw=t.cats.get(r.c); if(cw) x+=Math.min(2,cw);           // category you gravitate to
+ if(r.col!=='unknown' && t.cols.get(r.col)) x+=1;              // colour family you like
+ return x; }
 function rndFrom(cats,filt,k,style){
  let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
  if(filt)pool=pool.filter(filt);
@@ -1132,9 +1141,10 @@ function rndFrom(cats,filt,k,style){
  const fresh=pool.filter(r=>!ub.has((r.b||'').toLowerCase()));
  if(fresh.length) pool=fresh;
  const acc=fitAccents();
- // reason: COLOUR HARMONY with what's placed, then STYLE (goes-together), then quality, then price
+ // reason: COLOUR HARMONY first, then SIMILAR-TO-YOUR-TASTE, then style, quality, price
  pool.sort((a,b)=>
    (harmC(b,acc)-harmC(a,acc))
+   ||(tasteBoost(b)-tasteBoost(a))
    ||(style?((styleOf(b)===style?1:0)-(styleOf(a)===style?1:0)):0)
    ||(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
    ||((a.col==='unknown'?1:0)-(b.col==='unknown'?1:0))||(a.g-b.g));
@@ -1195,7 +1205,7 @@ $('bcopy').onclick=()=>{
 };
 $('bpreview').onclick=()=>{ if(SLOTORDER.some(k=>outfit[k])) openPreview(outfit,'Your fit',cvTotal()); else toast('Nothing placed yet'); };
 // ===== STARTER LOOKS (load into builder) =====
-const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,items:Object.assign({},o.items)}));
+const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,cs:o.cs||0,items:Object.assign({},o.items)}));
 const fitTotal=f=>Object.values(f.items).reduce((a,b)=>a+b.g,0);
 function slotHtml(r,k){
  return `<div class="slotw">
@@ -1233,25 +1243,41 @@ function renderFits(){
  $('fitcount').textContent=`${f.length} of ${FITS.length} looks`;
 }
 // ===== Top Fits: curated ranking weighted toward the user's actual taste =====
-function fitScore(f, prefFormulas, prefBrands){
+// a "taste profile" built from your saves: the brands, categories and colours you gravitate to,
+// so we can surface pieces SIMILAR to what you like — not only the exact items you've saved.
+function tasteProfile(){
+ const brands=new Set(), cats=new Map(), cols=new Map();
+ D.forEach(r=>{ if(savedUrls.has(r.u)){
+   brands.add(r.b);
+   cats.set(r.c,(cats.get(r.c)||0)+1);
+   if(r.col&&r.col!=='unknown') cols.set(r.col,(cols.get(r.col)||0)+1);
+ }});
+ return {brands, cats, cols, n: savedUrls.size};
+}
+function fitScore(f, prefFormulas, taste){
  let s=0, liked=0, slots=0;
  SLOTORDER.forEach(k=>{ const p=f.items[k]; if(!p) return; slots++;
-   if(savedUrls.has(p.u)){ s+=120; liked++; }        // a liked piece dominates — his taste leads
-   if(prefBrands.has(p.b)) s+=9;                      // brands he saves from
-   if(p.n) s+=10;                                     // curated best-of
-   if(p.v) s+=6;                                      // seen in a video
-   s+=Math.min(12, p.sc||0);                          // per-piece curation/quality signal
+   if(savedUrls.has(p.u)){ s+=120; liked++; }               // an exact saved piece leads
+   else {                                                   // SIMILAR to your taste ->
+     if(taste.brands.has(p.b))                    s+=14;    //   same brand you save from
+     const cw=taste.cats.get(p.c); if(cw)         s+=6*Math.min(3,cw);   //   category you gravitate to
+     const kw=taste.cols.get(p.col); if(kw && p.col!=='unknown') s+=4;   //   colour family you like
+   }
+   if(p.n) s+=10;                                            // curated best-of
+   if(p.v) s+=6;                                             // seen in a video
+   s+=Math.min(12, p.sc||0);                                 // per-piece curation/quality signal
  });
- s+=slots*3;                                          // fuller, more-styled fits
- if(prefFormulas.has(f.formula)) s+=16;               // formulas he saves as outfits
+ s += (f.cs||0)*4;                                           // COORDINATION quality weighs into the rank
+ s+=slots*3;                                                 // fuller, more-styled fits
+ if(prefFormulas.has(f.formula)) s+=16;                      // formulas you save as outfits
  return {f, s, liked, slots};
 }
 function renderTop(){
  const prefFormulas=new Set(savedFits.map(x=>x.note));
- const prefBrands=new Set(); D.forEach(r=>{ if(savedUrls.has(r.u)) prefBrands.add(r.b); });
+ const taste=tasteProfile();
  let pool=FITS;
  if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=FITS.filter(f=>!sv.has(fitSig(f))); }
- const scored=pool.map(f=>fitScore(f,prefFormulas,prefBrands))
+ const scored=pool.map(f=>fitScore(f,prefFormulas,taste))
    .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
  const top=scored.slice(0,60);
  const anyLiked=savedUrls.size>0 || savedFits.length>0;

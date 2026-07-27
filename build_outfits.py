@@ -239,11 +239,24 @@ def build(name, blurb, slots):
     _cols = [v["col"] for v in fit.values() if v["col"] and v["col"]!="unknown"]
     _accents = set(c for c in _cols if c not in NEUTRALS)
     _shoe = fit.get("shoe")
+    # ---- coordination score: real styling reasoning, not just a flag ----
     coord = 0
-    if len(_accents) <= 1: coord += 3            # disciplined palette (neutral base + <=1 accent)
-    if _shoe and SNEAKER_RE.search(_shoe["t"]) and not CASUAL_SHOE_RE.search(_shoe["t"]): coord += 2  # clean trainer
-    coord += sum(1 for v in fit.values() if v["u"] in favs or v["u"] in picks)   # built on liked pieces
-    coord += len(fit)                            # fuller, more-styled fits
+    na = len(_accents)
+    if   na == 0: coord += 3                      # clean all-neutral / tonal — always reads considered
+    elif na == 1: coord += 5                      # neutral base + ONE hero accent — the ideal fit
+    else:         coord -= 3 * (na - 1)           # competing loud colours clash — penalise hard
+    # footwear discipline: a clean trainer anchors; sandals/mules/loafers rarely do
+    if _shoe:
+        if SNEAKER_RE.search(_shoe["t"]) and not CASUAL_SHOE_RE.search(_shoe["t"]): coord += 3
+        elif CASUAL_SHOE_RE.search(_shoe["t"]):                                     coord -= 1
+    # neutral-dominant palette (all but one piece neutral) is the streetwear default that always works
+    _neu_n = sum(1 for v in fit.values() if v.get("neu"))
+    if _neu_n >= len(fit) - 1: coord += 2
+    # a single accent that the shoe or another neutral grounds = deliberate, not random
+    if na == 1 and _neu_n >= 1: coord += 1
+    coord += sum(1 for v in fit.values() if v["u"] in favs or v["u"] in picks)   # built on liked/curated pieces
+    coord += sum(1 for v in fit.values() if v["b"].lower() in FAV_BRANDS)        # elevated labels = taste
+    coord += min(5, len(fit))                    # fuller, more-styled fits (capped)
     return {"formula": name, "note": blurb, "items": fit,
             "brands": len(brands), "cs": coord,
             "total": round(sum(v["g"] for v in fit.values()), 2)}
