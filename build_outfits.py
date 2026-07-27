@@ -22,14 +22,14 @@ BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwell
 # HARD EXCLUSIONS — men's only. Women's / kids pieces must NEVER build into an outfit.
 WOMENS_RE = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
-    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
+    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami tops?\b"
     r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
     r"|\bskirts?\b|\bskorts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
     r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b"
     r"|\bjeggings?\b|\bleggings?\b|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
     r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b"
     r"|\bballet.?(?:flats?|pumps?)\b|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
-    r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
+    r"|\bdress(?:es)?\b(?!\s*(?:shirts?|pants?|trousers?|chinos?|shorts?|shoes?|boots?|socks?|coats?|blazers?|jackets?|vests?|cardigans?|belts?|rings?|slacks?|watch|down|up|code|form|age|maker))"
     , re.I)
 KIDS_RE = re.compile(
     r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
@@ -42,8 +42,8 @@ def clean_title(t):
 WOMENS_BRAND = re.compile(
     r"\b(frankies bikinis|guizio|sandy liang|tropic of c|eb denim|asta resort|venuja|knwls"
     r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
-    r"|di petsa|jade swim|susan fang|with jean|sinead gorey|sir the label|ottolinger|paloma wool"
-    r"|gimaguas|the garment|reformation|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
+    r"|di petsa|jade swim|susan fang|sinead gorey|sir the label|ottolinger|paloma wool"
+    r"|gimaguas|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
 def is_forbidden(t):
     return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
 _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
@@ -70,11 +70,11 @@ _CLS_RULES = [
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("tee",       r"\b(t-?shirts?|tees?)\b"),  # explicit tee wins over incidental jeans/denim/cargo in a design name
- ("top",       r"\b(oxford|chambray|flannel|button[- ]?ups?|button[- ]?downs?|bd shirt|work ?shirt|dress ?shirt|camp ?collar)\b"),  # a shirt/oxford/flannel is a TOP even if selvedge/denim
+ ("top",       r"\b(oxford|chambray|flannel|button[- ]?ups?|button[- ]?downs?|bd shirt|work ?shirt|dress ?shirt|camp ?collar|shirts?)\b"),  # any shirt is a TOP even if selvedge/denim/cargo
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|jogging ?bottoms?|track ?pants?|track ?jort|fleece ?pants?|nylon ?pants?|tricot ?pants?|parachute ?pants?|warm.?up ?pants?|lounge ?pants?|active ?pants?|wind ?pants?)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
- ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?|pantalon)\b"),
+ ("pants",     r"\b(pants?|trousers?|chinos?|cargo ?pants?|slacks|leggings?|pantalon)\b"),  # 'cargo' alone removed — a cargo JACKET/SHIRT is not a bottom
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),
  ("jacket_outerwear", r"\b(jackets?|coats?|parkas?|bomber|puffer|gilet|fleece ?jackets?|fleece ?vest|fleece ?gilet|cardigan|overshirt|shacket|poncho|blouson|veste|manteau|doudoune|blazer(?! ?(low|mid|77)))\b"),
  ("footwear",  r"\b(sneakers?|trainers?|shoes?|footwear|dunk|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|slides?|sliders?|sandals?|loafers?|mules?|clogs?|crocs?|vans|sk8|old ?skool|runners?|gazelle|samba|campus|superstar|\bforum\b|new balance|\d{3,4}v\d|saucony|\basics\b|onitsuka|\bhoka\b|\bveja\b|superga|novesta|moonstar|\bautry\b|chuck taylor|jack purcell)\b"),

@@ -16,7 +16,7 @@ def get(url):
 
 WOMENS = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
-    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
+    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami tops?\b"
     r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
     r"|\bskirts?\b|\bskorts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b|\bbodysuits?\b"
     r"|\bbodycon\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b|legging|jeggings?"
@@ -24,7 +24,7 @@ WOMENS = re.compile(
     r"|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b|\bballet.?(?:flats?|pumps?)\b"
     r"|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
     r"|\bcrop(?:ped)?\s*(?:top|tee|t-?shirt|tank|cami|hoodie|sweat|jumper|knit)\b"
-    r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
+    r"|\bdress(?:es)?\b(?!\s*(?:shirts?|pants?|trousers?|chinos?|shorts?|shoes?|boots?|socks?|coats?|blazers?|jackets?|vests?|cardigans?|belts?|rings?|slacks?|watch|down|up|code|form|age|maker))"
     , re.I)
 KIDS = re.compile(
     r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
@@ -34,8 +34,8 @@ KIDS = re.compile(
 WOMENS_BRAND = re.compile(
     r"\b(frankies bikinis|guizio|sandy liang|tropic of c|eb denim|asta resort|venuja|knwls"
     r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
-    r"|di petsa|jade swim|susan fang|with jean|sinead gorey|sir the label|ottolinger|paloma wool"
-    r"|gimaguas|the garment|reformation|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
+    r"|di petsa|jade swim|susan fang|sinead gorey|sir the label|ottolinger|paloma wool"
+    r"|gimaguas|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
 def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")
     t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
