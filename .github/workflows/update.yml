@@ -28,7 +28,7 @@ jobs:
         run: |
           pip install --quiet cryptography
           mkdir -p site
-          OUT=site/index.html PER_DOMAIN=140 FULL_CAP=300 MAX_TOTAL=12000 MIN_GBP=6 python build_catalog.py
+          OUT=site/index.html ALL_STOCK=1 PER_DOMAIN=240 FULL_CAP=520 MAX_TOTAL=17000 MIN_GBP=6 python build_catalog.py
       - name: Save data back to repo
         run: |
           git config user.name "catalogue-bot"
