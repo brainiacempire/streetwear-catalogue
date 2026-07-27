@@ -14,7 +14,36 @@ def get(url):
     with urllib.request.urlopen(req, timeout=40) as r:
         return r.read()
 
-WOMENS = re.compile(r"\bwomen|\bwmns|\bladies|\bskirt\b|\bdress\b|\bbra\b|legging|bodysuit|\bgirls?\b|\bkids?\b|\bboys?\b|toddler|crop", re.I)
+WOMENS = re.compile(
+    r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
+    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
+    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b|\bteddy\b"
+    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b|\bbodysuits?\b"
+    r"|\bbodycon\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing\b|\bnurse\b|legging|jeggings?"
+    r"|\bmaxi\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b|\bstrappy\b"
+    r"|\bspaghetti.?strap\b|\bstilettos?\b|\bheels?\b|\bpeep.?toe\b|\bmary.?janes?\b|\bballet.?(?:flats?|pumps?)\b"
+    r"|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b|crop"
+    r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
+    , re.I)
+KIDS = re.compile(
+    r"\(gs\)|\bgs\b|\(ps\)|\(td\)|\(ts\)|\bbig kids?\b|\blittle kids?\b|\btoddlers?\b|\binfants?\b"
+    r"|\bjuniors?\b|\bgrade.?school\b|\bpre.?school\b|\byouth\b|\bboys?\b|\bkids?\b|\bchildren'?s?\b"
+    , re.I)
+def clean_title(t):
+    t = re.sub(r"<[^>]+>", " ", t or "")
+    t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
+    return re.sub(r"\s+", " ", t).strip()
+# Gender from the item's OWN tags/type. Drop women-AND-not-men; keep men + unisex (dual-tagged).
+_W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
+_M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
+_TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
+_TYPE_MU = re.compile(r"unisex|(^|[:/|>])\s*m[ae]n\b", re.I)
+def women_item(ptype, tags):
+    pt = str(ptype or "")
+    if _TYPE_W.search(pt) and not _TYPE_MU.search(pt):
+        return True
+    blob = (pt + " " + " ".join(tags if isinstance(tags, list) else [str(tags or "")])).strip()
+    return bool(blob) and bool(_W_TAG.search(blob)) and not bool(_M_TAG.search(blob))
 def cat(title, ptype):
     t = (title + " " + (ptype or "")).lower()
     for k, pats in [("footwear","sneaker|shoe|trainer|boot|loafer|slide|dunk|jordan|gel-|samba"),
@@ -36,13 +65,16 @@ newdrops = set(); total = 0
 for b in BRANDS:
     dom = b["domain"]; rows = []
     try:
-        for page in range(1, 8):
+        for page in range(1, 21):   # max out full catalogues (up to 5000/brand; small brands early-exit)
             data = json.loads(get(f"https://{dom}/products.json?limit=250&page={page}"))
             prods = data.get("products", [])
             if not prods: break
             for p in prods:
-                title = p.get("title","")
-                if WOMENS.search(title): continue
+                title = clean_title(p.get("title",""))
+                if not title: continue
+                if WOMENS.search(title) or KIDS.search(title): continue
+                _ptype = p.get("product_type")
+                if women_item(_ptype, p.get("tags")): continue   # women's by its own tags/type
                 variants = p.get("variants") or [{}]
                 prices = [float(v.get("price") or 0) for v in variants if v.get("price")]
                 if not prices: continue
@@ -69,6 +101,7 @@ for b in BRANDS:
                     "available": avail, "sizes": sizes[:12], "image": img,
                     "url": f"https://{dom}/products/{p.get('handle','')}",
                     "tags": p.get("tags") if isinstance(p.get("tags"),list) else [],
+                    "product_type": p.get("product_type") or "",
                     "colour": colour, "neutral": neutral, "new": is_new})
                 if is_new and avail: newdrops.add(dom)
             if len(prods) < 250: break

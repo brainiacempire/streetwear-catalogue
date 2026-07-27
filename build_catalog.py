@@ -84,6 +84,51 @@ if os.path.exists("video_picks.json"):
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
 BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwellies?\b|desert boot|work ?boot|moc.?toe|\bmoccasin|timberland|red ?wing|blundstone|\bugg\b|tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|\bheel|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform (heel|sandal)|oxford|thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
 
+# HARD EXCLUSIONS — men's only. Any women's or kids piece must NEVER appear (Dave's #1 rule).
+# Applied at build time (defence-in-depth) so it also purges rows already scraped before the filter.
+WOMENS_RE = re.compile(
+    r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
+    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
+    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b|\bteddy\b"
+    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
+    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing\b|\bnurse\b"
+    r"|\bjeggings?\b|\bmaxi\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
+    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bheels?\b|\bpeep.?toe\b|\bmary.?janes?\b"
+    r"|\bballet.?(?:flats?|pumps?)\b|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
+    r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
+    , re.I)
+# Kids / youth sneaker sizings (GS = grade-school, PS = pre-school, TD = toddler) and junior lines.
+KIDS_RE = re.compile(
+    r"\(gs\)|\bgs\b|\(ps\)|\(td\)|\(ts\)|\bbig kids?\b|\blittle kids?\b|\btoddlers?\b|\binfants?\b"
+    r"|\bjuniors?\b|\bgrade.?school\b|\bpre.?school\b|\byouth\b|\bboys?\b|\bkids?\b|\bchildren'?s?\b"
+    , re.I)
+def clean_title(t):
+    """Strip HTML tags / entities that leak into Shopify titles (<span>15 Ounce…</span>)."""
+    t = re.sub(r"<[^>]+>", " ", t or "")
+    t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
+    return re.sub(r"\s+", " ", t).strip()
+def is_forbidden(t):
+    """True if the title is a women's or kids piece that must be dropped entirely."""
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t))
+# Gender from the product's OWN tags / type (authoritative on mixed retailers).
+# Women's items carry 'BVCategory:Women' / 'Gender_Womens' / type 'Women:Bottoms';
+# unisex pieces carry BOTH men + women → we keep those.  Drop only women-AND-not-men.
+_W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
+_M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
+_TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
+_TYPE_MU = re.compile(r"unisex|(^|[:/|>])\s*m[ae]n\b", re.I)
+def women_tagged(o):
+    ptype = str(o.get("product_type") or "")
+    # An explicit "Women:Bottoms" style product_type is authoritative — drop even if a
+    # stray cross-merchandised men tag exists (unless the type itself says men/unisex).
+    if _TYPE_W.search(ptype) and not _TYPE_MU.search(ptype):
+        return True
+    blob = (ptype + " " + " ".join(
+        o.get("tags") if isinstance(o.get("tags"), list) else [str(o.get("tags") or "")])).strip()
+    if not blob:
+        return False
+    return bool(_W_TAG.search(blob)) and not bool(_M_TAG.search(blob))
+
 # Title-first classifier — the garment word wins over brand/model names.
 # Checked in priority order; footwear only matches real footwear words AND only after
 # apparel is ruled out, so "Jordan x Awake Thermal Shirt" reads as a longsleeve, not a shoe.
@@ -112,9 +157,13 @@ _CLS = [(k, re.compile(p, re.I)) for k, p in _CLS_RULES]
 _NOVELTY = re.compile(r"\b(postcards?|stickers?|magnets?|sponges?|keychains?|earrings?|pins?|badges?|posters?|incense|candles?|mugs?|cups?|saucers?|bowls?|coasters?|plates?|glass|tumblers?|trays?|dish(es)?|ramen|towels?|rugs?|blankets?|ashtrays?|lighters?|air ?fresh|puzzles?|figurines?|keyrings?|ornaments?)\b", re.I)
 def classify(title, stored):
     t = title or ""
-    if _FOOT_EXPLICIT.search(t):
-        return "footwear"                 # literally a shoe/sneaker/loafer/etc.
     apparel = bool(_APPAREL_NOUN.search(t))
+    foot = bool(_FOOT_EXPLICIT.search(t))
+    # A real shoe title (no competing garment noun) short-circuits to footwear.
+    # But "Slim TRAINER Jacket" / "Runner Coat" contain an apparel noun — the ambiguous
+    # foot word ("trainer"/"runner"/"slide") must NOT steal them into the shoe slot.
+    if foot and not apparel:
+        return "footwear"
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
             continue
@@ -122,10 +171,8 @@ def classify(title, stored):
             if k == "set" and _NOVELTY.search(t):   # a postcard/sticker "set" is not a clothing set
                 continue
             return k
-    if not apparel:
-        for k, rx in _CLS:
-            if k == "footwear" and rx.search(t):
-                return k
+    if foot:                              # apparel noun present but nothing matched → trust foot word
+        return "footwear"
     if stored == "set" and _NOVELTY.search(t):
         return "other"      # scraper-labelled novelty 'set' isn't a clothing set
     return stored
@@ -175,13 +222,16 @@ for f in _rowfiles:
             o = json.loads(line)
         except Exception:
             bad += 1; continue
-        t = (o.get("title") or "").strip()
+        t = clean_title(o.get("title") or "")   # strip leaked <span>/HTML from titles
         if not t:
             bad += 1; continue
+        o["title"] = t                           # keep the cleaned title downstream
         tl = t.lower()
         if re.fullmatch(r"(test\s*\d*|\d{1,3})", tl):      continue
         if "gift card" in tl:                              continue
         if re.search(r"\bcrop(?:ped)?\b", tl):             continue   # Dave: no crop tees
+        if is_forbidden(t):                                continue   # women's / kids by title
+        if women_tagged(o):                                continue   # women's by its own tags/type
         try:    price = float(o.get("price") or 0)
         except Exception: price = 0.0
         if price <= 0 and "mystery" not in tl:             continue
@@ -244,9 +294,9 @@ except Exception:
 # Cap per DOMAIN, not per brand: a real label (Cole Buxton, Corteiz) has one domain
 # and stays fully shown; only multi-brand mega-shops (Stadium Goods, END, bstn) get
 # trimmed. Saved / curated / video / outfit pieces are never dropped.
-PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "120"))
-FULL_CAP = int(os.environ.get("FULL_CAP", "600"))
-MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "42000"))   # hard ceiling: keeps the page fast however many brands we add
+PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "450"))   # was 120 — max out full catalogues per brand
+FULL_CAP = int(os.environ.get("FULL_CAP", "1600"))      # was 600 — loved/saved brands shown in full
+MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "60000"))   # hard ceiling; page streams in chunks so it stays fast
 import collections as _co
 MIN_GBP = float(os.environ.get("MIN_GBP", "0"))   # drop obvious data-error prices from non-saved pieces
 perdom = collections.Counter()
@@ -1289,12 +1339,28 @@ function renderTop(){
    : `The flyest coordinated fits across every brand \u2014 distinct labels head to toe, ranked on curation and quality. Heart any piece or outfit and this instantly reshuffles around your taste.`;
  $('toplist').innerHTML = top.length ? top.map(x=>fitHtml(x.f)).join('') : '<div class="empty">No fits to rank yet.</div>';
 }
+// Switch to the Outfits view + builder from ANYWHERE (Surprise, Top Fits, saved).
+// Bug fix: "Use & edit" on the Surprise tab loaded the builder into #buildmode, which
+// lives inside the hidden #fits view — so nothing appeared. Force the view over first.
+function goBuilder(){
+ document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on'));
+ const vt=document.querySelector('.vt[data-v="fits"]'); if(vt) vt.classList.add('on');
+ if($('fits')) $('fits').hidden=false;
+ if($('surprise')) $('surprise').hidden=true;
+ if($('grid')) $('grid').hidden=true;
+ if($('more')) $('more').style.display='none';
+ if($('loadmore')) $('loadmore').style.display='none';
+ const ch=document.getElementById('chips'); if(ch) ch.style.display='none';
+ const br=document.querySelector('.bar'); if(br) br.style.display='none';
+ setFitSub('build'); initBuilder(); renderCanvas(); setSlot('top');
+ const bm=$('buildmode'); if(bm) bm.scrollIntoView({behavior:'smooth',block:'start'});
+}
 document.addEventListener('click',e=>{
  const u=e.target.closest('[data-use]'); if(!u)return;
- const f=FITS[+u.dataset.use];
+ const f=FITS[+u.dataset.use]; if(!f||!f.items){ toast('Could not load that outfit'); return; }
  outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
- SLOTORDER.forEach(k=>{ if(f.items[k]) outfit[k]=f.items[k]; });
- setFitSub('build'); initBuilder(); renderCanvas(); setSlot('top');
+ SLOTORDER.forEach(k=>{ if(f.items[k]) outfit[k]=D.find(x=>x.u===f.items[k].u)||f.items[k]; });
+ goBuilder();
  toast('Loaded — now swap any piece');
 });
 {const ff=$('fformula');
@@ -1312,7 +1378,7 @@ document.addEventListener('click',e=>{
  if(ld){ const f=savedFits[+ld.dataset.loadsaved]; if(!f)return;
    outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
    SLOTORDER.forEach(k=>{ if(f.items[k]){ const p=f.items[k]; outfit[k]=D.find(x=>x.u===p.u)||p; }});
-   setFitSub('build'); initBuilder(); renderCanvas(); setSlot('top'); toast('Loaded into the builder'); return; }
+   goBuilder(); toast('Loaded into the builder'); return; }
  const dl=e.target.closest('[data-delsaved]');
  if(dl){ savedFits.splice(+dl.dataset.delsaved,1); persistFits(); renderSaved(); return; }
 });

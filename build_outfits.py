@@ -19,6 +19,39 @@ random.seed(11)   # deterministic — no Date/random drift between rebuilds
 
 # Dave wears trainers/sneakers, loafers, Vans-type — never boots or dressy/"female" shoes.
 BOOT_RE = re.compile(r"\bboots?\b|chukka|chelsea|combat|hiking|wellington|\bwellies?\b|desert boot|work ?boot|moc.?toe|\bmoccasin|timberland|red ?wing|blundstone|\bugg\b|tasman|tazz|slipper|danner|palladium|dr\.? ?martens|doc.? ?marten|gore.?tex boot|\bheel|stiletto|\bpumps?\b|ballet|mary.?jane|\bwedge|platform (heel|sandal)|oxford|thigh.?high|knee.?high|court shoe|brogue|derby shoe|monk strap", re.I)
+# HARD EXCLUSIONS — men's only. Women's / kids pieces must NEVER build into an outfit.
+WOMENS_RE = re.compile(
+    r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
+    r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
+    r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b|\bteddy\b"
+    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
+    r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing\b|\bnurse\b"
+    r"|\bjeggings?\b|\bmaxi\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
+    r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bheels?\b|\bpeep.?toe\b|\bmary.?janes?\b"
+    r"|\bballet.?(?:flats?|pumps?)\b|\bbras?\b|\blace\s+(?:tank|top|cami|bralette|dress|bodysuit|trim|slip)\b"
+    r"|\bdress(?:es)?\b(?!\s*(?:shirt|pant|trouser|shoe|boot|sock|down|up|code|watch|shoes))"
+    , re.I)
+KIDS_RE = re.compile(
+    r"\(gs\)|\bgs\b|\(ps\)|\(td\)|\(ts\)|\bbig kids?\b|\blittle kids?\b|\btoddlers?\b|\binfants?\b"
+    r"|\bjuniors?\b|\bgrade.?school\b|\bpre.?school\b|\byouth\b|\bboys?\b|\bkids?\b|\bchildren'?s?\b"
+    , re.I)
+def clean_title(t):
+    t = re.sub(r"<[^>]+>", " ", t or "")
+    t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
+    return re.sub(r"\s+", " ", t).strip()
+def is_forbidden(t):
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t))
+_W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
+_M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
+_TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
+_TYPE_MU = re.compile(r"unisex|(^|[:/|>])\s*m[ae]n\b", re.I)
+def women_tagged(o):
+    ptype = str(o.get("product_type") or "")
+    if _TYPE_W.search(ptype) and not _TYPE_MU.search(ptype):
+        return True
+    blob = (ptype + " " + " ".join(
+        o.get("tags") if isinstance(o.get("tags"), list) else [str(o.get("tags") or "")])).strip()
+    return bool(blob) and bool(_W_TAG.search(blob)) and not bool(_M_TAG.search(blob))
 # outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
 SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics|saucony|onitsuka|\bhoka\b|\bveja\b|superga|novesta|converse", re.I)
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
@@ -134,7 +167,9 @@ for path in files:
         if not big: continue
         b = (o.get("brand") or "").strip()
         u = o["url"]
-        title = o.get("title","")
+        title = clean_title(o.get("title",""))       # strip leaked HTML from titles
+        if is_forbidden(title): continue             # women's / kids by title
+        if women_tagged(o): continue                 # women's by its own tags/type
         cat = classify(title, o.get("category"))
         if cat == "footwear" and BOOT_RE.search(title): continue
         score = 1
