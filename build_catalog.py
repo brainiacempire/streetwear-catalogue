@@ -984,8 +984,17 @@ function filtered(){
  else if(s==='pd')out=[...out].sort((a,b)=>b.g-a.g);
  else if(s==='az')out=[...out].sort((a,b)=>a.t.localeCompare(b.t));
  else if(s==='rand')out=[...out].sort((a,b)=>_rnd(a.id)-_rnd(b.id));
- else out=[...out].sort((a,b)=>(b.n?1:0)-(a.n?1:0));
+ else out=[...out].sort((a,b)=>curScore(b)-curScore(a)||(a.g-b.g));
  return out;
+}
+// curated default ordering for every item menu (Best of, New In, B/W, each category chip):
+// the flyest, highest-quality, most on-your-taste pieces lead — not just best-of-flag then price.
+function curScore(r){ let s=0;
+ if(r.n) s+=9; if(r.v) s+=5; if(r.np) s+=3;          // curated best-of / video / genuinely new
+ s+=Math.min(10,(r.sc||0));                          // server curation/quality signal
+ if(_taste().n) s+=tasteBoost(r);                    // similar to what you save
+ if(r.col==='unknown') s-=2; if(r.g<8) s-=3;         // demote no-colour / junk-priced
+ return s;
 }
 function card(r){
  const cl=CATS.find(([k])=>k===r.c);
@@ -1030,7 +1039,12 @@ $('grid').addEventListener('click',_favClick);
 {const sp=$('surprisepieces'); if(sp) sp.addEventListener('click',_favClick);}
 function renderSurprise(){
  const pool=D.filter(r=>r.a && r.i);
- const pieces=[...pool].sort(()=>Math.random()-0.5).slice(0,24);
+ // curated surprise: weight by your taste + curation + quality, sample from the strong head so
+ // it stays fresh each click but never serves low-quality noise.
+ const scored=pool.map(r=>({r, s:(_taste().n?tasteBoost(r):0)+(r.n?4:0)+(r.v?3:0)+Math.min(5,(r.sc||0)/2)+(r.f?2:0)}))
+   .sort((a,b)=>b.s-a.s);
+ const head=scored.slice(0, Math.max(80, Math.floor(scored.length*0.15)));
+ const pieces=[...head].sort(()=>Math.random()-0.5).slice(0,24).map(x=>x.r);
  $('surprisepieces').innerHTML = pieces.length?pieces.map(card).join(''):'<div class="empty">Nothing to surprise you with yet.</div>';
  const outs=[...FITS].sort(()=>Math.random()-0.5).slice(0,6);
  $('surpriseouts').innerHTML = outs.length?outs.map(fitHtml).join(''):'';
@@ -1181,13 +1195,41 @@ function renderCanvas(){
  }).join('');
  $('btotal').textContent=gbp(cvTotal());
 }
+// how well a candidate for the ACTIVE slot coordinates with the pieces already placed:
+// colour harmony / accent-echo first (this is what makes a green top pull a green-accented cap),
+// then same style lane, distinct brand, your taste, curation & quality. Same brain as the ↻ button,
+// now driving the manual swap menu so its TOP results are the tailored, matching picks.
+const _SNK=/sneaker|trainer|\bdunk\b|air ?force|air ?max|jordan|gel[- ]|\brunner|gazelle|samba|campus|superstar|new balance|\bnb\b|\bvans\b|sk8|old ?skool|authentic|\b\d{3,4}\b|salomon|asics/i;
+const _NOTSNK=/loafer|sandal|\bslide|slider|\bmule|\bclog|\bcroc/i;
+function pickerCoord(r,acc,style,ub,hero){
+ let s=0;
+ s+=harmC(r,acc)*3;                                  // colour harmony / accent echo (dominant)
+ if(hero && r.col===hero) s+=4;                      // explicitly echo the fit's hero colour
+ if(!ub.has((r.b||'').toLowerCase())) s+=3;          // distinct label head-to-toe
+ if(style && styleOf(r)===style) s+=3;               // stays in the same style lane
+ s+=tasteBoost(r);                                   // similar to what you save
+ if(r.n) s+=3; if(r.v) s+=2;                          // curated best-of / seen in a video
+ s+=Math.min(4,(r.sc||0)/2);                          // server curation/quality signal
+ if(r.f) s+=2;                                        // a piece you saved
+ if(r.col==='unknown') s-=2;
+ if(activeSlot==='shoe'){ if(_SNK.test(r.t)) s+=3; if(_NOTSNK.test(r.t)) s-=5; }   // trainers lead
+ return s;
+}
 function pickerPool(){
  const s=CVSLOTS.find(x=>x.k===activeSlot);
  const q=$('pkq').value.trim().toLowerCase(), col=$('pkcol').value, fit=$('pkfit').checked, sv=$('pksaved').checked;
  let out=[]; s.cats.forEach(c=>(byCat[c]||[]).forEach(r=>out.push(r)));
  out=out.filter(r=>r.a && r.i && (!fit||!r.sm) && (!col||r.col===col) && (!sv||favs.has(r.id)) &&
    (!q||r.t.toLowerCase().includes(q)||r.b.toLowerCase().includes(q)));
- out.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||(a.g-b.g));
+ // coordinate around every OTHER placed piece (exclude the slot being swapped)
+ const ub=usedBrands(activeSlot);
+ const acc=new Set(); SLOTORDER.forEach(k=>{ if(k!==activeSlot){ const r=outfit[k];
+   if(r&&r.col&&r.col!=='unknown'&&!NEUTC.has(r.col)&&!r.neu) acc.add(r.col); }});
+ const style=outfitStyle();
+ const hero=activeSlot==='top'?null:heroColour();
+ const anyPlaced=SLOTORDER.some(k=>k!==activeSlot&&outfit[k]);
+ if(anyPlaced) out.sort((a,b)=>(pickerCoord(b,acc,style,ub,hero)-pickerCoord(a,acc,style,ub,hero))||(b.f-a.f)||(a.g-b.g));
+ else out.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||(Math.min(6,(b.sc||0))-Math.min(6,(a.sc||0)))||(a.g-b.g));
  return out;
 }
 function renderPicker(){
