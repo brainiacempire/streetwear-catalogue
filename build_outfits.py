@@ -24,7 +24,7 @@ WOMENS_RE = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
     r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
     r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
-    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
+    r"|\bskirts?\b|\bskorts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
     r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b"
     r"|\bjeggings?\b|\bleggings?\b|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
     r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b"
@@ -39,8 +39,13 @@ def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")
     t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
     return re.sub(r"\s+", " ", t).strip()
+WOMENS_BRAND = re.compile(
+    r"\b(frankies bikinis|guizio|sandy liang|tropic of c|eb denim|asta resort|venuja|knwls"
+    r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
+    r"|di petsa|jade swim|susan fang|with jean|sinead gorey|sir the label|ottolinger|paloma wool"
+    r"|gimaguas|the garment|reformation|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
 def is_forbidden(t):
-    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t))
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
 _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
 _M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
 _TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
@@ -621,6 +626,38 @@ add("Colour Pop",
          ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 10)
+
+# ===== VARIED SILHOUETTES — not every fit is 4 pieces. Some are a clean 3 (no hat),
+#       some are a layered 5 (hat + jacket + top + bottom + shoe). =====
+add("Three-Piece Clean",
+    "Stripped back — just a considered top, bottom and one clean shoe. No hat, no fuss.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], neutral=True)),
+         ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
+         ("shoe", pool("footwear"))], 30)
+add("Tee & Denim (3)",
+    "A plain tee, the right jeans, one sneaker — the three-piece that never misses.",
+    lambda: [("top", pool("tee")),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True))], 24)
+add("Shirt, Trouser, Shoe (3)",
+    "An oxford or knit with a clean trouser and a low shoe — three pieces, quietly sharp.",
+    lambda: [("top", pool(["top","longsleeve"])),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 20)
+add("Full Layered (5)",
+    "The full stack — cap, a jacket over a tee, clean trousers and a trainer. Every layer earns its place.",
+    lambda: [("hat", pool("headwear", neutral=True)),
+         ("layer", pool(["jacket_outerwear","windrunner"])),
+         ("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool(["pants","jeans"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 26)
+add("Winter Layered (5)",
+    "Beanie, heavy jacket, a knit, warm trousers and a solid shoe — built for the cold, still considered.",
+    lambda: [("hat", pool("headwear", neutral=True)),
+         ("layer", pool("jacket_outerwear")),
+         ("top", pool(["hoodie_sweat","longsleeve"], neutral=True)),
+         ("bottom", pool(["jeans","pants"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 20)
 
 # ===== FRESH FITS — built from the newest drops, so this shelf changes as stock lands and
 #       (ranked client-side by taste) gets sharper every time Dave saves. =====

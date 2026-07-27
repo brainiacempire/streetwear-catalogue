@@ -18,7 +18,7 @@ WOMENS = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
     r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
     r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
-    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b|\bbodysuits?\b"
+    r"|\bskirts?\b|\bskorts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b|\bbodysuits?\b"
     r"|\bbodycon\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b|legging|jeggings?"
     r"|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b|\bstrappy\b"
     r"|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b|\bballet.?(?:flats?|pumps?)\b"
@@ -30,6 +30,12 @@ KIDS = re.compile(
     r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
     r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b"
     , re.I)
+# Women's-ONLY designer labels that leak via multi-brand retailers (Kith Women etc.).
+WOMENS_BRAND = re.compile(
+    r"\b(frankies bikinis|guizio|sandy liang|tropic of c|eb denim|asta resort|venuja|knwls"
+    r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
+    r"|di petsa|jade swim|susan fang|with jean|sinead gorey|sir the label|ottolinger|paloma wool"
+    r"|gimaguas|the garment|reformation|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
 def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")
     t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
@@ -73,7 +79,7 @@ for b in BRANDS:
             for p in prods:
                 title = clean_title(p.get("title",""))
                 if not title: continue
-                if WOMENS.search(title) or KIDS.search(title): continue
+                if WOMENS.search(title) or KIDS.search(title) or WOMENS_BRAND.search(title): continue
                 _ptype = p.get("product_type")
                 if women_item(_ptype, p.get("tags")): continue   # women's by its own tags/type
                 variants = p.get("variants") or [{}]

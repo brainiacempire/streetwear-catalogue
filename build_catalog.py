@@ -90,7 +90,7 @@ WOMENS_RE = re.compile(
     r"\bwom(?:e|a)n'?s?\b|\bwmns\b|\bladies\b|\blady\b|\bfemale\b|\bgirls?\b|\bfeminine\b"
     r"|\bbralette?s?\b|\bbralet(?:te)?s?\b|\bbandeau\b|\bcorsets?\b|\bbustiers?\b|\bcamisoles?\b|\bcami\b"
     r"|\bbabydoll\b|\bnegligee\b|\blingerie\b|\bthongs?\b|\bpanties\b|\bknickers\b|\bgarter\b"
-    r"|\bskirts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
+    r"|\bskirts?\b|\bskorts?\b|\bgowns?\b|\bpinafore\b|\bblouses?\b|\bpeplum\b|\bhalter\b|\btube ?top\b"
     r"|\bbodycon\b|\bbodysuits?\b|\bleotards?\b|\bcatsuits?\b|\bmaternity\b|\bnursing bra\b"
     r"|\bjeggings?\b|\bleggings?\b|\bmaxi ?dress\b|\bmini ?dress\b|\boff.?shoulder\b|\bcold.?shoulder\b|\bbackless\b"
     r"|\bstrappy\b|\bspaghetti.?strap\b|\bstilettos?\b|\bpeep.?toe\b|\bmary.?janes?\b"
@@ -108,9 +108,17 @@ def clean_title(t):
     t = re.sub(r"<[^>]+>", " ", t or "")
     t = re.sub(r"&(?:amp|nbsp|quot|apos|lt|gt|#\d+|#x[0-9a-fA-F]+);", " ", t)
     return re.sub(r"\s+", " ", t).strip()
+# Women's-ONLY designer labels that leak in via multi-brand retailers (Kith Women, etc.)
+# which don't gender-tag. Only labels with NO men's line — never block unisex/men's-too
+# houses (Alexander Wang, Vivienne Westwood, Rick Owens) or we'd drop real menswear.
+WOMENS_BRAND = re.compile(
+    r"\b(frankies bikinis|guizio|sandy liang|tropic of c|eb denim|asta resort|venuja|knwls"
+    r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
+    r"|di petsa|jade swim|susan fang|with jean|sinead gorey|sir the label|ottolinger|paloma wool"
+    r"|gimaguas|the garment|reformation|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
 def is_forbidden(t):
     """True if the title is a women's or kids piece that must be dropped entirely."""
-    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t))
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
 # Gender from the product's OWN tags / type (authoritative on mixed retailers).
 # Women's items carry 'BVCategory:Women' / 'Gender_Womens' / type 'Women:Bottoms';
 # unisex pieces carry BOTH men + women → we keep those.  Drop only women-AND-not-men.
