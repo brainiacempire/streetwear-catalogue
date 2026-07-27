@@ -1353,5 +1353,135 @@
   "domain": "ykwyk.com",
   "brand": "ykwyk",
   "cur": "USD"
+ },
+ {
+  "domain": "drakes.com",
+  "brand": "Drake's",
+  "cur": "GBP"
+ },
+ {
+  "domain": "albamclothing.com",
+  "brand": "Albam",
+  "cur": "GBP"
+ },
+ {
+  "domain": "communityclothing.co.uk",
+  "brand": "Community Clothing",
+  "cur": "GBP"
+ },
+ {
+  "domain": "weekendoffender.com",
+  "brand": "Weekend Offender",
+  "cur": "GBP"
+ },
+ {
+  "domain": "dawsondenim.com",
+  "brand": "Dawson Denim",
+  "cur": "GBP"
+ },
+ {
+  "domain": "privatewhitevc.com",
+  "brand": "Private White V.C.",
+  "cur": "GBP"
+ },
+ {
+  "domain": "prettygreen.com",
+  "brand": "Pretty Green",
+  "cur": "GBP"
+ },
+ {
+  "domain": "finisterre.com",
+  "brand": "Finisterre",
+  "cur": "GBP"
+ },
+ {
+  "domain": "akindofguise.com",
+  "brand": "A Kind of Guise",
+  "cur": "EUR"
+ },
+ {
+  "domain": "thinkingmu.com",
+  "brand": "Thinking MU",
+  "cur": "EUR"
+ },
+ {
+  "domain": "libertine-libertine.com",
+  "brand": "Libertine-Libertine",
+  "cur": "EUR"
+ },
+ {
+  "domain": "isto.pt",
+  "brand": "ISTO.",
+  "cur": "EUR"
+ },
+ {
+  "domain": "rotholz-store.com",
+  "brand": "Rotholz",
+  "cur": "EUR"
+ },
+ {
+  "domain": "maisonlabiche.com",
+  "brand": "Maison Labiche",
+  "cur": "EUR"
+ },
+ {
+  "domain": "homecore.com",
+  "brand": "Homecore",
+  "cur": "EUR"
+ },
+ {
+  "domain": "kingsofindigo.com",
+  "brand": "Kings of Indigo",
+  "cur": "EUR"
+ },
+ {
+  "domain": "bleudepaname.com",
+  "brand": "Bleu de Paname",
+  "cur": "EUR"
+ },
+ {
+  "domain": "unionlosangeles.com",
+  "brand": "Union LA",
+  "cur": "USD"
+ },
+ {
+  "domain": "thequietlife.com",
+  "brand": "The Quiet Life",
+  "cur": "USD"
+ },
+ {
+  "domain": "4hunnid.com",
+  "brand": "4Hunnid",
+  "cur": "USD"
+ },
+ {
+  "domain": "saturdaysnyc.com",
+  "brand": "Saturdays NYC",
+  "cur": "USD"
+ },
+ {
+  "domain": "wythenewyork.com",
+  "brand": "Wythe New York",
+  "cur": "USD"
+ },
+ {
+  "domain": "krostnewyork.com",
+  "brand": "KROST",
+  "cur": "USD"
+ },
+ {
+  "domain": "profoundco.com",
+  "brand": "Profound",
+  "cur": "USD"
+ },
+ {
+  "domain": "freeandeasy.com",
+  "brand": "Free & Easy",
+  "cur": "USD"
+ },
+ {
+  "domain": "almostsomeday.com",
+  "brand": "Almost Someday",
+  "cur": "USD"
  }
 ]
