@@ -735,6 +735,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div id="fits" hidden>
   <div class="fitsub" id="fitsub">
    <button class="fsub on" data-fs="build">Build a fit</button>
+   <button class="fsub" data-fs="fresh">&#9889; Fresh Fits<span class="n" id="freshn"></span></button>
    <button class="fsub" data-fs="top">&#9733; Top Fits<span class="n" id="topn"></span></button>
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
    <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
@@ -769,6 +770,11 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
      <button class="more" id="pkmore" hidden>Show more</button>
     </div>
    </div>
+  </div>
+  <div id="freshmode" hidden>
+   <div class="tophead"><div class="toptitle">&#9889; Fresh Fits</div>
+    <div class="tophint" id="freshhint"></div></div>
+   <div id="freshlist"></div>
   </div>
   <div id="topmode" hidden>
    <div class="tophead"><div class="toptitle">&#9733; Top Fits</div>
@@ -1288,7 +1294,8 @@ $('bcopy').onclick=()=>{
 };
 $('bpreview').onclick=()=>{ if(SLOTORDER.some(k=>outfit[k])) openPreview(outfit,'Your fit',cvTotal()); else toast('Nothing placed yet'); };
 // ===== STARTER LOOKS (load into builder) =====
-const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,cs:o.cs||0,items:Object.assign({},o.items)}));
+const FITS=OUT.map((o,i)=>({i,formula:o.formula,note:o.note,cs:o.cs||0,fresh:!!o.fresh,items:Object.assign({},o.items)}));
+try{ const _fn=document.getElementById('freshn'); if(_fn) _fn.textContent=FITS.filter(f=>f.fresh).length; }catch(e){}
 const fitTotal=f=>Object.values(f.items).reduce((a,b)=>a+b.g,0);
 function slotHtml(r,k){
  return `<div class="slotw">
@@ -1370,6 +1377,25 @@ function renderTop(){
    ? `Curated from what you\u2019ve liked \u2014 ${withLiked} of the ${top.length} below are built around your saved pieces, with your brands and outfit styles pushed to the top. Heart more and this reshapes around you.`
    : `The flyest coordinated fits across every brand \u2014 distinct labels head to toe, ranked on curation and quality. Heart any piece or outfit and this instantly reshuffles around your taste.`;
  $('toplist').innerHTML = top.length ? top.map(x=>fitHtml(x.f)).join('') : '<div class="empty">No fits to rank yet.</div>';
+}
+// FRESH FITS — only fits built from recent drops, ranked by your taste. Changes as stock
+// lands (rebuilt daily) AND sharpens every time you save (taste pushes your brands/colours up).
+function renderFresh(){
+ const prefFormulas=new Set(savedFits.map(x=>x.note));
+ const taste=tasteProfile();
+ let pool=FITS.filter(f=>f.fresh);
+ if(hideSavedFitsOn()){ const sv=savedFitSigs(); pool=pool.filter(f=>!sv.has(fitSig(f))); }
+ const scored=pool.map(f=>fitScore(f,prefFormulas,taste))
+   .sort((a,b)=> b.s-a.s || fitTotal(a.f)-fitTotal(b.f));
+ const top=scored.slice(0,60);
+ if($('freshn')) $('freshn').textContent=pool.length;
+ const anyLiked=savedUrls.size>0 || savedFits.length>0;
+ $('freshhint').textContent = pool.length
+   ? (anyLiked
+      ? `The newest drops, built into fits and ranked around what you’ve saved — this shelf refreshes as new stock lands and sharpens every time you heart a piece.`
+      : `Fits built from the newest arrivals across your brands — refreshed as new stock drops. Heart pieces and outfits and this reshapes around your taste.`)
+   : `No fresh drops in the mix right now — check back as new stock lands.`;
+ $('freshlist').innerHTML = top.length ? top.map(x=>fitHtml(x.f)).join('') : '<div class="empty">No fresh fits yet — new drops will appear here.</div>';
 }
 // Switch to the Outfits view + builder from ANYWHERE (Surprise, Top Fits, saved).
 // Bug fix: "Use & edit" on the Surprise tab loaded the builder into #buildmode, which
@@ -1616,10 +1642,12 @@ document.addEventListener('DOMContentLoaded',()=>{});
 function setFitSub(which){
  document.querySelectorAll('.fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
  $('buildmode').hidden=which!=='build';
+ $('freshmode').hidden=which!=='fresh';
  $('topmode').hidden=which!=='top';
  $('looksmode').hidden=which!=='looks';
  $('savedmode').hidden=which!=='saved';
  if(which==='build') initBuilder();
+ else if(which==='fresh') renderFresh();
  else if(which==='top') renderTop();
  else if(which==='looks'){ if(!$('fitlist').innerHTML) renderFits(); }
  else if(which==='saved') renderSaved();

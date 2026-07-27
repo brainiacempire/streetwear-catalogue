@@ -184,7 +184,8 @@ for path in files:
         rows.append({"b":b, "t":title, "c":cat,
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
-                     "i":o["image"], "u":u, "sc":score, "s":sizes[:8]})
+                     "i":o["image"], "u":u, "sc":score, "s":sizes[:8],
+                     "new":bool(o.get("new"))})   # recent drop → feeds the Fresh Fits shelf
 
 _COL_MAP2 = [("black",r"\b(black|jet ?black|onyx|noir)\b"),("white",r"\b(white|off.?white|blanc)\b"),
  ("grey",r"\b(grey|gray|charcoal|heather|slate|graphite)\b"),("navy",r"\b(navy|midnight)\b"),
@@ -207,6 +208,13 @@ for r in rows:
     if dc: r["col"]=dc
     elif not r.get("col"): r["col"]="unknown"
     r["neu"]=(r["col"] in _NEUTSET)
+# ---- styling intelligence: silhouette / formality / season, for deeper coordination reasoning ----
+_BAGGY   = re.compile(r"\b(baggy|wide|loose|balloon|relaxed|oversized|carpenter|skater|puddle|billow|voluminous)\b", re.I)
+_SLIM    = re.compile(r"\b(slim|skinny|tapered|fitted|slim.?fit|cropped|tailored)\b", re.I)
+_ELEVATED= re.compile(r"\b(trouser|tailored|pleated|oxford|loafer|blazer|wool|suit|dress ?shirt|chino|slack|gurkha)\b", re.I)
+_GYMSHOE = re.compile(r"\b(slide|slider|sandal|mule|croc|clog|flip.?flop|pool)\b", re.I)
+_HEAVY   = re.compile(r"\b(puffer|down|parka|heavy|wool ?coat|shearling|padded|quilted|sherpa|fleece|overcoat|duffle)\b", re.I)
+_SUMMER  = re.compile(r"\b(shorts?|jorts?|tank|linen|swim|board ?short|mesh)\b", re.I)
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
@@ -226,6 +234,14 @@ def pool(cats, colour=None, neutral=None, hero=False, limit=600):
             if hero and r["col"] not in HEROES:          continue
             out.append(r)
     return out[:limit]
+
+def freshpool(cats, colour=None, neutral=None, hero=False, limit=600):
+    """Like pool(), but recent drops (new) come FIRST — so Fresh Fits leans on what just landed.
+    Falls back to the full pool when few/no new pieces exist, so fits always build."""
+    base = pool(cats, colour=colour, neutral=neutral, hero=hero, limit=5000)
+    fresh = [r for r in base if r.get("new")]
+    rest  = [r for r in base if not r.get("new")]
+    return (fresh + rest)[:limit]
 
 def harmony(col, fit_cols):
     """Does this colour coordinate with the fit so far? Neutral base + at most ONE accent, or tonal."""
@@ -303,8 +319,22 @@ def build(name, blurb, slots):
     coord += sum(1 for v in fit.values() if v["u"] in favs or v["u"] in picks)   # built on liked/curated pieces
     coord += sum(1 for v in fit.values() if v["b"].lower() in FAV_BRANDS)        # elevated labels = taste
     coord += min(5, len(fit))                    # fuller, more-styled fits (capped)
+    # ---- deeper reasoning: silhouette proportion, formality coherence, seasonal cohesion ----
+    _titles = [v["t"] for v in fit.values()]
+    _baggy = sum(1 for t in _titles if _BAGGY.search(t))
+    _slim  = sum(1 for t in _titles if _SLIM.search(t))
+    if _baggy >= 2:               coord -= 2      # multiple oversized pieces = shapeless, not styled
+    if _baggy >= 1 and _slim >= 1: coord += 2     # relaxed + fitted = deliberate proportion play
+    _bottom = fit.get("bottom"); _shoefit = fit.get("shoe"); _layer = fit.get("layer")
+    if _bottom and _shoefit and _ELEVATED.search(_bottom["t"]) and _GYMSHOE.search(_shoefit["t"]):
+        coord -= 4                                # slides/sandals under tailored trousers — formality clash
+    if _layer and _bottom and _HEAVY.search(_layer["t"]) and _SUMMER.search(_bottom["t"]):
+        coord -= 4                                # puffer/parka over shorts — seasons don't match
+    if _layer and _shoefit and _HEAVY.search(_layer["t"]) and _GYMSHOE.search(_shoefit["t"]):
+        coord -= 2                                # heavy outerwear with pool slides
+    _fresh = any(v.get("new") for v in fit.values())   # contains a recent drop → Fresh Fits
     return {"formula": name, "note": blurb, "items": fit,
-            "brands": len(brands), "cs": coord,
+            "brands": len(brands), "cs": coord, "fresh": _fresh,
             "total": round(sum(v["g"] for v in fit.values()), 2)}
 
 OUTFIT_MULT = 2.2   # scale every formula up — far more variety across the whole catalogue
@@ -580,8 +610,33 @@ add("Colour Pop",
          ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 10)
 
+# ===== FRESH FITS — built from the newest drops, so this shelf changes as stock lands and
+#       (ranked client-side by taste) gets sharper every time Dave saves. =====
+add("Fresh Drop — Easy",
+    "Straight off the newest drops — a clean tee, a considered trouser and one fresh sneaker.",
+    lambda: [("top", freshpool(["tee","longsleeve"], neutral=True)),
+         ("bottom", freshpool(["pants","jeans"], neutral=True)),
+         ("shoe", freshpool("footwear")),
+         ("hat", freshpool("headwear", neutral=True))], 26)
+add("Fresh Drop — Layered",
+    "New-season layering: a fresh overshirt or jacket over a tee with a clean trouser.",
+    lambda: [("layer", freshpool(["jacket_outerwear","windrunner"])),
+         ("top", freshpool(["tee","longsleeve"], neutral=True)),
+         ("bottom", freshpool(["pants","jeans","sweats"], neutral=True)),
+         ("shoe", freshpool("footwear", neutral=True))], 22)
+add("Fresh Drop — Statement",
+    "Latest arrivals with one hero piece carrying it — everything else kept quiet around it.",
+    lambda: [("top", freshpool(["hoodie_sweat","tee","longsleeve"], hero=True) or freshpool(["hoodie_sweat","tee"])),
+         ("bottom", freshpool(["jeans","pants","sweats"], neutral=True)),
+         ("shoe", freshpool("footwear", neutral=True)),
+         ("hat", freshpool("headwear", neutral=True))], 20)
+
 random.shuffle(outfits)
-outfits = outfits[:700]   # bound page weight while keeping huge variety
+# Keep every Fresh fit, then fill variety up to a much larger cap now the catalogue is huge.
+_fresh_fits = [o for o in outfits if o.get("fresh")]
+_other_fits = [o for o in outfits if not o.get("fresh")]
+outfits = (_fresh_fits + _other_fits)[:1500]   # was 700 — far more variety across the bigger catalogue
+random.shuffle(outfits)
 json.dump(outfits, open("outfits.json","w"), indent=1)
 
 print(f"eligible products : {len(rows):,}")
