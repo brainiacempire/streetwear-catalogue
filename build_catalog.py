@@ -304,6 +304,12 @@ for f in _rowfiles:
             "neu": 1 if colour_of(t, o.get("colour","unknown")) in _NEUT_COLS else 0,
             "nd": 1 if (o.get("new") or (o.get("domain") or "") in NEWDROP_DOMAINS) else 0,
             "np": 1 if o.get("new") else 0,          # genuinely new arrival (published <= 7 days)
+            # quality score — drives which items survive the SUPERSTORE cap and the fill/stream
+            # ordering, so saved / curated / video / new / in-stock, sensibly-priced pieces win
+            # (was missing, so those sorts were arbitrary).
+            "sc": (6 if _saved else 0) + (3 if url in picks else 0) + (3 if url in vidpicks else 0)
+                  + (2 if o.get("new") else 0) + (1 if o.get("available") else 0)
+                  + (1 if 40 <= _g <= 600 else 0),
         })
 
 # The full dataset is now ~152k rows across 287 stores — far too large to render.
@@ -924,7 +930,11 @@ function money(v,c){
 const gbp=v=>'\u00a3'+(v>=100? Math.round(v).toLocaleString('en-US') : v.toFixed(2));
 const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
 
-const counts={}; D.forEach(r=>counts[r.c]=(counts[r.c]||0)+1);
+function _instOnly(){ const el=$('only'); return el?el.checked:true; }
+// category counts honour the sold-out toggle: in-stock-only by default, full library when the
+// toggle is off — so flipping "in stock only" visibly fills sweats / longsleeves / windrunners.
+function catCounts(){ const oo=_instOnly(); const c={}; D.forEach(r=>{ if(oo && !r.a && !favs.has(r.id)) return; c[r.c]=(c[r.c]||0)+1; }); return c; }
+const counts=catCounts();
 const nPend=D.filter(r=>r.n).length;
 $('collections').innerHTML =
   `<button class="chip special" data-x="pend">&#9733; Best of<span class="n">${nPend}</span></button>`+
@@ -1029,6 +1039,8 @@ function renderSurprise(){
 $('more').onclick=()=>{shown+=PAGE;render()};
 $('pmin').addEventListener('input',e=>{$('pvmin').textContent=e.target.value;shown=PAGE;render()});
 ['q','brand','sort','only','fitsme','colf','hidesaved'].forEach(id=>{const el=$(id); if(el) el.addEventListener('input',()=>{shown=PAGE;render()});});
+// toggling "in stock only" must also rebuild the chip counts so the fuller sold-out numbers show
+{const oel=$('only'); if(oel) oel.addEventListener('change',()=>{ try{reindex(true);}catch(e){} shown=PAGE; render(); });}
 {const sh=$('shuffle'); if(sh) sh.onclick=()=>{ _seed=Math.random(); $('sort').value='rand'; shown=PAGE; render(); toast('Shuffled \u2014 pick a Sort to go back'); };}
 $('pmax').addEventListener('input',e=>{$('pv').textContent=e.target.value;shown=PAGE;render()});
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');
@@ -1071,7 +1083,7 @@ let activeSlot='top', pkShown=60, builderReady=false;
 const byCat={}; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
 // ----- Load more pieces: merge extra encrypted chunks into the same catalogue -----
 function reindex(quiet){
- const counts={}; D.forEach(r=>counts[r.c]=(counts[r.c]||0)+1);
+ const counts=catCounts();
  $('chips').innerHTML = CATS.filter(([k])=>counts[k]).map(([k,l])=>
    `<button class="chip${active.has(k)?' on':''}" data-c="${k}">${l}<span class="n">${counts[k]}</span></button>`).join('');
  $('collections').innerHTML =
