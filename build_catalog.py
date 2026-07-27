@@ -660,6 +660,10 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  color:var(--acc-ink);padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:600;
  opacity:0;pointer-events:none;transition:.2s;z-index:99}
 #toast.show{opacity:1}
+.backbtn{position:fixed;top:12px;left:12px;z-index:150;background:var(--acc);color:var(--acc-ink);
+ border:0;border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:700;cursor:pointer;
+ box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;gap:6px}
+.backbtn:hover{filter:brightness(1.08)}
 .pkcard{position:relative}
 .pfav,.cvfav,.sfav{position:absolute;top:5px;left:5px;z-index:4;background:rgba(11,11,13,.74);border:none;
  color:#9aa2ad;font-size:12px;line-height:1;padding:4px 6px;border-radius:6px;cursor:pointer;filter:grayscale(1);opacity:.9}
@@ -730,6 +734,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
 .vpt .vg{display:block;color:#fff;font-weight:700;margin-top:2px}
 .gate{position:fixed;inset:0;z-index:99999;background:#0b0b0f;display:flex;align-items:center;justify-content:center}.gatebox{width:330px;max-width:86vw;text-align:center;color:#eee}.gatelogo{font-size:30px;color:#ff5c8a;margin-bottom:12px}.gatebox h1{font-size:21px;margin:0 0 6px;letter-spacing:.3px}.gatebox p{color:#8a8a93;font-size:13px;margin:0 0 18px;line-height:1.5}.gatebox input{width:100%;padding:12px 14px;border:1px solid #333;background:#15151c;color:#fff;border-radius:10px;font-size:15px;box-sizing:border-box}.gatebox input:focus{outline:none;border-color:#ff5c8a}.gatebox button{width:100%;margin-top:10px;padding:12px;border:0;background:#ff5c8a;color:#111;font-weight:700;border-radius:10px;font-size:15px;cursor:pointer}.gerr{color:#ff6b6b;font-size:12.5px;min-height:16px;margin-top:10px}</style></head><body>
 <div id="gate" class="gate" hidden><div class="gatebox"><div class="gatelogo">&#9670;</div><h1>Private</h1><p>Enter your password to view the catalogue.</p><input id="gpw" type="password" placeholder="Password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button id="gbtn">Enter</button><div id="gerr" class="gerr"></div></div></div>
+<button id="backbtn" class="backbtn" hidden>&larr; Back</button>
 <header><div class="wrap">
  <div class="top">
   <div><h1>__TITLE__</h1>
@@ -1071,7 +1076,8 @@ function planFromProduct(id){
  if(include.top && !outfit.top){ outfit.top=coordPick('top', slot==='top'?null:heroColour()); }
  let hero=heroColour();
  ['bottom','shoe','hat','layer'].forEach(k=>{ if(k!==slot && include[k] && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
- const vt=document.querySelector('.vt[data-v="fits"]'); if(vt) vt.click();
+ rememberReturn();
+ switchView('fits');
  setFitSub('build'); initBuilder(); renderCanvas(); setSlot(slot);
  try{ document.querySelector('.picker').scrollIntoView({block:'nearest'}); }catch(e){}
  toast('Planned a fit around your '+r.b+' — swap any slot, lock keepers, or hit Variations');
@@ -1600,6 +1606,27 @@ function renderForYou(){
 // Switch to the Outfits view + builder from ANYWHERE (Surprise, Top Fits, saved).
 // Bug fix: "Use & edit" on the Surprise tab loaded the builder into #buildmode, which
 // lives inside the hidden #fits view — so nothing appeared. Force the view over first.
+// ===== BACK / scroll-restore: dive into a fit or the builder, then return EXACTLY where you were
+// (same view, same scroll spot) so you can carry on browsing without losing your place. =====
+let _returnTo=null;
+function _currentView(){ if($('grid')&&!$('grid').hidden)return'grid'; if($('surprise')&&!$('surprise').hidden)return'surprise'; if($('fits')&&!$('fits').hidden)return'fits'; return'grid'; }
+function switchView(v){
+ document.querySelectorAll('.vt').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+ const isFits=v==='fits',isSurp=v==='surprise',isGrid=v==='grid';
+ $('fits').hidden=!isFits; $('surprise').hidden=!isSurp; $('grid').hidden=!isGrid;
+ $('more').style.display=isGrid?'':'none';
+ $('loadmore').style.display='none'; if(isGrid) updateLoadMore();
+ document.getElementById('chips').style.display=isGrid?'':'none';
+ const _bar=document.querySelector('.bar'); if(_bar) _bar.style.display=isGrid?'':'none';
+}
+function _currentFitSub(){ const on=document.querySelector('.fsub.on'); return on?on.dataset.fs:'build'; }
+function rememberReturn(){ _returnTo={v:_currentView(), y:window.scrollY||window.pageYOffset||0, sub:_currentFitSub()}; const bb=$('backbtn'); if(bb) bb.hidden=false; }
+function goBack(){ if(!_returnTo)return; const t=_returnTo; _returnTo=null; const bb=$('backbtn'); if(bb) bb.hidden=true;
+ switchView(t.v);
+ if(t.v==='fits' && t.sub && t.sub!=='build') setFitSub(t.sub);   // return to the exact sub-tab (Top Fits, For You…)
+ else if(t.v==='surprise' && !document.querySelector('#surprisepieces .card')) renderSurprise();
+ requestAnimationFrame(()=>window.scrollTo(0, t.y||0)); }
+{const bb=$('backbtn'); if(bb) bb.onclick=goBack;}
 function goBuilder(){
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on'));
  const vt=document.querySelector('.vt[data-v="fits"]'); if(vt) vt.classList.add('on');
@@ -1616,10 +1643,11 @@ function goBuilder(){
 document.addEventListener('click',e=>{
  const u=e.target.closest('[data-use]'); if(!u)return;
  const f=fitById(u.dataset.use); if(!f||!f.items){ toast('Could not load that outfit'); return; }
+ rememberReturn();
  outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
  SLOTORDER.forEach(k=>{ if(f.items[k]) outfit[k]=D.find(x=>x.u===f.items[k].u)||f.items[k]; });
  goBuilder();
- toast('Loaded — now swap any piece');
+ toast('Loaded — now swap any piece. ← Back returns you to your place');
 });
 {const ff=$('fformula');
  [...new Set(OUT.map(o=>o.formula))].sort().forEach(f=>{const op=document.createElement('option');op.textContent=f;ff.appendChild(op);});}
@@ -1863,6 +1891,7 @@ document.getElementById('fitsub').addEventListener('click',e=>{const b=e.target.
    else renderTop(); });}
 
 $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
+ _returnTo=null; {const _bb=$('backbtn'); if(_bb) _bb.hidden=true;}   // manual navigation clears the Back target
  document.querySelectorAll('.vt').forEach(x=>x.classList.remove('on')); b.classList.add('on');
  const v=b.dataset.v, isFits=v==='fits', isSurp=v==='surprise', isGrid=v==='grid';
  $('fits').hidden=!isFits; $('surprise').hidden=!isSurp; $('grid').hidden=!isGrid;
