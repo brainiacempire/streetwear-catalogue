@@ -1,0 +1,23 @@
+{
+ "generated": "2026-07-27T19:11:52.175878+00:00",
+ "cats": {
+  "tee": 2304,
+  "longsleeve": 602,
+  "top": 1319,
+  "hoodie_sweat": 1171,
+  "windrunner": 407,
+  "jeans": 1192,
+  "sweats": 571,
+  "pants": 1228,
+  "shorts": 1013,
+  "jacket_outerwear": 1402,
+  "footwear": 2050,
+  "headwear": 1115,
+  "accessory": 1146,
+  "underwear": 136,
+  "set": 350,
+  "other": 840
+ },
+ "rows": 16846,
+ "instock": 14116
+}
