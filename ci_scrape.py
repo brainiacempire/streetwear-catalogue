@@ -22,7 +22,7 @@ def cat(title, ptype):
         ("hoodie_sweat","hoodie|hooded|sweatshirt|crewneck|zip.?up"),
         ("longsleeve","long.?sleeve|longsleeve|\\bls\\b|thermal|henley"),
         ("sweats","sweatpant|jogger|track.?pant"),
-        ("shorts","shorts|jorts"), ("jeans","jeans|denim"),
+        ("shorts","(?:jorts?|shorts?)(?!\\s*sleeve)"), ("jeans","jeans|denim"),
         ("windrunner","windbreaker|anorak|track.?jacket|fleece|half.?zip"),
         ("jacket_outerwear","jacket|coat|parka|bomber|puffer|vest"),
         ("pants","pants|trouser|cargo|chino"), ("tee","t.?shirt|tee\\b"),

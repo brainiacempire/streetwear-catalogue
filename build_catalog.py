@@ -94,6 +94,7 @@ _CLS_RULES = [
  ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
+ ("tee",       r"\b(t-?shirts?|tees?)\b"),  # explicit tee wins: a graphic tee named after jeans/cargo/denim is still a TEE, not a bottom
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
@@ -958,8 +959,11 @@ function reindex(quiet){
  for(const k in byCat) delete byCat[k]; D.forEach(r=>{ (byCat[r.c]=byCat[r.c]||[]).push(r); });
  D.forEach(r=>{ if(savedUrls.has(r.u)) favs.add(r.id); });
  if(!quiet) render();
+ else { // background fill: keep the "Show more" affordance in sync without resetting the grid
+   try{ const f=filtered(); const btn=$('more'); if(btn){ btn.hidden=f.length<=shown; if(f.length>shown) btn.textContent=`Show more (${f.length-shown} left)`; } }catch(e){}
+ }
 }
-function updateLoadMore(){ const btn=$('loadmore'); if(!btn) return;
+function updateLoadMore(){ const btn=$('loadmore'); if(btn) btn.hidden=true; return;
  if(_chunkNext>=__CHUNKS__.length){ btn.hidden=true; }
  else { btn.hidden=false; btn.textContent='\u002b Load more pieces'; } }
 let _loadingChunk=false;
@@ -986,19 +990,24 @@ async function loadAllChunks(){ while(_chunkNext<__CHUNKS__.length){ await loadM
 let _bgFilling=false,_bgDone=false;
 async function loadAllQuiet(){
  if(_bgFilling||_bgDone) return; _bgFilling=true;
+ let stubborn=0;
  while(_chunkNext<__CHUNKS__.length){
    if(_loadingChunk){ await new Promise(r=>setTimeout(r,200)); continue; }
    _loadingChunk=true;
-   try{
-     const raw=await fetch(__CHUNKS__[_chunkNext],{cache:'force-cache'}).then(r=>r.json());
-     let pieces;
-     if(_KEY){ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(raw.iv)},_KEY,_b64(raw.ct)); pieces=JSON.parse(new TextDecoder().decode(pt)).D; }
-     else { pieces=raw.D; }
-     for(const r of pieces) D.push(r);
-     _chunkNext++;
-     reindex(true);
-   }catch(e){ _loadingChunk=false; break; }
+   let ok=false;
+   for(let attempt=0; attempt<3 && !ok; attempt++){
+     try{
+       const raw=await fetch(__CHUNKS__[_chunkNext],{cache:'force-cache'}).then(r=>{ if(!r.ok) throw new Error('http'); return r.json(); });
+       let pieces;
+       if(_KEY){ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:_b64(raw.iv)},_KEY,_b64(raw.ct)); pieces=JSON.parse(new TextDecoder().decode(pt)).D; }
+       else { pieces=raw.D; }
+       for(const r of pieces) D.push(r);
+       _chunkNext++; ok=true;
+       reindex(true);
+     }catch(e){ await new Promise(r=>setTimeout(r,700)); }   // transient (network/contention) — retry quietly
+   }
    _loadingChunk=false;
+   if(!ok){ if(++stubborn>=2) break; await new Promise(r=>setTimeout(r,1500)); continue; }  // give up only after repeated failure; retries next visit
    updateLoadMore();
    await new Promise(r=>setTimeout(r,140));
  }
@@ -1492,7 +1501,7 @@ $('viewtabs').onclick=e=>{const b=e.target.closest('.vt'); if(!b)return;
  const v=b.dataset.v, isFits=v==='fits', isSurp=v==='surprise', isGrid=v==='grid';
  $('fits').hidden=!isFits; $('surprise').hidden=!isSurp; $('grid').hidden=!isGrid;
  $('more').style.display=isGrid?'':'none';
- $('loadmore').style.display=isGrid?'':'none'; if(isGrid) updateLoadMore();
+ $('loadmore').style.display='none'; if(isGrid) updateLoadMore();
  document.getElementById('chips').style.display=isGrid?'':'none';
  document.querySelector('.bar').style.display=isGrid?'':'none';
  if(isFits) setFitSub('build');
