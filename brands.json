@@ -220,11 +220,6 @@
   "cur": "USD"
  },
  {
-  "domain": "laced.com",
-  "brand": "Laced",
-  "cur": "USD"
- },
- {
   "domain": "poptradingcompany.com",
   "brand": "Poptradingcompany",
   "cur": "USD"
@@ -467,11 +462,6 @@
  {
   "domain": "dtmusa.myshopify.com",
   "brand": "Dtmusa",
-  "cur": "USD"
- },
- {
-  "domain": "satoshinakamoto.cloud",
-  "brand": "SATOSHI NAKAMOTO",
   "cur": "USD"
  },
  {
@@ -898,11 +888,6 @@
   "domain": "colorfulstandard.com",
   "brand": "Colorful Standard",
   "cur": "EUR"
- },
- {
-  "domain": "garciago.com",
-  "brand": "Garciago",
-  "cur": "USD"
  },
  {
   "domain": "fr2.tokyo",
