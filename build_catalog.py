@@ -294,9 +294,26 @@ except Exception:
 # Cap per DOMAIN, not per brand: a real label (Cole Buxton, Corteiz) has one domain
 # and stays fully shown; only multi-brand mega-shops (Stadium Goods, END, bstn) get
 # trimmed. Saved / curated / video / outfit pieces are never dropped.
-PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "450"))   # was 120 — max out full catalogues per brand
-FULL_CAP = int(os.environ.get("FULL_CAP", "1600"))      # was 600 — loved/saved brands shown in full
-MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "60000"))   # hard ceiling; page streams in chunks so it stays fast
+# Dave's rule: EVERY single-brand label is shown in FULL — no cap removes its pieces.
+# Only genuine multi-brand SUPERSTORES (Stadium Goods, Browns, Italist…) are trimmed,
+# because they'd otherwise dump thousands of other-label products into the grid.
+PER_DOMAIN = int(os.environ.get("PER_DOMAIN", "4000"))   # effectively uncapped for real brands
+FULL_CAP = int(os.environ.get("FULL_CAP", "6000"))       # loved/saved brands: full
+SUPERSTORE_CAP = int(os.environ.get("SUPERSTORE_CAP", "700"))   # the ONLY real cap: multi-brand shops
+MAX_TOTAL = int(os.environ.get("MAX_TOTAL", "30000"))    # size of the EMBEDDED first paint; the rest streams
+SUPERSTORE_NAMES = {"stadiumgoods","italist","brownsfashion","cncpts","sneakerpolitics","packer",
+ "notre","xhibition","slamjam","overkillshop","afew-store","extrabutterny","crepslocker",
+ "socialstatuspgh","blue in green","naked copenhagen","civilized","corlection","hypedept",
+ "hypeboys","juice","union la","undefeated","vestairestudios","bdga","soleboy","xhibition",
+ "sneakerpolitics","stadiumgoods","packer","notre","us","slamjam"}
+SUPERSTORE_DOMAINS = set()
+try:
+    for _sb in json.load(open("brands.json")):
+        if (_sb.get("brand", "").strip().lower()) in SUPERSTORE_NAMES:
+            SUPERSTORE_DOMAINS.add(_sb.get("domain"))
+except Exception:
+    pass
+FULL_DOMAINS -= SUPERSTORE_DOMAINS   # a saved piece can't un-cap a whole multi-brand superstore
 import collections as _co
 MIN_GBP = float(os.environ.get("MIN_GBP", "0"))   # drop obvious data-error prices from non-saved pieces
 perdom = collections.Counter()
@@ -311,6 +328,21 @@ for r in rows:
     if not ALL_STOCK and (not r["a"] or r["sm"]):
         continue
     pool.append(r)
+# 1b) The ONLY items ever dropped for volume: overflow from multi-brand SUPERSTORES.
+#     Every single-brand label keeps ALL its pieces (embedded first, the rest streamed).
+if SUPERSTORE_DOMAINS:
+    _sc = collections.Counter(); _capped = []
+    for r in sorted(pool, key=lambda r: -(r.get("sc") or 0)):
+        d = r["d"]
+        if d in SUPERSTORE_DOMAINS:
+            if _sc[d] >= SUPERSTORE_CAP:
+                continue
+            _sc[d] += 1
+        _capped.append(r)
+    _dropped = len(pool) - len(_capped)
+    pool = _capped
+else:
+    _dropped = 0
 # 2) fill the rest BALANCED across category AND brand, so no category (sets, tees, shoes...)
 #    or brand gets starved by expensive items dominating a global price sort.
 budget = max(0, MAX_TOTAL - len(protected))
@@ -342,8 +374,8 @@ rows = protected + picked
 
 best = {}
 for r in rows:
-    k = (r["d"], r["t"].lower())
-    cur = best.get(k)
+    k = r["u"]        # dedup by URL, NOT (brand,title) — different colourways share a title
+    cur = best.get(k)                            # and must all survive (Dave: "so many more colours")
     if cur is None or (r["a"] and not cur["a"]) or (r["a"] == cur["a"] and r["g"] < cur["g"]):
         if cur is not None:                      # keep the better listing but never lose flags
             r["f"] = r["f"] or cur["f"]; r["n"] = r["n"] or cur["n"]; r["v"] = r["v"] or cur["v"]
@@ -370,10 +402,10 @@ npend   = sum(1 for r in rows if r["n"])
 nvid    = sum(1 for r in rows if r["v"])
 
 CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", "12000"))
-_seen_dt = set((r["d"], r["t"].lower()) for r in rows)
+_seen_dt = set(r["u"] for r in rows)      # dedup by URL so colourways stream in too
 _lb = {}
 for r in leftover:
-    k = (r["d"], r["t"].lower())
+    k = r["u"]
     if k in _seen_dt or k in _lb: continue
     _lb[k] = r
 leftover = sorted(_lb.values(), key=lambda r: (not r["a"], r["sm"], -(r.get("sc") or 0), -(r["g"] or 0)))
