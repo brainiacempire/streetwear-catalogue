@@ -1603,5 +1603,105 @@
   "domain": "goodmorningtapes.com",
   "brand": "Good Morning Tapes",
   "cur": "USD"
+ },
+ {
+  "domain": "postoveralls.com",
+  "brand": "Post O'Alls",
+  "cur": "JPY"
+ },
+ {
+  "domain": "railcarfinegoods.com",
+  "brand": "Railcar Fine Goods",
+  "cur": "USD"
+ },
+ {
+  "domain": "shockoeatelier.com",
+  "brand": "Shockoe Atelier",
+  "cur": "USD"
+ },
+ {
+  "domain": "bravestarselvage.com",
+  "brand": "Brave Star Selvage",
+  "cur": "USD"
+ },
+ {
+  "domain": "samanamel.com",
+  "brand": "Saman Amel",
+  "cur": "SEK"
+ },
+ {
+  "domain": "husbands-paris.com",
+  "brand": "Husbands Paris",
+  "cur": "EUR"
+ },
+ {
+  "domain": "mfpen.com",
+  "brand": "mfpen",
+  "cur": "EUR"
+ },
+ {
+  "domain": "lestrangelondon.com",
+  "brand": "L'Estrange London",
+  "cur": "GBP"
+ },
+ {
+  "domain": "studionicholson.com",
+  "brand": "Studio Nicholson",
+  "cur": "GBP"
+ },
+ {
+  "domain": "margarethowell.co.uk",
+  "brand": "Margaret Howell (MHL)",
+  "cur": "GBP"
+ },
+ {
+  "domain": "anerkjendt.com",
+  "brand": "Anerkjendt",
+  "cur": "EUR"
+ },
+ {
+  "domain": "woodbird.dk",
+  "brand": "Woodbird",
+  "cur": "DKK"
+ },
+ {
+  "domain": "knowledgecottonapparel.com",
+  "brand": "Knowledge Cotton Apparel",
+  "cur": "EUR"
+ },
+ {
+  "domain": "skateboardcafe.com",
+  "brand": "Skateboard Cafe",
+  "cur": "GBP"
+ },
+ {
+  "domain": "aprilskateboards.com",
+  "brand": "April Skateboards",
+  "cur": "USD"
+ },
+ {
+  "domain": "studioskateboards.com",
+  "brand": "Studio Skateboards",
+  "cur": "CAD"
+ },
+ {
+  "domain": "yardsalexxx.myshopify.com",
+  "brand": "Yardsale",
+  "cur": "GBP"
+ },
+ {
+  "domain": "callme917.com",
+  "brand": "Call Me 917",
+  "cur": "USD"
+ },
+ {
+  "domain": "thereskateboards.com",
+  "brand": "There Skateboards",
+  "cur": "USD"
+ },
+ {
+  "domain": "poeticcollective.com",
+  "brand": "Poetic Collective",
+  "cur": "EUR"
  }
 ]
