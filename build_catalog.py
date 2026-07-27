@@ -941,6 +941,9 @@ function money(v,c){
 // everything is compared and filtered in GBP; native price shown underneath
 const gbp=v=>'\u00a3'+(v>=100? Math.round(v).toLocaleString('en-US') : v.toFixed(2));
 const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
+// novelty / non-fashion — kept out of the elevated shelves (Surprise) and demoted in menu ranking:
+// swimwear, underwear, socks and trinkets are not "heights of fashion" hero pieces.
+const NOVELTY_RE=/\b(swim|swimsuit|trunks?|board ?short|briefs?|boxer ?briefs?|boxers?|thong|jockstrap|socks?|underwear|base ?layer|keyring|keychain|lanyard|sticker|pin badge|badge set|air ?freshener|incense|candle|\bmug\b|magnet|coaster|poster|tote$|shopping ?bag|water ?bottle|drink ?bottle|phone ?case|airpod)\b/i;
 
 function _instOnly(){ const el=$('only'); return el?el.checked:true; }
 // category counts honour the sold-out toggle: in-stock-only by default, full library when the
@@ -1006,6 +1009,7 @@ function curScore(r){ let s=0;
  s+=Math.min(10,(r.sc||0));                          // server curation/quality signal
  if(_taste().n) s+=tasteBoost(r);                    // similar to what you save
  if(r.col==='unknown') s-=2; if(r.g<8) s-=3;         // demote no-colour / junk-priced
+ if(NOVELTY_RE.test(r.t)) s-=8;                      // novelty/basics sink below real fashion
  return s;
 }
 function card(r){
@@ -1071,12 +1075,15 @@ function planFromProduct(id){
 document.addEventListener('click',e=>{ const pb=e.target.closest('[data-plan]');
  if(pb){ e.preventDefault(); e.stopPropagation(); planFromProduct(+pb.dataset.plan); }});
 function renderSurprise(){
- const pool=D.filter(r=>r.a && r.i);
- // curated surprise: weight by your taste + curation + quality, sample from the strong head so
- // it stays fresh each click but never serves low-quality noise.
- const scored=pool.map(r=>({r, s:(_taste().n?tasteBoost(r):0)+(r.n?4:0)+(r.v?3:0)+Math.min(5,(r.sc||0)/2)+(r.f?2:0)}))
+ // HEIGHTS OF FASHION, not randomness: Surprise draws from genuinely ELEVATED pieces — curated
+ // best-of, video-sourced, high server-quality, and the brands you save from — and never novelty
+ // (swimwear, underwear, socks, trinkets). If there aren't enough elevated pieces yet, it widens
+ // to the clean pool, still excluding novelty.
+ const elite=D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t) && (r.n||r.v||(r.sc||0)>=6||(_taste().n&&tasteBoost(r)>=3)));
+ const pool = elite.length>=40 ? elite : D.filter(r=>r.a && r.i && !NOVELTY_RE.test(r.t));
+ const scored=pool.map(r=>({r, s:(_taste().n?tasteBoost(r)*2:0)+(r.n?6:0)+(r.v?4:0)+Math.min(6,(r.sc||0))+(r.f?2:0)}))
    .sort((a,b)=>b.s-a.s);
- const head=scored.slice(0, Math.max(80, Math.floor(scored.length*0.15)));
+ const head=scored.slice(0, Math.max(60, Math.floor(scored.length*0.35)));
  const pieces=[...head].sort(()=>Math.random()-0.5).slice(0,24).map(x=>x.r);
  $('surprisepieces').innerHTML = pieces.length?pieces.map(card).join(''):'<div class="empty">Nothing to surprise you with yet.</div>';
  const outs=[...FITS].sort(()=>Math.random()-0.5).slice(0,6);
