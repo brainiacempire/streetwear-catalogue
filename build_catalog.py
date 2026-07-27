@@ -630,6 +630,10 @@ button.act.prim:hover{filter:brightness(1.05)}
  display:flex;align-items:center;justify-content:center;transition:.12s;padding:0}
 .fav:hover{background:rgba(0,0,0,.85);color:#fff}
 .fav.on{background:var(--fav);color:#fff}
+.planfit{position:absolute;top:7px;right:43px;z-index:3;width:30px;height:30px;border-radius:50%;
+ border:none;background:rgba(0,0,0,.6);color:#fff9;font-size:14px;cursor:pointer;line-height:1;
+ display:flex;align-items:center;justify-content:center;transition:.12s;padding:0}
+.planfit:hover{background:var(--acc);color:#111}
 .body{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1}
 .brand{font-size:10.5px;color:var(--dim2);text-transform:uppercase;letter-spacing:.07em;
  font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1000,6 +1004,7 @@ function card(r){
  const cl=CATS.find(([k])=>k===r.c);
  return `<div class="card${r.a?'':' out'}${r.n?' pend':''}" data-id="${r.id}">
   <button class="fav${favs.has(r.id)?' on':''}" data-fav="${r.id}" title="Save">&#9829;</button>
+  <button class="planfit" data-plan="${r.id}" title="Plan a fit around this piece">&#128085;</button>
   <a class="ph" href="${esc(r.u)}" target="_blank" rel="noopener">
    ${r.i?`<img loading="lazy" src="${esc(r.i)}" alt="" onerror="this.remove()">`:''}
    ${r.n?'<span class="tagnew">BEST OF</span>':(r.v?'<span class="tagvid">VIDEO</span>':(r.a?'':'<span class="tagout">SOLD OUT</span>'))}
@@ -1037,6 +1042,26 @@ function _favClick(e){
 }
 $('grid').addEventListener('click',_favClick);
 {const sp=$('surprisepieces'); if(sp) sp.addEventListener('click',_favClick);}
+// ---- Plan a fit FROM any product (top, bottom, SHOE or HAT): seed the builder with this exact
+// piece, lock it, then coordinate a full tailored fit around it — accent-echo, style lane, distinct
+// brands. One tap on a card jumps straight into the builder with a considered fit already built. ----
+function planFromProduct(id){
+ const r=D.find(x=>x.id===id); if(!r) return;
+ const slot=(CVSLOTS.find(s=>s.cats.indexOf(r.c)>=0)||{}).k;
+ if(!slot){ toast('Can’t build a fit around that piece'); return; }
+ outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
+ Object.keys(locked).forEach(k=>locked[k]=false);
+ outfit[slot]=r; locked[slot]=true; include[slot]=true;                 // the chosen piece is the anchor, kept
+ if(include.top && !outfit.top){ outfit.top=coordPick('top', slot==='top'?null:heroColour()); }
+ let hero=heroColour();
+ ['bottom','shoe','hat','layer'].forEach(k=>{ if(k!==slot && include[k] && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
+ const vt=document.querySelector('.vt[data-v="fits"]'); if(vt) vt.click();
+ setFitSub('build'); initBuilder(); renderCanvas(); setSlot(slot);
+ try{ document.querySelector('.picker').scrollIntoView({block:'nearest'}); }catch(e){}
+ toast('Planned a fit around your '+r.b+' — swap any slot, lock keepers, or hit Variations');
+}
+document.addEventListener('click',e=>{ const pb=e.target.closest('[data-plan]');
+ if(pb){ e.preventDefault(); e.stopPropagation(); planFromProduct(+pb.dataset.plan); }});
 function renderSurprise(){
  const pool=D.filter(r=>r.a && r.i);
  // curated surprise: weight by your taste + curation + quality, sample from the strong head so
