@@ -777,6 +777,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
  <div id="fits" hidden>
   <div class="fitsub" id="fitsub">
    <button class="fsub on" data-fs="build">Build a fit</button>
+   <button class="fsub" data-fs="foryou">&#10084; For You<span class="n" id="foryoun"></span></button>
    <button class="fsub" data-fs="fresh">&#9889; Fresh Fits<span class="n" id="freshn"></span></button>
    <button class="fsub" data-fs="top">&#9733; Top Fits<span class="n" id="topn"></span></button>
    <button class="fsub" data-fs="looks">Starter looks<span class="n" id="lookn"></span></button>
@@ -813,6 +814,11 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
      <button class="more" id="pkmore" hidden>Show more</button>
     </div>
    </div>
+  </div>
+  <div id="foryoumode" hidden>
+   <div class="tophead"><div class="toptitle">&#10084; For You &mdash; a fit built around every piece you save</div>
+    <div class="tophint" id="foryouhint"></div></div>
+   <div id="foryoulist"></div>
   </div>
   <div id="freshmode" hidden>
    <div class="tophead"><div class="toptitle">&#9889; Fresh Fits</div>
@@ -903,7 +909,9 @@ let savedFits=loadFits();
 function persistFits(){ try{localStorage.setItem(OKEY,JSON.stringify(savedFits));}catch(e){} }
 function updateSavedCount(){ const el=$('savedn'); if(el)el.textContent=savedFits.length; }
 function updateFav(){ const n=favs.size; const tot=D.filter(r=>favs.has(r.id)).reduce((a,r)=>a+r.g,0);
- const fc=$('favcount'); if(fc)fc.textContent=n+' saved'+(n?' \u00b7 '+gbp(tot):''); const fn=$('favn'); if(fn)fn.textContent=n; }
+ const fc=$('favcount'); if(fc)fc.textContent=n+' saved'+(n?' \u00b7 '+gbp(tot):''); const fn=$('favn'); if(fn)fn.textContent=n;
+ const fyn=$('foryoun'); if(fyn)fyn.textContent=n;                    // For You badge tracks saved count
+ try{ const fym=$('foryoumode'); if(fym && !fym.hidden && typeof renderForYou==='function') renderForYou(); }catch(e){} }
 function togglePiece(u){ const row=D.find(x=>x.u===u);
  if(savedUrls.has(u)){ savedUrls.delete(u); if(row)favs.delete(row.id); }
  else { savedUrls.add(u); if(row)favs.add(row.id); }
@@ -1510,6 +1518,53 @@ function renderFresh(){
    : `No fresh drops in the mix right now — check back as new stock lands.`;
  $('freshlist').innerHTML = top.length ? top.map(x=>fitHtml(x.f)).join('') : '<div class="empty">No fresh fits yet — new drops will appear here.</div>';
 }
+// ===== FOR YOU — a tailored wardrobe: a complete coordinated fit built around EVERY piece you
+// save. Grows and re-curates as you heart more; each saved anchor gets fresh, matching variations.
+// Reuses the same coordination brain (accent-echo, style lane, distinct brands) as the builder. =====
+let FORYOU=[];
+function fitById(id){ id=String(id); return id.slice(0,2)==='fy' ? FORYOU[+id.slice(2)] : FITS[+id]; }
+function fitAroundAnchor(anchor){
+ const slot=(CVSLOTS.find(s=>s.cats.indexOf(anchor.c)>=0)||{}).k;
+ if(!slot) return null;
+ const keep={}; SLOTORDER.forEach(k=>keep[k]=outfit[k]);            // borrow the builder's global to coordinate, then restore
+ SLOTORDER.forEach(k=>outfit[k]=null);
+ outfit[slot]=anchor;
+ if(slot!=='top'){ outfit.top=coordPick('top', heroColour()); }    // establish the top so the palette reads
+ let hero=heroColour();
+ ['bottom','shoe','hat'].forEach(k=>{ if(k!==slot && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
+ const items={}; SLOTORDER.forEach(k=>{ if(outfit[k]) items[k]=outfit[k]; });
+ SLOTORDER.forEach(k=>outfit[k]=keep[k]);
+ return Object.keys(items).length>=3 ? items : null;
+}
+function buildForYou(){
+ FORYOU=[]; const seen=new Set();
+ const anchors=D.filter(r=>savedUrls.has(r.u) && r.i && r.a)        // your saved, in-stock, shoppable pieces
+   .sort(()=>Math.random()-0.5);                                   // rotate the whole wardrobe so every save gets its turn
+ for(const a of anchors){
+   for(let v=0; v<2 && FORYOU.length<48; v++){                     // two tailored variations per saved piece = depth
+     const items=fitAroundAnchor(a);
+     if(!items) continue;
+     const sig=SLOTORDER.map(k=>items[k]?items[k].u:'').join('|');
+     if(seen.has(sig)) continue; seen.add(sig);
+     const lab=((CATS.find(([k])=>k===a.c)||[])[1]||a.c).toLowerCase().replace(/s$/,'');
+     FORYOU.push({i:'fy'+FORYOU.length, formula:'Built around your '+a.b,
+       note:'Your saved '+lab+' anchors it — every other piece chosen to coordinate.', items:items, foryou:true, anchor:a.u, cs:0});
+   }
+   if(FORYOU.length>=48) break;
+ }
+ return FORYOU;
+}
+function renderForYou(){
+ buildForYou();
+ if($('foryoun')) $('foryoun').textContent=savedUrls.size;
+ if(!savedUrls.size){
+   $('foryouhint').textContent='Heart the pieces you love (♥) and this builds a complete, coordinated fit around each one — your own tailored wardrobe that grows and sharpens every time you save.';
+   $('foryoulist').innerHTML='<div class="empty">No saved pieces yet. Tap ♥ on anything you like — or the 👕 on a card to plan a fit — and your tailored looks appear here.</div>';
+   return;
+ }
+ $('foryouhint').textContent='A complete fit built around every piece you’ve saved — coordinated head to toe, cross-brand, with fresh variations. Save more and this grows and re-curates. Use & edit any of them, or swap a slot.';
+ $('foryoulist').innerHTML = FORYOU.length ? FORYOU.map(fitHtml).join('') : '<div class="empty">Heart a few more pieces and full coordinated fits will build around them here.</div>';
+}
 // Switch to the Outfits view + builder from ANYWHERE (Surprise, Top Fits, saved).
 // Bug fix: "Use & edit" on the Surprise tab loaded the builder into #buildmode, which
 // lives inside the hidden #fits view — so nothing appeared. Force the view over first.
@@ -1528,7 +1583,7 @@ function goBuilder(){
 }
 document.addEventListener('click',e=>{
  const u=e.target.closest('[data-use]'); if(!u)return;
- const f=FITS[+u.dataset.use]; if(!f||!f.items){ toast('Could not load that outfit'); return; }
+ const f=fitById(u.dataset.use); if(!f||!f.items){ toast('Could not load that outfit'); return; }
  outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
  SLOTORDER.forEach(k=>{ if(f.items[k]) outfit[k]=D.find(x=>x.u===f.items[k].u)||f.items[k]; });
  goBuilder();
@@ -1544,7 +1599,7 @@ document.addEventListener('click',e=>{
  const sf=e.target.closest('[data-sfav]');
  if(sf){ e.preventDefault(); e.stopPropagation(); const on=togglePiece(sf.dataset.sfav); sf.classList.toggle('on',on); toast(on?'Piece saved':'Removed from saved'); return; }
  const sl=e.target.closest('[data-savelook]');
- if(sl){ e.preventDefault(); const f=FITS[+sl.dataset.savelook]; const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
+ if(sl){ e.preventDefault(); const f=fitById(sl.dataset.savelook); const r=saveOutfit(f.items,f.formula); toast(r===1?'Outfit saved to Saved Outfits':r===-1?'Already saved':'Could not save'); return; }
  const ld=e.target.closest('[data-loadsaved]');
  if(ld){ const f=savedFits[+ld.dataset.loadsaved]; if(!f)return;
    outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
@@ -1743,7 +1798,7 @@ $('pvwrap').addEventListener('click',e=>{ if(e.target.id==='pvwrap')$('pvwrap').
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')$('pvwrap').hidden=true; });
 document.addEventListener('click',e=>{
  const pv=e.target.closest('[data-preview]');
- if(pv){ const f=FITS[+pv.dataset.preview]; if(f) openPreview(f.items,f.formula,fitTotal(f)); return; }
+ if(pv){ const f=fitById(pv.dataset.preview); if(f) openPreview(f.items,f.formula,fitTotal(f)); return; }
  const ps=e.target.closest('[data-preview-saved]');
  if(ps){ const f=savedFits[+ps.dataset.previewSaved]; if(f) openPreview(f.items,f.note,f.total); return; }
 });
@@ -1755,11 +1810,13 @@ document.addEventListener('DOMContentLoaded',()=>{});
 function setFitSub(which){
  document.querySelectorAll('.fsub').forEach(x=>x.classList.toggle('on',x.dataset.fs===which));
  $('buildmode').hidden=which!=='build';
+ $('foryoumode').hidden=which!=='foryou';
  $('freshmode').hidden=which!=='fresh';
  $('topmode').hidden=which!=='top';
  $('looksmode').hidden=which!=='looks';
  $('savedmode').hidden=which!=='saved';
  if(which==='build') initBuilder();
+ else if(which==='foryou') renderForYou();
  else if(which==='fresh') renderFresh();
  else if(which==='top') renderTop();
  else if(which==='looks'){ if(!$('fitlist').innerHTML) renderFits(); }
