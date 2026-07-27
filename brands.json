@@ -1598,5 +1598,10 @@
   "domain": "vollebak.com",
   "brand": "Vollebak",
   "cur": "USD"
+ },
+ {
+  "domain": "goodmorningtapes.com",
+  "brand": "Good Morning Tapes",
+  "cur": "USD"
  }
 ]

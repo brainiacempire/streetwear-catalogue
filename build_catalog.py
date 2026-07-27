@@ -1836,3 +1836,24 @@ print(f"gate        : {_gate_note}\n")
 for k, l in CATS:
     if cats[k]:
         print(f"  {l:22} {cats[k]:5}  ({sum(1 for r in rows if r['c']==k and r['a'])} in stock)")
+
+# ---- category regression guard: flag any category that fell sharply vs the previous build ----
+import datetime as _dtm
+_curcat = {k: int(cats[k]) for k, _ in CATS}
+_prevcat = {}
+try: _prevcat = (json.load(open("cat_health.json")) or {}).get("cats", {})
+except Exception: _prevcat = {}
+_alerts = []
+for k, l in CATS:
+    p = _prevcat.get(k)
+    if p and _curcat[k] < p * 0.75 and (p - _curcat[k]) >= 15:
+        _alerts.append(f"{l} {p}->{_curcat[k]}")
+if _prevcat:
+    print("\nHEALTH ALERT — categories down >25% vs last build: " + "; ".join(_alerts) if _alerts
+          else "\nHEALTH: no category regressions vs last build")
+try:
+    json.dump({"generated": _dtm.datetime.now(_dtm.timezone.utc).isoformat(),
+               "cats": _curcat, "rows": len(rows), "instock": instock},
+              open("cat_health.json", "w"), indent=1)
+except Exception:
+    pass

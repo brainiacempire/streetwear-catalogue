@@ -69,6 +69,8 @@ def cat(title, ptype):
 
 os.makedirs("rows", exist_ok=True)
 newdrops = set(); total = 0
+status_rows = []                                  # per-brand health -> status.jsonl (feeds the on-site health table)
+health = {"ok": 0, "thin": 0, "dead": 0}
 for b in BRANDS:
     dom = b["domain"]; rows = []
     try:
@@ -118,9 +120,29 @@ for b in BRANDS:
                 for r in rows: fh.write(json.dumps(r, ensure_ascii=False)+"\n")
             total += len(rows)
             print(f"  {dom}: {len(rows)}")
+            _st = "ok" if len(rows) >= 5 else "thin"
+            status_rows.append({"domain": dom, "brand": b.get("brand") or dom, "status": _st,
+                "product_count": len(rows), "note": "" if _st == "ok" else "few pieces in stock"})
+            health[_st] += 1
+        else:
+            print(f"  {dom}: 0 (empty)")
+            status_rows.append({"domain": dom, "brand": b.get("brand") or dom, "status": "dead",
+                "product_count": 0, "note": "no products returned"})
+            health["dead"] += 1
     except Exception as e:
         print(f"  {dom}: skip ({type(e).__name__})")
+        status_rows.append({"domain": dom, "brand": b.get("brand") or dom, "status": "dead",
+            "product_count": 0, "note": type(e).__name__})
+        health["dead"] += 1
     time.sleep(0.2)
 
 json.dump(sorted(newdrops), open("newdrops.json","w"))
+# ---- health report: written every run so the site + build log always show source health ----
+with open("status.jsonl", "w", encoding="utf-8") as fh:
+    for s in status_rows: fh.write(json.dumps(s, ensure_ascii=False) + "\n")
+health["generated"] = NOW.isoformat(); health["rows"] = total; health["brands"] = len(BRANDS)
+json.dump(health, open("brand_health.json", "w"), indent=1)
 print(f"TOTAL {total} rows, {len(newdrops)} brands with drops this week")
+print(f"HEALTH: {health['ok']} ok, {health['thin']} thin, {health['dead']} dead of {len(BRANDS)} brands")
+_dead = [s["domain"] for s in status_rows if s["status"] == "dead"]
+if _dead: print("  needs attention: " + ", ".join(sorted(_dead))[:600])
