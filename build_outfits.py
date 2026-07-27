@@ -209,10 +209,20 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False):
         fresh = [r for r in poolc if r["b"].lower() not in fit_brands]
         if fresh: poolc = fresh
     fc = fit_cols or set()
-    # colour harmony leads, then variety (least-used piece/brand), then curation score
-    poolc.sort(key=lambda r: (-harmony(r["col"], fc), usage[r["u"]], brand_usage[r["b"].lower()], -r["sc"]))
-    # tighter head = more curated (best pieces), still enough for variety across rebuilds
-    head = poolc[:max(12, len(poolc)//7)]
+    # WEIGHTED reasoning: what LOOKS GOOD leads (colour harmony, then piece quality), and brand
+    # mixing is a soft nudge — never forced. So a great piece from an already-used brand can win
+    # over a weak piece from a fresh one, while the set still spreads across many labels.
+    def _brand_pen(bu):
+        # soft up to ~4% of the set, then rises hard so no single label can dominate the catalogue
+        return bu * 0.35 + 0.9 * max(0, bu - 28)
+    def _q(r):
+        return (harmony(r["col"], fc) * 10.0        # coordination dominates (0..5 -> 0..50)
+                + min(15, r["sc"]) * 1.0            # curation/quality (favs, picks, elevated labels, clean sneaker)
+                - usage[r["u"]] * 0.6               # gently avoid repeating the exact same piece
+                - _brand_pen(brand_usage[r["b"].lower()]))  # mix brands: soft recurrence, hard cap on dominance
+    poolc.sort(key=lambda r: -_q(r))
+    # head = the genuinely best-looking candidates; randomised for fresh variety across rebuilds
+    head = poolc[:max(10, len(poolc)//6)]
     random.shuffle(head)
     return head[0] if head else None
 
