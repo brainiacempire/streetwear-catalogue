@@ -521,8 +521,8 @@ add("Skate Fit",
     "Baggy bottom, graphic tee, low skate shoe and a cap — the skate-shop uniform, kept cross-brand.",
     lambda: [("top", pool(["tee","longsleeve"], neutral=False)),
          ("bottom", pool(["jeans","pants"], neutral=True)),
-         ("shoe", pool("footwear")),
-         ("hat", pool("headwear"))], 12)
+         ("shoe", pool("footwear", neutral=True)),   # loud graphic top is the accent; shoe+hat neutral
+         ("hat", pool("headwear", neutral=True))], 12)
 
 # 19) Double Denim — done right, two washes, break with a knit/tee
 add("Double Denim",
@@ -593,8 +593,8 @@ add("Baggy Denim",
     "Baggy jeans, a boxy graphic tee and a chunky sneaker — the wide-leg denim shape done loud up top.",
     lambda: [("top", pool(["tee","longsleeve"], neutral=False)),
          ("bottom", pool("jeans")),
-         ("shoe", pool("footwear")),
-         ("hat", pool("headwear"))], 12)
+         ("shoe", pool("footwear", neutral=True)),   # keep shoe+hat neutral so the loud top is the ONLY accent
+         ("hat", pool("headwear", neutral=True))], 12)
 
 # 28) Monochrome Grey — the soft all-grey fit
 add("Monochrome Grey",
@@ -689,11 +689,80 @@ add("Fresh Drop — Statement",
          ("shoe", freshpool("footwear", neutral=True)),
          ("hat", freshpool("headwear", neutral=True))], 20)
 
+# ===== MORE SHORTS — a full summer lane, not an afterthought (Dave: more shorts fits) =====
+add("Denim Shorts Fit",
+    "Denim shorts or jorts with a graphic tee and a low sneaker — the everyday summer denim-short shape.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=False)),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 16)
+add("Cargo Shorts Utility",
+    "Utility or cargo shorts with a plain tee and a clean trainer — function, kept tonal.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 14)
+add("Loud Top, Short Leg",
+    "One hero colour up top, neutral shorts below — the Loud-Top rule at summer weight.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], hero=True)),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 16)
+add("Shorts & Longsleeve",
+    "A longsleeve with shorts and a low sneaker — the transitional warm-day layer.",
+    lambda: [("top", pool("longsleeve", neutral=True)),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear"))], 12)
+add("All-Black Shorts",
+    "Blacked-out for summer — black tee, black shorts, one detail shoe.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour="black")),
+         ("bottom", pool("shorts", colour="black") or pool("shorts", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", colour="black"))], 10)
+add("Statement Shorts",
+    "The shorts are the loud piece — everything above kept neutral so the leg carries it.",
+    lambda: [("bottom", pool("shorts", hero=True) or pool("shorts", neutral=False)),
+         ("top", pool(["tee","longsleeve"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 10)
+add("Shorts, Tee, Shoe (3)",
+    "Just a tee, the right shorts and one clean sneaker — the three-piece summer fit.",
+    lambda: [("top", pool("tee")),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 20)
+
+# ===== MORE SWEATS & DENIM — Dave's favourites, widened for variety =====
+add("Baggy Sweats",
+    "Baggy sweatpants with a boxy tee and a chunky sneaker — relaxed, still put-together.",
+    lambda: [("top", pool(["tee","hoodie_sweat","longsleeve"], neutral=False)),
+         ("bottom", pool("sweats", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 14)
+add("Sweats & Tee Easy",
+    "Clean sweats, a plain tee and one fresh trainer — the off-duty uniform done with good pieces.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("sweats", neutral=True)),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True))], 14)
+add("Washed Denim & Tee",
+    "A washed or vintage jean with a plain tee and a low sneaker — easy denim, dialled in.",
+    lambda: [("top", pool(["tee","longsleeve"], neutral=True)),
+         ("bottom", pool("jeans", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear"))], 14)
+add("Indigo Denim Clean",
+    "Dark indigo denim, a clean top and one minimal shoe — the sharpest way to wear jeans.",
+    lambda: [("top", pool(["top","longsleeve","tee"], neutral=True)),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True)),
+         ("layer", pool("jacket_outerwear", neutral=True))], 12)
+
 random.shuffle(outfits)
 # Keep every Fresh fit, then fill variety up to a much larger cap now the catalogue is huge.
 _fresh_fits = [o for o in outfits if o.get("fresh")]
 _other_fits = [o for o in outfits if not o.get("fresh")]
-outfits = (_fresh_fits + _other_fits)[:1500]   # was 700 — far more variety across the bigger catalogue
+outfits = (_fresh_fits + _other_fits)[:1800]   # lifted so the new shorts/sweats/denim lanes all survive
 random.shuffle(outfits)
 json.dump(outfits, open("outfits.json","w"), indent=1)
 
@@ -703,6 +772,8 @@ c = collections.Counter(o["formula"] for o in outfits)
 for k,v in c.most_common(): print(f"   {k:26} {v}")
 multi = sum(1 for o in outfits if o["brands"] >= len(o["items"]))
 print(f"\nall-distinct-brand fits : {multi}/{len(outfits)}")
+bc = collections.Counter(o["items"]["bottom"]["c"] for o in outfits if o["items"].get("bottom"))
+print("bottom mix : " + ", ".join(f"{k} {v}" for k, v in bc.most_common()))
 if outfits:
     tot=[o["total"] for o in outfits]
     print(f"outfit cost range : GBP {min(tot):.0f} - {max(tot):.0f}   median {sorted(tot)[len(tot)//2]:.0f}")
