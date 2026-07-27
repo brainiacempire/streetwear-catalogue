@@ -32,6 +32,7 @@ _CLS_RULES = [
  ("hoodie_sweat", r"\b(hoodie|hooded|sweat ?shirt|crew ?neck|crewneck|zip ?up|zip ?hood|pullover)\b"),
  ("longsleeve", r"\b(long ?sleeve|longsleeve|l/s|thermal|henley)\b"),
  ("tee",       r"\b(t-?shirts?|tees?)\b"),  # explicit tee wins over incidental jeans/denim/cargo in a design name
+ ("top",       r"\b(oxford|chambray|flannel|button[- ]?ups?|button[- ]?downs?|bd shirt|work ?shirt|dress ?shirt|camp ?collar)\b"),  # a shirt/oxford/flannel is a TOP even if selvedge/denim
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
  ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
