@@ -151,7 +151,7 @@ _CLS_RULES = [
  ("tee",       r"\b(t-?shirts?|tees?)\b"),  # explicit tee wins: a graphic tee named after jeans/cargo/denim is still a TEE, not a bottom
  ("top",       r"\b(oxford|chambray|flannel|button[- ]?ups?|button[- ]?downs?|bd shirt|work ?shirt|dress ?shirt|camp ?collar)\b"),  # a shirt/oxford/flannel is a TOP even if selvedge/denim
  ("jeans",     r"\b(jeans|denim pant|selvedge)\b"),
- ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|track ?pants?|track ?jort)\b"),
+ ("sweats",    r"\b(sweat ?pants?|sweats|joggers?|jogging ?bottoms?|track ?pants?|track ?jort|fleece ?pants?|nylon ?pants?|tricot ?pants?|parachute ?pants?|warm.?up ?pants?|lounge ?pants?|active ?pants?|wind ?pants?)\b"),
  ("shorts",    r"\b(jorts?|shorts?)\b(?!\s*sleeve)"),
  ("pants",     r"\b(pants?|trousers?|chinos?|cargo|slacks|leggings?|pantalon)\b"),
  ("windrunner",r"\b(windrunner|windbreaker|anorak|track ?jacket|track ?top|shell jacket)\b"),

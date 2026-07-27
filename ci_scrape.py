@@ -57,7 +57,7 @@ def cat(title, ptype):
         ("headwear","cap\\b|hat\\b|beanie|snapback|bucket|59fifty"),
         ("hoodie_sweat","hoodie|hooded|sweatshirt|crewneck|zip.?up"),
         ("longsleeve","long.?sleeve|longsleeve|\\bls\\b|thermal|henley"),
-        ("sweats","sweatpant|jogger|track.?pant"),
+        ("sweats","sweatpant|jogger|jogging ?bottom|track.?pant|fleece ?pant|nylon ?pant|tricot ?pant|parachute ?pant|warm.?up ?pant|lounge ?pant|active ?pant"),
         ("shorts","(?:jorts?|shorts?)(?!\\s*sleeve)"), ("jeans","jeans|denim"),
         ("windrunner","windbreaker|anorak|track.?jacket|fleece|half.?zip"),
         ("jacket_outerwear","jacket|coat|parka|bomber|puffer|vest"),
