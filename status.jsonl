@@ -38,7 +38,7 @@
 {"domain": "us.bape.com", "brand": "Us", "status": "ok", "product_count": 644, "note": ""}
 {"domain": "clubextc.com", "brand": "Clubextc", "status": "ok", "product_count": 6, "note": ""}
 {"domain": "cncpts.com", "brand": "Cncpts", "status": "ok", "product_count": 785, "note": ""}
-{"domain": "a-ma-maniere.com", "brand": "A-Ma-Maniere", "status": "ok", "product_count": 2087, "note": ""}
+{"domain": "a-ma-maniere.com", "brand": "A-Ma-Maniere", "status": "ok", "product_count": 2086, "note": ""}
 {"domain": "cherrylosangeles.com", "brand": "Cherrylosangeles", "status": "ok", "product_count": 1134, "note": ""}
 {"domain": "poptradingcompany.com", "brand": "Poptradingcompany", "status": "ok", "product_count": 1589, "note": ""}
 {"domain": "overkillshop.com", "brand": "Overkillshop", "status": "ok", "product_count": 4544, "note": ""}
@@ -98,7 +98,7 @@
 {"domain": "cookiessf.com", "brand": "Cookies", "status": "ok", "product_count": 934, "note": ""}
 {"domain": "aimeleondore.com", "brand": "Aimé Leon Dore", "status": "ok", "product_count": 987, "note": ""}
 {"domain": "purple-brand.com", "brand": "Purple Brand", "status": "ok", "product_count": 1006, "note": ""}
-{"domain": "nakedcph.com", "brand": "Naked Copenhagen", "status": "ok", "product_count": 1716, "note": ""}
+{"domain": "nakedcph.com", "brand": "Naked Copenhagen", "status": "ok", "product_count": 1718, "note": ""}
 {"domain": "menacelosangeles.com", "brand": "Menace", "status": "ok", "product_count": 845, "note": ""}
 {"domain": "folkclothing.com", "brand": "Folk", "status": "ok", "product_count": 741, "note": ""}
 {"domain": "percivalclo.com", "brand": "Percival", "status": "ok", "product_count": 728, "note": ""}
@@ -112,23 +112,23 @@
 {"domain": "lowheads.com", "brand": "Lowheads", "status": "ok", "product_count": 900, "note": ""}
 {"domain": "blueingreensoho.com", "brand": "Blue in Green", "status": "ok", "product_count": 1609, "note": ""}
 {"domain": "standardandstrange.com", "brand": "Standard & Strange", "status": "ok", "product_count": 1643, "note": ""}
-{"domain": "therealmccoys.com", "brand": "The Real McCoy's", "status": "ok", "product_count": 1252, "note": ""}
+{"domain": "therealmccoys.com", "brand": "The Real McCoy's", "status": "dead", "product_count": 0, "note": "HTTPError"}
 {"domain": "nakedandfamousdenim.com", "brand": "Naked & Famous", "status": "ok", "product_count": 953, "note": ""}
 {"domain": "ironheart.co.uk", "brand": "Iron Heart", "status": "ok", "product_count": 1343, "note": ""}
 {"domain": "sonofastag.com", "brand": "Son of a Stag", "status": "ok", "product_count": 731, "note": ""}
 {"domain": "bdgastore.com", "brand": "BDGA", "status": "ok", "product_count": 3023, "note": ""}
 {"domain": "packershoes.com", "brand": "Packer", "status": "ok", "product_count": 1686, "note": ""}
 {"domain": "civilizednationshop.com", "brand": "Civilized", "status": "ok", "product_count": 1336, "note": ""}
-{"domain": "reasonclothing.com", "brand": "Reason", "status": "ok", "product_count": 1447, "note": ""}
+{"domain": "reasonclothing.com", "brand": "Reason", "status": "ok", "product_count": 1449, "note": ""}
 {"domain": "kingspider.co", "brand": "King Spider", "status": "ok", "product_count": 744, "note": ""}
 {"domain": "corlection.com", "brand": "Corlection", "status": "ok", "product_count": 1516, "note": ""}
-{"domain": "hypeboys.store", "brand": "Hypeboys", "status": "ok", "product_count": 3148, "note": ""}
+{"domain": "hypeboys.store", "brand": "Hypeboys", "status": "dead", "product_count": 0, "note": "HTTPError"}
 {"domain": "online-ceramics.com", "brand": "Online Ceramics", "status": "ok", "product_count": 1690, "note": ""}
 {"domain": "shop.chrystienyc.com", "brand": "Chrystie NYC", "status": "ok", "product_count": 438, "note": ""}
 {"domain": "helascaps.com", "brand": "Hélas", "status": "ok", "product_count": 242, "note": ""}
 {"domain": "lastresortab.com", "brand": "Last Resort AB", "status": "ok", "product_count": 136, "note": ""}
 {"domain": "stepneyworkersclub.com", "brand": "Stepney Workers Club", "status": "ok", "product_count": 148, "note": ""}
-{"domain": "noahny.com", "brand": "Noah", "status": "dead", "product_count": 0, "note": "HTTPError"}
+{"domain": "noahny.com", "brand": "Noah", "status": "ok", "product_count": 494, "note": ""}
 {"domain": "marketstudios.com", "brand": "Market", "status": "dead", "product_count": 0, "note": "HTTPError"}
 {"domain": "kavu.com", "brand": "Kavu", "status": "ok", "product_count": 277, "note": ""}
 {"domain": "afieldout.com", "brand": "Afield Out", "status": "ok", "product_count": 159, "note": ""}
@@ -169,11 +169,11 @@
 {"domain": "districtvision.com", "brand": "District Vision", "status": "ok", "product_count": 400, "note": ""}
 {"domain": "alexmill.com", "brand": "Alex Mill", "status": "ok", "product_count": 278, "note": ""}
 {"domain": "taylorstitch.com", "brand": "Taylor Stitch", "status": "ok", "product_count": 3719, "note": ""}
-{"domain": "toddsnyder.com", "brand": "Todd Snyder", "status": "dead", "product_count": 0, "note": "HTTPError"}
-{"domain": "blackhorselane.com", "brand": "Blackhorse Lane Ateliers", "status": "ok", "product_count": 249, "note": ""}
+{"domain": "toddsnyder.com", "brand": "Todd Snyder", "status": "ok", "product_count": 3005, "note": ""}
+{"domain": "blackhorselane.com", "brand": "Blackhorse Lane Ateliers", "status": "dead", "product_count": 0, "note": "HTTPError"}
 {"domain": "oliverspencer.co.uk", "brand": "Oliver Spencer", "status": "ok", "product_count": 647, "note": ""}
 {"domain": "colorfulstandard.com", "brand": "Colorful Standard", "status": "ok", "product_count": 2005, "note": ""}
-{"domain": "fr2.tokyo", "brand": "#FR2", "status": "ok", "product_count": 323, "note": ""}
+{"domain": "fr2.tokyo", "brand": "#FR2", "status": "ok", "product_count": 324, "note": ""}
 {"domain": "032c.com", "brand": "032c", "status": "ok", "product_count": 202, "note": ""}
 {"domain": "50percentlegit.com", "brand": "50percentlegit", "status": "ok", "product_count": 9, "note": ""}
 {"domain": "agoodsoul.com", "brand": "A Good Soul", "status": "ok", "product_count": 22, "note": ""}
@@ -182,7 +182,7 @@
 {"domain": "astrum-house.com", "brand": "ASTRUM", "status": "ok", "product_count": 41, "note": ""}
 {"domain": "abstractclothingclub.com", "brand": "Abstract Clothing Club", "status": "ok", "product_count": 80, "note": ""}
 {"domain": "aloyoga.com", "brand": "Alo Yoga", "status": "ok", "product_count": 1264, "note": ""}
-{"domain": "amiparis.com", "brand": "Ami Paris", "status": "ok", "product_count": 973, "note": ""}
+{"domain": "amiparis.com", "brand": "Ami Paris", "status": "dead", "product_count": 0, "note": "HTTPError"}
 {"domain": "and1.com", "brand": "AND1", "status": "ok", "product_count": 80, "note": ""}
 {"domain": "anonymousism.com", "brand": "Anonymous Ism", "status": "ok", "product_count": 173, "note": ""}
 {"domain": "avirex.com", "brand": "Avirex", "status": "ok", "product_count": 114, "note": ""}
@@ -197,7 +197,7 @@
 {"domain": "brotherlylovebrand.com", "brand": "Brotherly Love Brand", "status": "ok", "product_count": 76, "note": ""}
 {"domain": "bstroy.us", "brand": "Bstroy", "status": "ok", "product_count": 137, "note": ""}
 {"domain": "cherryla.com", "brand": "CHERRY LA", "status": "ok", "product_count": 1134, "note": ""}
-{"domain": "clesste.com", "brand": "CLESSTE", "status": "ok", "product_count": 338, "note": ""}
+{"domain": "clesste.com", "brand": "CLESSTE", "status": "ok", "product_count": 339, "note": ""}
 {"domain": "clotinc.com", "brand": "CLOT", "status": "ok", "product_count": 842, "note": ""}
 {"domain": "couor.com", "brand": "Couor", "status": "ok", "product_count": 63, "note": ""}
 {"domain": "cultofindividuality.com", "brand": "Cult of Individuality", "status": "ok", "product_count": 592, "note": ""}
@@ -218,7 +218,7 @@
 {"domain": "hypedept.com", "brand": "Hypedept", "status": "ok", "product_count": 258, "note": ""}
 {"domain": "jjjjound.com", "brand": "JJJJound", "status": "ok", "product_count": 271, "note": ""}
 {"domain": "johnelliott.com", "brand": "John Elliott", "status": "ok", "product_count": 316, "note": ""}
-{"domain": "karhu.com", "brand": "Karhu", "status": "ok", "product_count": 295, "note": ""}
+{"domain": "karhu.com", "brand": "Karhu", "status": "ok", "product_count": 294, "note": ""}
 {"domain": "localauthorityla.com", "brand": "Local Authority", "status": "ok", "product_count": 206, "note": ""}
 {"domain": "lonechryst.com", "brand": "Lonechryst", "status": "ok", "product_count": 52, "note": ""}
 {"domain": "lostintricacy.com", "brand": "Lost Intricacy", "status": "ok", "product_count": 104, "note": ""}
@@ -269,14 +269,14 @@
 {"domain": "weekendoffender.com", "brand": "Weekend Offender", "status": "ok", "product_count": 1125, "note": ""}
 {"domain": "dawsondenim.com", "brand": "Dawson Denim", "status": "ok", "product_count": 62, "note": ""}
 {"domain": "privatewhitevc.com", "brand": "Private White V.C.", "status": "ok", "product_count": 364, "note": ""}
-{"domain": "prettygreen.com", "brand": "Pretty Green", "status": "ok", "product_count": 307, "note": ""}
+{"domain": "prettygreen.com", "brand": "Pretty Green", "status": "ok", "product_count": 308, "note": ""}
 {"domain": "finisterre.com", "brand": "Finisterre", "status": "ok", "product_count": 431, "note": ""}
 {"domain": "akindofguise.com", "brand": "A Kind of Guise", "status": "ok", "product_count": 1005, "note": ""}
 {"domain": "thinkingmu.com", "brand": "Thinking MU", "status": "ok", "product_count": 569, "note": ""}
 {"domain": "libertine-libertine.com", "brand": "Libertine-Libertine", "status": "ok", "product_count": 137, "note": ""}
 {"domain": "isto.pt", "brand": "ISTO.", "status": "ok", "product_count": 165, "note": ""}
 {"domain": "rotholz-store.com", "brand": "Rotholz", "status": "ok", "product_count": 141, "note": ""}
-{"domain": "maisonlabiche.com", "brand": "Maison Labiche", "status": "ok", "product_count": 430, "note": ""}
+{"domain": "maisonlabiche.com", "brand": "Maison Labiche", "status": "ok", "product_count": 434, "note": ""}
 {"domain": "homecore.com", "brand": "Homecore", "status": "ok", "product_count": 313, "note": ""}
 {"domain": "kingsofindigo.com", "brand": "Kings of Indigo", "status": "ok", "product_count": 112, "note": ""}
 {"domain": "bleudepaname.com", "brand": "Bleu de Paname", "status": "ok", "product_count": 25, "note": ""}
@@ -302,8 +302,8 @@
 {"domain": "charlesjeffreyloverboy.com", "brand": "Charles Jeffrey Loverboy", "status": "ok", "product_count": 183, "note": ""}
 {"domain": "camielfortgens.com", "brand": "Camiel Fortgens", "status": "ok", "product_count": 103, "note": ""}
 {"domain": "debonnefacture.fr", "brand": "De Bonne Facture", "status": "ok", "product_count": 116, "note": ""}
-{"domain": "sunflower.dk", "brand": "Sunflower", "status": "dead", "product_count": 0, "note": "HTTPError"}
-{"domain": "arpenteur.fr", "brand": "Arpenteur", "status": "dead", "product_count": 0, "note": "HTTPError"}
+{"domain": "sunflower.dk", "brand": "Sunflower", "status": "ok", "product_count": 4988, "note": ""}
+{"domain": "arpenteur.fr", "brand": "Arpenteur", "status": "ok", "product_count": 114, "note": ""}
 {"domain": "cdlp.com", "brand": "CDLP", "status": "ok", "product_count": 436, "note": ""}
 {"domain": "merzbschwanen.com", "brand": "Merz b. Schwanen", "status": "ok", "product_count": 503, "note": ""}
 {"domain": "ninelivesbrand.com", "brand": "Nine Lives", "status": "ok", "product_count": 68, "note": ""}
