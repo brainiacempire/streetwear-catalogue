@@ -126,9 +126,10 @@ try:
     _ALLOWED_DOMAINS = {b["domain"].lower() for b in json.load(open("brands.json"))} | {"laced.com","satoshinakamoto.cloud"}
 except Exception:
     _ALLOWED_DOMAINS = None
+NONAPPAREL = re.compile(r"\b(incense|candle|diffuser|fragrance|perfume|cologne|\bbook\b|monograph|magazine|\bzine\b|vinyl|cassette|poster|art ?print|figurine|\bfigure\b|plush|keychain|keyring|lanyard|sticker|pin badge|\bmug\b|tumbler|\bbowl\b|\bplate\b|\btray\b|ashtray|lighter|\bmatches\b|vase|ceramic|blanket|\btowel\b|\brug\b|cushion|\bpillow\b|puzzle|playing cards|notebook|stationery|\bsoap\b|\bbalm\b|lotion|skincare|shampoo|chopsticks|coaster|ornament|snow globe|air ?freshener|scented|home ?fragrance)\b", re.I)
 def is_forbidden(t):
-    """True if the title is a women's or kids piece that must be dropped entirely."""
-    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
+    """True if the title is a women's/kids piece or a non-apparel homeware object — dropped entirely."""
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t) or NONAPPAREL.search(t))
 # Gender from the product's OWN tags / type (authoritative on mixed retailers).
 # Women's items carry 'BVCategory:Women' / 'Gender_Womens' / type 'Women:Bottoms';
 # unisex pieces carry BOTH men + women → we keep those.  Drop only women-AND-not-men.

@@ -52,8 +52,11 @@ FLASHY_RE = re.compile(
     r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
     r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
     r"|goyard|herm[eè]s|brunello|\bcelio\b|\bferrari\b|\bmclaren\b)\b", re.I)
+# NON-APPAREL — homeware / books / lifestyle objects that leak from boutiques (a KAWS book, incense,
+# a candle) must NEVER land in a clothing slot. Filtered by title, keeps real apparel & sneakers.
+NONAPPAREL = re.compile(r"\b(incense|candle|diffuser|fragrance|perfume|cologne|\bbook\b|monograph|magazine|\bzine\b|vinyl|cassette|poster|art ?print|figurine|\bfigure\b|plush|keychain|keyring|lanyard|sticker|pin badge|\bmug\b|tumbler|\bbowl\b|\bplate\b|\btray\b|ashtray|lighter|\bmatches\b|vase|ceramic|blanket|\btowel\b|\brug\b|cushion|\bpillow\b|puzzle|playing cards|notebook|stationery|\bsoap\b|\bbalm\b|lotion|skincare|shampoo|chopsticks|coaster|ornament|snow globe|air ?freshener|scented|home ?fragrance)\b", re.I)
 def is_forbidden(t):
-    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
+    return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t) or NONAPPAREL.search(t))
 _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
 _M_TAG = re.compile(r"\bmen'?s?\b|\bhomme\b|\bmale\b|\bunisex\b|bvcategory:? ?men|gender[_:\- ]?men|cat[- ]?men|(^|[:/|])\s*men\b", re.I)
 _TYPE_W = re.compile(r"(^|[:/|>])\s*wom[ae]n", re.I)
@@ -73,6 +76,15 @@ SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jord
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
 # dressy / non-trainer footwear — Dave wears trainers, not these (loafers a rare exception)
 DRESS_RE = re.compile(r"\b(loafer|derby|oxford shoe|monk ?strap|brogue|county clare|dress shoe|ballet|mary.?jane|court shoe|espadrille|moccasin|penny loafer|tassel|slingback|boat shoe|deck shoe)\b", re.I)
+# LOUD PATTERN — a patterned piece is not a clean solid; Dave: on all-black/tonal fits the hat & shoe
+# must stay plain/matched, patterned caps (gingham/check) throw the fit off.
+PATTERN_RE = re.compile(r"\b(gingham|checked?|checker|plaid|tartan|houndstooth|floral|paisley|tie.?dye|camo(?:uflage)?|leopard|zebra|argyle|fair ?isle|aztec|geo(?:metric)?|madras|patchwork|harlequin|polka|striped?)\b", re.I)
+# rolled/cuffed cargo & tailored suit-pants — Dave dislikes these in a casual street fit
+_ROLLCARGO = re.compile(r"\b(rolled|turn.?up|cuffed)\b.*\bcargo|\bcargo\b.*\b(rolled|turn.?up|cuffed)\b", re.I)
+_SUITPANT  = re.compile(r"\b(suit trouser|suit pant|dress trouser|dress pant|pleated wool|tuxedo|formal trouser)\b", re.I)
+# a LOUD colour word in the title — catches multi-colour sneakers (e.g. a white/PINK Jordan) whose
+# dominant colour reads neutral but that still throw off an all-black / monochrome fit.
+LOUD_COL = re.compile(r"\b(pink|rose|fuchsia|magenta|red|crimson|scarlet|cherry|orange|rust|coral|peach|yellow|mustard|gold|volt|lime|green|emerald|kelly|teal|aqua|turquoise|\bblue\b|cobalt|royal|purple|violet|lilac|neon|multi[- ]?colou?r)\b", re.I)
 # HERO = a graphic/statement piece that can anchor a fit (the reference pages lead with one).
 HERO_RE  = re.compile(r"\b(graphic|print(?:ed)?|logo|embroider|artwork|hand ?painted|tie.?dye|paisley|flame|skull|angel|cherub|butterfly|rhinestone|patch(?:work)?|jacquard|intarsia|souvenir|bowling|baseball jersey|all.?over|statement|varsity|collegiate)\b", re.I)
 # BASIC = generic no-name filler — demoted UNLESS it's a saved/curated/fav-brand piece.
@@ -227,8 +239,10 @@ for path in files:
         if u in picks:              score += 8;  curated = True   # curated best-of pick
         if u in vidpicks:           score += 7;  curated = True   # worn in the videos studied
         if b.lower() in FAV_BRANDS: score += 6;  curated = True   # a brand you repeat-buy / rate
-        if HERO_RE.search(title):   score += 3                    # graphic / statement piece — a hero anchor
+        if HERO_RE.search(title):   score += 5                    # graphic / statement top — Dave rates these (Huf etc.)
         if BASIC_RE.search(title) and not curated: score -= 4     # plain no-name basic — demote generic filler
+        if cat in ("pants","jeans","sweats") and (_ROLLCARGO.search(title) or _SUITPANT.search(title)):
+            score -= 6                                             # rolled-cuff cargo / suit-pants — Dave dislikes in casual fits
         if cat == "footwear":                       # steer fills toward trainers/sneakers
             if DRESS_RE.search(title):              score -= 10  # dressy leather shoes — Dave: trainers, not these
             elif CASUAL_SHOE_RE.search(title):      score -= 4   # sandals/slides/mules occasional
@@ -262,9 +276,12 @@ for r in rows:
         if rx.search(r["t"] or ""): dc=k; break
     if dc: r["col"]=dc
     elif not r.get("col"): r["col"]="unknown"
+    # a LOUD PATTERN (gingham/check/camo/floral…) is never a clean solid — flag it so it can't slip
+    # into a solid/neutral slot on a cohesive fit (Dave: patterned caps throw an all-black fit off).
+    r["pat"] = bool(PATTERN_RE.search(r["t"] or ""))
     # raw/indigo denim is a wardrobe NEUTRAL — so jeans don't read as a loud accent and
-    # denim-based fits stop being penalised as "clashes".
-    r["neu"]=(r["col"] in _NEUTSET) or (r.get("c")=="jeans")
+    # denim-based fits stop being penalised as "clashes". A patterned piece is NOT a clean neutral.
+    r["neu"]=((r["col"] in _NEUTSET) or (r.get("c")=="jeans")) and not r["pat"]
 # ---- styling intelligence: silhouette / formality / season, for deeper coordination reasoning ----
 _BAGGY   = re.compile(r"\b(baggy|wide|loose|balloon|relaxed|oversized|carpenter|skater|puddle|billow|voluminous)\b", re.I)
 _SLIM    = re.compile(r"\b(slim|skinny|tapered|fitted|slim.?fit|cropped|tailored)\b", re.I)
@@ -319,18 +336,23 @@ def _eligible(cat):
     _elig_cache[cat] = top + tail_curated
     return _elig_cache[cat]
 
-def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True):
+def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True, plain=False, cols=None, noloud=False):
     """Candidate pieces for one or more categories under colour/tone constraints.
-    quality=True draws only from the eligible (stronger) slice so fits use the best pieces."""
+    quality=True draws only from the eligible (stronger) slice so fits use the best pieces.
+    plain=True excludes loud-patterned pieces (for clean hats/shoes on cohesive fits).
+    cols=set(...) allows ANY of several colours (e.g. black OR white shoe on an all-black fit)."""
     if isinstance(cats, str): cats = [cats]
     out = []
     for cat in cats:
         src = _eligible(cat) if quality else bycat.get(cat, [])[:5000]
         for r in src:
             if colour and r["col"] != colour:            continue
+            if cols and r["col"] not in cols:            continue
             if neutral is True and not r["neu"]:         continue
             if neutral is False and r["neu"]:            continue
             if hero and r["col"] not in HEROES:          continue
+            if plain and r.get("pat"):                   continue   # keep patterned pieces out of clean slots
+            if noloud and not r.get("curated") and LOUD_COL.search(r["t"] or ""): continue   # loud colour off cohesive fits — BUT your saved/liked pieces always pass (learn from your taste)
             out.append(r)
     return out[:limit]
 
@@ -388,12 +410,12 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False, ctx
         return (harmony(r["col"], fc) * 11.0        # coordination dominates (tight colour echo like the fit pages)
                 + _ctx_adj(r) * 4.0                 # season/silhouette/formality fit (strong — a wrong-season piece falls away)
                 + min(28, r["sc"]) * 2.2            # CURATION/TASTE weighed heavily — saves, picks, fav brands lead
-                - usage[r["u"]] * 0.6               # gently avoid repeating the exact same piece
+                - usage[r["u"]] * 1.4               # spread pieces HARD so you see real variety, not the same items
                 - _brand_pen(brand_usage[r["b"].lower()]))  # mix brands: soft recurrence, hard cap on dominance
     poolc.sort(key=lambda r: -_q(r))
-    # head = the genuinely best candidates only; a TIGHT head so the strongest, most-coordinated
-    # piece wins far more often (less randomness = higher, more consistent quality per fit).
-    head = poolc[:max(5, len(poolc)//14)]
+    # head = the best candidates; sized so the strongest, most-coordinated pieces win but the fit still
+    # VARIES across the catalogue (Dave wants to see variations — different colourways / shoes that work).
+    head = poolc[:max(8, len(poolc)//10)]
     random.shuffle(head)
     return head[0] if head else None
 
@@ -552,18 +574,18 @@ add("Windrunner Run",
 for colour in ("black","navy","olive","grey","brown","cream","tan"):
     add("Tonal",
         "One colour family head to toe, the shoe breaking it. Reads expensive whatever it cost.",
-        lambda c=colour: [("top", pool(["hoodie_sweat","longsleeve"], colour=c)),
-             ("bottom", pool(["sweats","pants"], colour=c)),
-             ("shoe", pool("footwear", neutral=True)),
-             ("hat", pool("headwear", colour=c))], 2)
+        lambda c=colour: [("top", pool(["hoodie_sweat","longsleeve"], colour=c, plain=True) or pool(["hoodie_sweat","longsleeve"], colour=c)),
+             ("bottom", pool(["sweats","pants"], colour=c, plain=True) or pool(["sweats","pants"], colour=c)),
+             ("shoe", pool("footwear", neutral=True, plain=True, noloud=True) or pool("footwear", neutral=True, plain=True) or pool("footwear", neutral=True)),
+             ("hat", pool("headwear", colour=c, plain=True) or pool("headwear", colour=c))], 2)
 
 # 7) All-Black Everything — the rapper monochrome (DDG / BBM)
 add("All-Black Everything",
     "Blacked-out head to toe, one detail shoe. The monochrome rapper fit from the closet tours.",
     lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], colour="black")),
-         ("bottom", pool(["jeans","sweats","pants"], colour="black")),
-         ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", colour="black"))], 14)
+         ("bottom", pool(["jeans","sweats","pants"], colour="black", plain=True) or pool(["jeans","sweats","pants"], colour="black")),
+         ("shoe", pool("footwear", cols={"black","white"}, noloud=True) or pool("footwear", cols={"black","white"}) or pool("footwear", neutral=True, plain=True)),
+         ("hat", pool("headwear", colour="black", plain=True) or pool("headwear", colour="black"))], 14)
 
 # 8) Denim Focus — raw denim hero, plain tee, clean sneaker
 add("Denim Focus",
@@ -682,8 +704,8 @@ add("Off-White Monochrome",
     "White and cream head to toe, one soft sneaker — the hardest colour to wear and the cleanest when it lands.",
     lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour="white") or pool(["tee","longsleeve"], colour="cream")),
          ("bottom", pool(["pants","jeans"], colour="cream") or pool("pants", neutral=True)),
-         ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 8)
+         ("shoe", pool("footwear", cols={"white","cream","grey"}) or pool("footwear", neutral=True, plain=True)),
+         ("hat", pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 8)
 
 # 23) Vest Layer — vest/gilet over a longsleeve
 add("Vest Layer",
@@ -729,9 +751,9 @@ add("Baggy Denim",
 add("Monochrome Grey",
     "Every shade of grey with one white sneaker — the softest monochrome, quietly expensive.",
     lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], colour="grey")),
-         ("bottom", pool(["sweats","pants"], colour="grey")),
-         ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 6)
+         ("bottom", pool(["sweats","pants"], colour="grey", plain=True) or pool(["sweats","pants"], colour="grey") or pool(["sweats","pants","jeans"], cols={"grey","black","tan","cream"}, plain=True)),
+         ("shoe", pool("footwear", cols={"grey","white","black"}, noloud=True) or pool("footwear", cols={"grey","white","black"}) or pool("footwear", neutral=True, plain=True)),
+         ("hat", pool("headwear", cols={"grey","black","white"}, plain=True) or pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 6)
 
 # 29) Earth Tones — brown/olive/tan tonal
 add("Earth Tones",
@@ -847,8 +869,8 @@ add("All-Black Shorts",
     "Blacked-out for summer — black tee, black shorts, one detail shoe.",
     lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour="black")),
          ("bottom", pool("shorts", colour="black") or pool("shorts", neutral=True)),
-         ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", colour="black"))], 10)
+         ("shoe", pool("footwear", cols={"black","white"}, noloud=True) or pool("footwear", cols={"black","white"}) or pool("footwear", neutral=True, plain=True)),
+         ("hat", pool("headwear", colour="black", plain=True) or pool("headwear", colour="black"))], 10)
 add("Statement Shorts",
     "The shorts are the loud piece — everything above kept neutral so the leg carries it.",
     lambda: [("bottom", pool("shorts", hero=True) or pool("shorts", neutral=False)),
