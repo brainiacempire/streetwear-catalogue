@@ -71,6 +71,8 @@ def women_tagged(o):
 # outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
 SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics|saucony|onitsuka|\bhoka\b|\bveja\b|superga|novesta|converse", re.I)
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
+# dressy / non-trainer footwear — Dave wears trainers, not these (loafers a rare exception)
+DRESS_RE = re.compile(r"\b(loafer|derby|oxford shoe|monk ?strap|brogue|county clare|dress shoe|ballet|mary.?jane|court shoe|espadrille|moccasin|penny loafer|tassel|slingback|boat shoe|deck shoe)\b", re.I)
 # HERO = a graphic/statement piece that can anchor a fit (the reference pages lead with one).
 HERO_RE  = re.compile(r"\b(graphic|print(?:ed)?|logo|embroider|artwork|hand ?painted|tie.?dye|paisley|flame|skull|angel|cherub|butterfly|rhinestone|patch(?:work)?|jacquard|intarsia|souvenir|bowling|baseball jersey|all.?over|statement|varsity|collegiate)\b", re.I)
 # BASIC = generic no-name filler — demoted UNLESS it's a saved/curated/fav-brand piece.
@@ -228,9 +230,11 @@ for path in files:
         if HERO_RE.search(title):   score += 3                    # graphic / statement piece — a hero anchor
         if BASIC_RE.search(title) and not curated: score -= 4     # plain no-name basic — demote generic filler
         if cat == "footwear":                       # steer fills toward trainers/sneakers
-            if "loafer" in title.lower():           score -= 8   # rare 1-in-many
+            if DRESS_RE.search(title):              score -= 10  # dressy leather shoes — Dave: trainers, not these
             elif CASUAL_SHOE_RE.search(title):      score -= 4   # sandals/slides/mules occasional
             elif SNEAKER_RE.search(title):          score += 3
+            else:                                    score -= 5   # non-sneaker, non-casual footwear = usually dressy/odd
+            if b.lower() == "bode":                 score -= 7   # Bode's footwear line is dressy art-shoes, not trainers
         rows.append({"b":b, "t":title, "c":cat,
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
