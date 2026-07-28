@@ -116,6 +116,16 @@ WOMENS_BRAND = re.compile(
     r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
     r"|di petsa|jade swim|susan fang|sinead gorey|sir the label|ottolinger|paloma wool"
     r"|gimaguas|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
+FLASHY_RE = re.compile(
+    r"\b(gucci|louis vuitton|\blvmh\b|prada|\bdior\b|balenciaga|fendi|versace|givenchy|burberry"
+    r"|saint laurent|\bysl\b|celine|\bloewe\b|bottega|valentino|dolce ?& ?gabbana|dolce and gabbana"
+    r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
+    r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
+    r"|goyard|herm[eè]s|brunello|\bferrari\b|\bmclaren\b)\b", re.I)
+try:
+    _ALLOWED_DOMAINS = {b["domain"].lower() for b in json.load(open("brands.json"))} | {"laced.com","satoshinakamoto.cloud"}
+except Exception:
+    _ALLOWED_DOMAINS = None
 def is_forbidden(t):
     """True if the title is a women's or kids piece that must be dropped entirely."""
     return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
@@ -147,7 +157,7 @@ def women_tagged(o):
 # Checked in priority order; footwear only matches real footwear words AND only after
 # apparel is ruled out, so "Jordan x Awake Thermal Shirt" reads as a longsleeve, not a shoe.
 _CLS_RULES = [
- ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
+ ("headwear",  r"\b(caps?(?! ?sleeve)|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband|trucker|fitted cap|dad cap|ball ?cap)\b"),
  ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
  ("accessory",  r"\b(belts?|totes?|backpacks?|rucksacks?|wallets?|purses?|card ?holders?|cardholders?|sunglasses|eyewear|goggles|necklaces?|bracelets?|earrings?|pendants?|brooch|keychains?|key ?rings?|scarves|scarf|umbrellas?|gloves?|mittens?|\bbags?\b)\b"),
  ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
@@ -192,8 +202,10 @@ def classify(title, stored):
     # Symmetric TOP route: a clear top/outerwear noun + no bottom noun → route to top rules,
     # so "Selvedge Denim JACKET" / "Denim SHIRT" / "Jordan TEE" can't be stolen by jeans/pants/footwear.
     if _TOP_STRONG.search(t) and not _BOTTOM_STRONG.search(t):
+        # a strong TOP noun (tee/shirt/hoodie/jacket) is never headwear — stops "Cap Sleeve T-Shirt"
+        # and "Hard Hat Jacket" being misfiled into the hat slot / hat category.
         for k, rx in _CLS:
-            if k in ("headwear", "set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
+            if k in ("set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
                 return k
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece
@@ -263,6 +275,9 @@ for f in _rowfiles:
         if re.search(r"\bcrop(?:ped)?\s*(top|tee|t-?shirt|tank|cami|hoodie|sweat|jumper|knit|shirt)\b", tl):
             continue   # Dave: no crop TOPS — but cropped/ankle trousers stay (menswear)
         if is_forbidden(t):                                continue   # women's / kids by title
+        if FLASHY_RE.search(t) or FLASHY_RE.search(o.get("brand") or ""):  continue   # big-designer / flashy flex
+        if _ALLOWED_DOMAINS is not None and f.startswith("rows/") and str(o.get("domain","")).lower() not in _ALLOWED_DOMAINS:
+            continue                                        # pruned brand — brands.json is source of truth
         if women_tagged(o):                                continue   # women's by its own tags/type
         try:    price = float(o.get("price") or 0)
         except Exception: price = 0.0

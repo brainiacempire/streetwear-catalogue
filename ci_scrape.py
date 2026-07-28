@@ -26,6 +26,12 @@ WOMENS = re.compile(
     r"|\bcrop(?:ped)?\s*(?:top|tee|t-?shirt|tank|cami|hoodie|sweat|jumper|knit)\b"
     r"|\bdress(?:es)?\b(?!\s*(?:shirts?|pants?|trousers?|chinos?|shorts?|shoes?|boots?|socks?|coats?|blazers?|jackets?|vests?|cardigans?|belts?|rings?|slacks?|watch|down|up|code|form|age|maker))"
     , re.I)
+FLASHY = re.compile(
+    r"\b(gucci|louis vuitton|\blvmh\b|prada|\bdior\b|balenciaga|fendi|versace|givenchy|burberry"
+    r"|saint laurent|\bysl\b|celine|\bloewe\b|bottega|valentino|dolce ?& ?gabbana|dolce and gabbana"
+    r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
+    r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
+    r"|goyard|herm[eè]s|brunello|\bferrari\b|\bmclaren\b)\b", re.I)
 KIDS = re.compile(
     r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgs\b|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
     r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b|^\s*kids?\b"
@@ -54,7 +60,7 @@ def women_item(ptype, tags):
 def cat(title, ptype):
     t = (title + " " + (ptype or "")).lower()
     for k, pats in [("footwear","sneaker|shoe|trainer|boot|loafer|slide|dunk|jordan|gel-|samba"),
-        ("headwear","cap\\b|hat\\b|beanie|snapback|bucket|59fifty"),
+        ("headwear","\\bcaps?\\b(?! ?sleeve)|\\bhats?\\b|beanie|snapback|bucket|59fifty|trucker|ball ?cap"),
         ("hoodie_sweat","hoodie|hooded|sweatshirt|crewneck|zip.?up"),
         ("longsleeve","long.?sleeve|longsleeve|\\bls\\b|thermal|henley"),
         ("sweats","sweatpant|jogger|jogging ?bottom|track.?pant|fleece ?pant|nylon ?pant|tricot ?pant|parachute ?pant|warm.?up ?pant|lounge ?pant|active ?pant"),
@@ -83,6 +89,7 @@ for b in BRANDS:
                 title = clean_title(p.get("title",""))
                 if not title: continue
                 if WOMENS.search(title) or KIDS.search(title) or WOMENS_BRAND.search(title): continue
+                if FLASHY.search(title) or FLASHY.search(str(p.get("vendor") or "")): continue   # big-designer/flashy flex
                 _ptype = p.get("product_type")
                 if women_item(_ptype, p.get("tags")): continue   # women's by its own tags/type
                 variants = p.get("variants") or [{}]

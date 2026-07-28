@@ -44,6 +44,14 @@ WOMENS_BRAND = re.compile(
     r"|studio amelia|conner ives|st\.? ?agni|mirror palais|house of sunny|nensi dojaka|poster girl"
     r"|di petsa|jade swim|susan fang|sinead gorey|sir the label|ottolinger|paloma wool"
     r"|gimaguas|realisation par|for love (?:&|and) lemons|are you am i)\b", re.I)
+# FLASHY / big-designer / hype-flip labels — Dave's rule: niche & elevated, NOT big designer or
+# overpriced flex. Excluded by brand OR title so they never enter a fit, whatever the source shop.
+FLASHY_RE = re.compile(
+    r"\b(gucci|louis vuitton|\blvmh\b|prada|\bdior\b|balenciaga|fendi|versace|givenchy|burberry"
+    r"|saint laurent|\bysl\b|celine|\bloewe\b|bottega|valentino|dolce ?& ?gabbana|dolce and gabbana"
+    r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
+    r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
+    r"|goyard|herm[eè]s|brunello|\bcelio\b|\bferrari\b|\bmclaren\b)\b", re.I)
 def is_forbidden(t):
     return bool(WOMENS_RE.search(t) or KIDS_RE.search(t) or WOMENS_BRAND.search(t))
 _W_TAG = re.compile(r"\bwom[ae]n'?s?\b|\bladies\b|\bfemme\b|\bfemale\b|bvcategory:? ?women|gender[_:\- ]?wom|cat[- ]?wom|(^|[:/|])\s*women\b", re.I)
@@ -70,7 +78,7 @@ BASIC_RE = re.compile(r"\b(basic|blank|plain|essential|everyday|staple|\d.?pack|
 
 # Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
 _CLS_RULES = [
- ("headwear",  r"\b(caps?|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband)\b"),
+ ("headwear",  r"\b(caps?(?! ?sleeve)|hats?|beanies?|snapback|bucket ?hat|59fifty|5[- ]?panel|balaclava|do[- ]?rag|durag|visor|headband|trucker|fitted cap|dad cap|ball ?cap)\b"),
  ("underwear", r"\b(socks?|underwear|boxers?|briefs?)\b"),
  ("accessory",  r"\b(belts?|totes?|backpacks?|rucksacks?|wallets?|purses?|card ?holders?|cardholders?|sunglasses|eyewear|goggles|necklaces?|bracelets?|earrings?|pendants?|brooch|keychains?|key ?rings?|scarves|scarf|umbrellas?|gloves?|mittens?|\bbags?\b)\b"),
  ("set",       r"(tracksuit|co[- ]?ords?|two[- ]?piece|2[- ]?piece|matching set|\bset\b)"),
@@ -108,8 +116,10 @@ def classify(title, stored):
                 return k
         return "pants"
     if _TOP_STRONG.search(t) and not _BOTTOM_STRONG.search(t):
+        # a piece with a strong TOP noun (tee/shirt/hoodie/jacket) is never headwear — this stops
+        # "Cap Sleeve T-Shirt" / "Hard Hat Jacket" being misfiled into the hat slot.
         for k, rx in _CLS:
-            if k in ("headwear", "set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
+            if k in ("set", "hoodie_sweat", "longsleeve", "tee", "top", "windrunner", "jacket_outerwear") and rx.search(t):
                 return k
     for k, rx in _CLS:
         if apparel and k == "footwear":   # a shoe MODEL name can't steal an apparel piece ("Trainer Jacket")
@@ -168,14 +178,23 @@ TO_GBP = {"GBP":1.0,"USD":0.79,"EUR":0.85,"JPY":0.0052,"CNY":0.11,"KRW":0.00058,
 files = sorted(glob.glob("rows/*.jsonl"))
 for extra in sorted(glob.glob("*.jsonl")):
     if extra not in files: files.append(extra)
+# brands.json is the SINGLE SOURCE OF TRUTH: a removed brand's pieces never load, even if a stale
+# rows/ file lingers in the repo (so pruning a reseller/off-brand domain actually takes effect).
+try:
+    _BRANDS = json.load(open("brands.json"))
+    _ALLOWED_DOMAINS = {b["domain"].lower() for b in _BRANDS} | {"laced.com","satoshinakamoto.cloud"}
+except Exception:
+    _ALLOWED_DOMAINS = None   # if brands.json unreadable, don't filter (fail open)
 
 rows = []
 for path in files:
+    _is_rows = path.startswith("rows/") or path.startswith("rows\\")
     for line in open(path, encoding="utf-8"):
         line = line.strip()
         if not line: continue
         try: o = json.loads(line)
         except Exception: continue
+        if _is_rows and _ALLOWED_DOMAINS is not None and str(o.get("domain","")).lower() not in _ALLOWED_DOMAINS: continue  # pruned brand
         if not o.get("available"):        continue
         if o.get("small_only"):           continue
         if not o.get("image") or not o.get("url"): continue
@@ -193,6 +212,7 @@ for path in files:
         u = o["url"]
         title = clean_title(o.get("title",""))       # strip leaked HTML from titles
         if is_forbidden(title): continue             # women's / kids by title
+        if FLASHY_RE.search(title) or FLASHY_RE.search(b): continue   # big-designer / flashy flex — excluded
         if women_tagged(o): continue                 # women's by its own tags/type
         cat = classify(title, o.get("category"))
         if cat == "footwear" and BOOT_RE.search(title): continue
@@ -283,13 +303,17 @@ brand_usage = collections.Counter()  # spread looks across as many brands as pos
 
 # QUALITY FLOOR: build outfits only from the stronger half of each category (bycat is score-sorted),
 # so generic filler never enters a fit — while EVERY curated/saved/fav-brand piece always qualifies.
+_elig_cache = {}
 def _eligible(cat):
+    if cat in _elig_cache: return _elig_cache[cat]     # memoized — bycat is static after load
     cand = bycat.get(cat, [])
-    if not cand: return []
+    if not cand:
+        _elig_cache[cat] = []; return []
     cut = max(40, int(len(cand) * 0.55))              # top ~55% by curation score
     top = cand[:cut]
     tail_curated = [r for r in cand[cut:] if r.get("curated")]   # keep any saved/curated piece from the tail
-    return top + tail_curated
+    _elig_cache[cat] = top + tail_curated
+    return _elig_cache[cat]
 
 def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True):
     """Candidate pieces for one or more categories under colour/tone constraints.
@@ -403,6 +427,10 @@ def build(name, blurb, slots):
     if _shoe:
         if SNEAKER_RE.search(_shoe["t"]) and not CASUAL_SHOE_RE.search(_shoe["t"]): coord += 3
         elif CASUAL_SHOE_RE.search(_shoe["t"]):                                     coord -= 1
+    # a LOUD shoe as the SOLE accent on an otherwise all-neutral fit reads like a random pop, not
+    # styling — the reference pages keep the shoe clean/white or colour-MATCHED to the fit. Nudge away.
+    if _shoe and _shoe["col"] in HEROES and _accents == {_shoe["col"]}:
+        coord -= 3
     # neutral-dominant palette (all but one piece neutral) is the streetwear default that always works
     _neu_n = sum(1 for v in fit.values() if v.get("neu"))
     if _neu_n >= len(fit) - 1: coord += 2
@@ -522,7 +550,7 @@ for colour in ("black","navy","olive","grey","brown","cream","tan"):
         "One colour family head to toe, the shoe breaking it. Reads expensive whatever it cost.",
         lambda c=colour: [("top", pool(["hoodie_sweat","longsleeve"], colour=c)),
              ("bottom", pool(["sweats","pants"], colour=c)),
-             ("shoe", pool("footwear")),
+             ("shoe", pool("footwear", neutral=True)),
              ("hat", pool("headwear", colour=c))], 2)
 
 # 7) All-Black Everything — the rapper monochrome (DDG / BBM)
@@ -530,7 +558,7 @@ add("All-Black Everything",
     "Blacked-out head to toe, one detail shoe. The monochrome rapper fit from the closet tours.",
     lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], colour="black")),
          ("bottom", pool(["jeans","sweats","pants"], colour="black")),
-         ("shoe", pool("footwear")),
+         ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", colour="black"))], 14)
 
 # 8) Denim Focus — raw denim hero, plain tee, clean sneaker
@@ -546,7 +574,7 @@ add("Tracksuit Energy",
     "Top-and-bottom in the same lane with a technical runner — the co-ord look done properly.",
     lambda: [("top", pool("hoodie_sweat", neutral=True)),
          ("bottom", pool("sweats", neutral=True)),
-         ("shoe", pool("footwear")),
+         ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 12)
 
 # 10) Layered Winter — jacket over hoodie, heavier bottom, boot/runner
@@ -815,7 +843,7 @@ add("All-Black Shorts",
     "Blacked-out for summer — black tee, black shorts, one detail shoe.",
     lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour="black")),
          ("bottom", pool("shorts", colour="black") or pool("shorts", neutral=True)),
-         ("shoe", pool("footwear")),
+         ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", colour="black"))], 10)
 add("Statement Shorts",
     "The shorts are the loud piece — everything above kept neutral so the leg carries it.",
