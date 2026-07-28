@@ -238,6 +238,26 @@ _GYMSHOE = re.compile(r"\b(slide|slider|sandal|mule|croc|clog|flip.?flop|pool)\b
 _HEAVY   = re.compile(r"\b(puffer|down|parka|heavy|wool ?coat|shearling|padded|quilted|sherpa|fleece|overcoat|duffle)\b", re.I)
 _SUMMER  = re.compile(r"\b(shorts?|jorts?|tank|linen|swim|board ?short|mesh)\b", re.I)
 _WINTERHAT = re.compile(r"\b(beanie|wool ?hat|knit ?hat|watch ?cap|fur|cowhide|shearling|balaclava|trapper|ushanka)\b", re.I)
+# finer footwear/material grammar — so a shoe actually SUITS the fit's season & silhouette
+_HIGHTOP = re.compile(r"\bhi-?tops?\b|\bhigh-?tops?\b|\bmid-?tops?\b|\bchukka\b|jordan 1\b|dunk hi\b|dunk high|air ?force ?1 ?(?:hi|high)|\b1 (?:hi|high)\b|blazer mid", re.I)
+_SUEDE   = re.compile(r"\bsuede\b|\bnubuck\b|pony ?hair|\bcalf ?hair\b", re.I)          # warm/luxe material — reads wrong on a shorts fit
+_TRAILSHOE = re.compile(r"gore[- ]?tex|\bgtx\b|salomon|speedcross|\btrail\b|\bacg\b|terrex|\bhoka\b|\bxt-?\d|mountain", re.I)
+_CLEANSHOE = re.compile(r"leather|minimal|\bcourt\b|\bstan\b|\bsamba\b|gazelle|spezial|german army|\bgat\b|achilles|\bclean\b|loafer", re.I)
+def _sig(t):
+    """Season / silhouette / formality signals from a piece's title — the styling reasoning that
+    lets us keep a fit seasonally & proportionally coherent (no suede high-top on summer shorts)."""
+    t = t or ""; f = set()
+    if _SUMMER.search(t):                        f.add("summer")
+    if _WINTERHAT.search(t) or _HEAVY.search(t): f.add("winter")
+    if _HEAVY.search(t):                         f.add("heavy")
+    if _ELEVATED.search(t):                      f.add("elevated")
+    if _BAGGY.search(t):                         f.add("baggy")
+    if _SLIM.search(t):                          f.add("slim")
+    if _GYMSHOE.search(t):                       f.add("gymshoe")
+    if _HIGHTOP.search(t):                       f.add("hightop")
+    if _SUEDE.search(t):                         f.add("suede")
+    if _TRAILSHOE.search(t):                     f.add("trail")
+    return f
 bycat = collections.defaultdict(list)
 for r in rows: bycat[r["c"]].append(r)
 for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
@@ -275,8 +295,10 @@ def harmony(col, fit_cols):
     if not accents:                return 2       # this piece becomes the single accent
     return -6                                      # a second, clashing accent — avoid
 
-def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False):
-    """Best coordinating piece: colour-harmonious first, then fresh brand, low recurrence, curation."""
+def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False, ctx=None):
+    """Best coordinating piece: colour-harmonious first, then fresh brand, low recurrence, curation.
+    `ctx` = the season/silhouette signals of the pieces already placed in this fit, so the piece we
+    choose SUITS the fit (a summer fit gets low summer sneakers, never a suede high-top or a beanie)."""
     if not cands: return None
     poolc = [r for r in cands if r["u"] not in fit_urls]
     if not poolc: return None
@@ -284,6 +306,22 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False):
         fresh = [r for r in poolc if r["b"].lower() not in fit_brands]
         if fresh: poolc = fresh
     fc = fit_cols or set()
+    cf = ctx or set()
+    hot  = ("summer" in cf) and ("winter" not in cf)
+    cold = ("winter" in cf) and ("summer" not in cf)
+    def _ctx_adj(r):
+        rf = _sig(r["t"]); a = 0.0
+        if hot:
+            if {"winter", "heavy", "suede"} & rf: a -= 8    # warm/heavy/suede piece in a summer fit
+            if "hightop" in rf:                   a -= 5    # high-top with shorts — the mismatch Dave flagged
+            if "trail" in rf:                     a -= 3    # bulky trail runner reads wrong with shorts
+            if "summer" in rf:                    a += 2    # a low summer piece — reward it
+        if cold:
+            if "summer" in rf:                    a -= 8    # shorts/tank/linen in a winter fit
+        if "elevated" in cf and "gymshoe" in rf:  a -= 6    # pool slides under tailored trousers
+        if "elevated" in cf and r["c"] == "footwear" and _CLEANSHOE.search(r["t"]) and "gymshoe" not in rf:
+            a += 2                                          # clean leather/loafer suits a tailored fit
+        return a
     # WEIGHTED reasoning: what LOOKS GOOD leads (colour harmony, then piece quality), and brand
     # mixing is a soft nudge — never forced. So a great piece from an already-used brand can win
     # over a weak piece from a fresh one, while the set still spreads across many labels.
@@ -292,6 +330,7 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False):
         return bu * 0.35 + 0.9 * max(0, bu - 28)
     def _q(r):
         return (harmony(r["col"], fc) * 10.0        # coordination dominates (0..5 -> 0..50)
+                + _ctx_adj(r) * 4.0                 # season/silhouette/formality fit (strong — a wrong-season piece falls away)
                 + min(15, r["sc"]) * 1.0            # curation/quality (favs, picks, elevated labels, clean sneaker)
                 - usage[r["u"]] * 0.6               # gently avoid repeating the exact same piece
                 - _brand_pen(brand_usage[r["b"].lower()]))  # mix brands: soft recurrence, hard cap on dominance
@@ -305,16 +344,17 @@ outfits = []
 seen = set()
 def build(name, blurb, slots):
     """slots: list of (slotname, candidate_list). Brands are forced distinct."""
-    fit, fit_urls, fit_brands, fit_cols = {}, set(), set(), set()
+    fit, fit_urls, fit_brands, fit_cols, fit_ctx = {}, set(), set(), set(), set()
     for slot, cands in slots:
-        r = pick(cands, fit_urls, fit_brands, fit_cols)
+        r = pick(cands, fit_urls, fit_brands, fit_cols, ctx=fit_ctx)
         if r is None:
             # last resort: allow same brand rather than drop the whole fit
-            r = pick(cands, fit_urls, fit_brands, fit_cols, allow_same_brand=True)
+            r = pick(cands, fit_urls, fit_brands, fit_cols, allow_same_brand=True, ctx=fit_ctx)
         if r is None:
             return None
         fit[slot] = r; fit_urls.add(r["u"]); fit_brands.add(r["b"].lower())
         if r["col"] and r["col"] != "unknown": fit_cols.add(r["col"])
+        fit_ctx |= _sig(r["t"])                      # grow the fit's season/silhouette context for the next slot
     sig = tuple(sorted(fit_urls))
     if sig in seen:
         return None
@@ -358,6 +398,11 @@ def build(name, blurb, slots):
     _hat = fit.get("hat")
     if _hat and _bottom and _WINTERHAT.search(_hat["t"]) and _SUMMER.search(_bottom["t"]):
         coord -= 4                                # wool beanie over summer shorts — seasons clash
+    if _shoefit and _bottom and _SUMMER.search(_bottom["t"]) and (
+            _HIGHTOP.search(_shoefit["t"]) or _SUEDE.search(_shoefit["t"]) or _TRAILSHOE.search(_shoefit["t"])):
+        coord -= 4                                # suede/high-top/trail shoe on summer shorts — "the footing makes no sense"
+    if _shoefit and _layer and _GYMSHOE.search(_shoefit["t"]) and _HEAVY.search(_layer["t"]):
+        coord -= 2                                # pool slides under a puffer
     _fresh = any(v.get("new") for v in fit.values())   # contains a recent drop → Fresh Fits
     return {"formula": name, "note": blurb, "items": fit,
             "brands": len(brands), "cs": coord, "fresh": _fresh,

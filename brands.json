@@ -1622,16 +1622,11 @@
  {
   "domain": "mfpen.com",
   "brand": "mfpen",
-  "cur": "EUR"
+  "cur": "DKK"
  },
  {
   "domain": "lestrangelondon.com",
   "brand": "L'Estrange London",
-  "cur": "GBP"
- },
- {
-  "domain": "studionicholson.com",
-  "brand": "Studio Nicholson",
   "cur": "GBP"
  },
  {

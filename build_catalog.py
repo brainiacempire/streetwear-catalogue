@@ -793,7 +793,7 @@ td.st-ok{color:var(--ok)} td.st-bad{color:var(--warn)}
    <button class="fsub" data-fs="saved">Saved outfits<span class="n" id="savedn"></span></button>
    <label class="tog fsubtog"><input type="checkbox" id="hidesavedfits"> hide saved outfits</label>
    <select id="pcfilter" class="fsubtog" title="Filter fits by number of pieces"><option value="">All sizes</option><option value="3">3-piece</option><option value="4">4-piece</option><option value="5">5-piece</option></select>
-   <span class="fithint">Pick each piece &middot; mix &amp; match &middot; Surprise Me for a starting point</span>
+   <span class="fithint">Pick any pieces &middot; <b>Fill the rest</b> completes the look &mdash; coordinated by colour, season &amp; style, cross-brand &middot; lock the keepers, Surprise the rest</span>
   </div>
   <div id="buildmode">
    <div class="builder">
@@ -1274,9 +1274,10 @@ function renderCanvas(){
 // now driving the manual swap menu so its TOP results are the tailored, matching picks.
 const _SNK=/sneaker|trainer|\bdunk\b|air ?force|air ?max|jordan|gel[- ]|\brunner|gazelle|samba|campus|superstar|new balance|\bnb\b|\bvans\b|sk8|old ?skool|authentic|\b\d{3,4}\b|salomon|asics/i;
 const _NOTSNK=/loafer|sandal|\bslide|slider|\bmule|\bclog|\bcroc/i;
-function pickerCoord(r,acc,style,ub,hero){
+function pickerCoord(r,acc,style,ub,hero,ctx){
  let s=0;
  s+=harmC(r,acc)*3;                                  // colour harmony / accent echo (dominant)
+ s+=seasonAdj(r,ctx)*2;                               // season / silhouette fit — real styling reasoning
  if(hero && r.col===hero) s+=4;                      // explicitly echo the fit's hero colour
  if(!ub.has((r.b||'').toLowerCase())) s+=3;          // distinct label head-to-toe
  if(style && styleOf(r)===style) s+=3;               // stays in the same style lane
@@ -1284,6 +1285,7 @@ function pickerCoord(r,acc,style,ub,hero){
  if(r.n) s+=3; if(r.v) s+=2;                          // curated best-of / seen in a video
  s+=Math.min(4,(r.sc||0)/2);                          // server curation/quality signal
  if(r.f) s+=2;                                        // a piece you saved
+ if(NOVELTY_RE.test(r.t)) s-=8;                       // novelty/basics never lead a coordinated fit
  if(r.col==='unknown') s-=2;
  if(activeSlot==='shoe'){ if(_SNK.test(r.t)) s+=3; if(_NOTSNK.test(r.t)) s-=5; }   // trainers lead
  return s;
@@ -1300,8 +1302,9 @@ function pickerPool(){
    if(r&&r.col&&r.col!=='unknown'&&!NEUTC.has(r.col)&&!r.neu) acc.add(r.col); }});
  const style=outfitStyle();
  const hero=activeSlot==='top'?null:heroColour();
+ const ctx=fitCtx(activeSlot);
  const anyPlaced=SLOTORDER.some(k=>k!==activeSlot&&outfit[k]);
- if(anyPlaced) out.sort((a,b)=>(pickerCoord(b,acc,style,ub,hero)-pickerCoord(a,acc,style,ub,hero))||(b.f-a.f)||(a.g-b.g));
+ if(anyPlaced) out.sort((a,b)=>(pickerCoord(b,acc,style,ub,hero,ctx)-pickerCoord(a,acc,style,ub,hero,ctx))||(b.f-a.f)||(a.g-b.g));
  else out.sort((a,b)=>(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||(Math.min(6,(b.sc||0))-Math.min(6,(a.sc||0)))||(a.g-b.g));
  return out;
 }
@@ -1375,29 +1378,69 @@ function fitAccents(){ const a=new Set(); SLOTORDER.forEach(k=>{const r=outfit[k
 // colour harmony vs the pieces already placed: neutral base + at most one accent, or tonal
 function harmC(r,acc){ if(!r.col||r.col==='unknown')return 0; if(NEUTC.has(r.col)||r.neu)return 3;
  if(acc.has(r.col))return 5; if(acc.size===0)return 2; return -6; }
+// ===== SEASON / SILHOUETTE / FORMALITY brain — shared by EVERY fill path (swap menu, Fill,
+//       Surprise, For You) so a chosen piece actually SUITS the fit: no suede high-top or wool
+//       beanie on a summer shorts fit, no pool slide under tailored trousers, no shorts in a puffer fit.
+const _SUMMERp=/\b(shorts?|jorts?|tank ?top|linen|swim|board ?short|mesh|sandals?|slides?)\b/i;
+const _WINTERp=/\b(puffer|down|parka|wool ?coat|shearling|padded|quilted|sherpa|overcoat|duffle|beanie|balaclava|trapper|ushanka|flannel|thermal|heavy ?knit|cashmere|mohair|fur\b)\b/i;
+const _HEAVYp=/\b(puffer|down|parka|wool ?coat|shearling|padded|quilted|sherpa|overcoat|duffle)\b/i;
+const _ELEVp=/\b(trouser|tailored|pleated|oxford|loafer|blazer|wool|suit|dress ?shirt|chino|slack|gurkha|merino|cashmere|silk)\b/i;
+const _HIGHTOPp=/\bhi-?tops?\b|\bhigh-?tops?\b|\bmid-?tops?\b|\bchukka\b|jordan 1\b|dunk hi\b|dunk high|air ?force ?1 ?(?:hi|high)|\b1 (?:hi|high)\b|blazer mid/i;
+const _SUEDEp=/\b(suede|nubuck|pony ?hair|calf ?hair)\b/i;
+const _TRAILp=/gore[- ]?tex|\bgtx\b|salomon|speedcross|\btrail\b|\bacg\b|terrex|\bhoka\b|\bxt-?\d|mountain/i;
+const _GYMSHOEp=/\b(slides?|sliders?|sandals?|mule|croc|clog|flip.?flop|pool)\b/i;
+const _BEANIEp=/\b(beanie|wool ?hat|knit ?hat|watch ?cap|trapper|ushanka|balaclava|fur ?hat)\b/i;
+const _STRAWp=/\b(straw|raffia|sun ?hat)\b/i;
+function _sig(r){ const t=(r&&r.t)||''; const f={};
+ if(_SUMMERp.test(t))f.summer=1; if(_WINTERp.test(t))f.winter=1; if(_HEAVYp.test(t))f.heavy=1;
+ if(_ELEVp.test(t))f.elev=1; if(_HIGHTOPp.test(t))f.hi=1; if(_SUEDEp.test(t))f.suede=1;
+ if(_TRAILp.test(t))f.trail=1; if(_GYMSHOEp.test(t))f.gym=1; if(_BEANIEp.test(t))f.beanie=1; if(_STRAWp.test(t))f.straw=1;
+ return f; }
+// the fit's current season/formality context, from every placed piece except the slot being chosen
+function fitCtx(exceptK){ let summer=0,winter=0,heavy=0,elev=0;
+ SLOTORDER.forEach(k=>{ if(k===exceptK)return; const r=outfit[k]; if(!r)return; const s=_sig(r);
+  if(s.summer)summer++; if(s.winter)winter++; if(s.heavy)heavy++; if(s.elev)elev++; });
+ return {summer,winter,heavy,elev, hot:summer>0&&winter===0, cold:winter>0&&summer===0}; }
+// how well a candidate SUITS the fit's season / silhouette — a strong, real styling penalty
+function seasonAdj(r,ctx){ const s=_sig(r); let a=0;
+ if(ctx.hot){ if(s.winter||s.heavy||s.suede)a-=8; if(s.hi)a-=5; if(s.trail)a-=3; if(s.beanie)a-=9; if(s.summer)a+=2; }
+ if(ctx.cold){ if(s.summer)a-=8; if(s.straw&&!s.beanie)a-=3; }
+ if(ctx.elev>0 && s.gym)a-=6;
+ return a; }
 // taste-similarity boost used across fills (_tasteCache is declared+invalidated up in persist())
 function _taste(){ return _tasteCache || (_tasteCache = tasteProfile()); }
 function tasteBoost(r){ const t=_taste(); if(!t.n) return 0; let x=0;
  if(t.brands.has(r.b)) x+=3;                                   // brand you save from
  const cw=t.cats.get(r.c); if(cw) x+=Math.min(2,cw);           // category you gravitate to
  if(r.col!=='unknown' && t.cols.get(r.col)) x+=1;              // colour family you like
+ if(t.styles){ const sv=t.styles.get(styleOf(r)); if(sv) x+=Math.min(2,sv*0.5); }   // style LANE you lean into
+ if(t.priceMid>0 && r.g>0 && r.g>=t.priceMid*0.5 && r.g<=t.priceMid*1.8) x+=1;       // sits in your price band
  return x; }
 function rndFrom(cats,filt,k,style){
- let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
+ let pool=[]; cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm&&!NOVELTY_RE.test(r.t))pool.push(r);}));
  if(filt)pool=pool.filter(filt);
- if(!pool.length)return null;
+ if(!pool.length){ // novelty guard may have emptied a thin slot — retry without it before giving up
+   cats.forEach(c=>(byCat[c]||[]).forEach(r=>{if(r.a&&r.i&&!r.sm)pool.push(r);}));
+   if(filt)pool=pool.filter(filt); if(!pool.length)return null; }
  const ub=usedBrands(k);
  const fresh=pool.filter(r=>!ub.has((r.b||'').toLowerCase()));
  if(fresh.length) pool=fresh;
  const acc=fitAccents();
- // reason: COLOUR HARMONY first, then SIMILAR-TO-YOUR-TASTE, then style, quality, price
+ const ctx=fitCtx(k);
+ // reason: COLOUR HARMONY + SEASON/SILHOUETTE FIT lead together (co-equal primary), then taste,
+ // then style lane, curation/quality, price — the full brain on every fill.
+ const prim=r=>harmC(r,acc)*3 + seasonAdj(r,ctx)*2;
  pool.sort((a,b)=>
-   (harmC(b,acc)-harmC(a,acc))
+   (prim(b)-prim(a))
    ||(tasteBoost(b)-tasteBoost(a))
    ||(style?((styleOf(b)===style?1:0)-(styleOf(a)===style?1:0)):0)
    ||(b.f-a.f)||((b.n?1:0)-(a.n?1:0))||((b.v?1:0)-(a.v?1:0))
+   ||(Math.min(6,b.sc||0)-Math.min(6,a.sc||0))
    ||((a.col==='unknown'?1:0)-(b.col==='unknown'?1:0))||(a.g-b.g));
- const head=pool.slice(0,Math.max(12,Math.floor(pool.length*0.18)));
+ // head = the genuinely best-coordinating candidates; randomised within for fresh variety.
+ // tighten the head when a clear season context exists so a wrong-season piece can't slip in.
+ const frac=(ctx.hot||ctx.cold||ctx.elev>0)?0.10:0.18;
+ const head=pool.slice(0,Math.max(10,Math.floor(pool.length*frac)));
  return head[Math.floor(Math.random()*head.length)];
 }
 const catsOf=k=>CVSLOTS.find(s=>s.k===k).cats;
@@ -1408,37 +1451,52 @@ function heroColour(){
    if(r && !r.neu && r.col && r.col!=='unknown') return r.col;}
  return null;
 }
-// pick a coordinating piece for one slot given the hero colour
+// pick a coordinating piece for one slot given the hero colour. Every branch now filters on the
+// fit's SEASON (via fitCtx) so a chosen piece can't be seasonally wrong for the fit around it.
 function coordPick(k,hero){
- const c=catsOf(k), st=outfitStyle();
+ const c=catsOf(k), st=outfitStyle(), ctx=fitCtx(k);
  if(k==='top')   return rndFrom(c,r=>!r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>!r.neu,k,st)||rndFrom(c,null,k,st);
  if(k==='bottom')return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
- if(k==='hat')   return (hero&&rndFrom(c,r=>r.col===hero,k,st))||rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
- // footwear: mainly trainers/sneakers, clean & style-matched — loafers are a rare exception, never random
+ if(k==='hat'){  // no wool beanie on a summer fit, no straw hat in deep winter
+   const wrong=r=>(ctx.hot&&_BEANIEp.test(r.t))||(ctx.cold&&_STRAWp.test(r.t));
+   return (hero&&rndFrom(c,r=>r.col===hero&&!wrong(r),k,st))||rndFrom(c,r=>r.neu&&r.col!=='unknown'&&!wrong(r),k,st)
+        ||rndFrom(c,r=>r.neu&&!wrong(r),k,st)||rndFrom(c,r=>!wrong(r),k,st)||rndFrom(c,null,k,st); }
+ // footwear: mainly trainers/sneakers, clean & style-matched. In a summer fit, hard-exclude
+ // high-tops / suede / trail runners so the footing always suits the fit (Dave's complaint).
  if(k==='shoe'){ const snk=r=>/sneaker|trainer|\bdunk\b|air ?force|air ?max|jordan|gel[- ]|\brunner|gazelle|samba|campus|superstar|new balance|\bnb\b|\bvans\b|sk8|old ?skool|authentic|\b\d{3,4}\b|salomon|asics/i.test(r.t);
    const bad=r=>/loafer|sandal|\bslide|slider|\bmule|\bclog|\bcroc/i.test(r.t);
-   return rndFrom(c,r=>snk(r)&&!bad(r)&&r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>snk(r)&&!bad(r),k,st)
-        ||(hero&&rndFrom(c,r=>!bad(r)&&r.col===hero,k,st))||rndFrom(c,r=>!bad(r)&&r.neu,k,st)||rndFrom(c,r=>!bad(r),k,st)||rndFrom(c,null,k,st); }
- if(k==='layer') return rndFrom(c,r=>r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>r.neu,k,st)||rndFrom(c,null,k,st);
+   const wrong=r=>ctx.hot&&(_HIGHTOPp.test(r.t)||_SUEDEp.test(r.t)||_TRAILp.test(r.t));   // wrong footwear for a summer fit
+   return rndFrom(c,r=>snk(r)&&!bad(r)&&!wrong(r)&&r.neu&&r.col!=='unknown',k,st)||rndFrom(c,r=>snk(r)&&!bad(r)&&!wrong(r),k,st)
+        ||rndFrom(c,r=>snk(r)&&!bad(r),k,st)
+        ||(hero&&rndFrom(c,r=>!bad(r)&&!wrong(r)&&r.col===hero,k,st))||rndFrom(c,r=>!bad(r)&&!wrong(r)&&r.neu,k,st)
+        ||rndFrom(c,r=>!bad(r)&&!wrong(r),k,st)||rndFrom(c,r=>!bad(r),k,st)||rndFrom(c,null,k,st); }
+ if(k==='layer'){ // no puffer / heavy coat over a summer shorts fit
+   const wrong=r=>ctx.hot&&(_HEAVYp.test(r.t)||_WINTERp.test(r.t));
+   return rndFrom(c,r=>r.neu&&r.col!=='unknown'&&!wrong(r),k,st)||rndFrom(c,r=>r.neu&&!wrong(r),k,st)||rndFrom(c,r=>!wrong(r),k,st)||rndFrom(c,null,k,st); }
  return rndFrom(c,r=>r.col!=='unknown',k,st)||rndFrom(c,null,k,st);
+}
+// ===== COORDINATED FILL — fills HOWEVER MANY slots are empty (1..5) as ONE coherent set.
+// Order matters: the top sets the palette, the bottom + layer set the SEASON, THEN shoe / hat /
+// accessory are chosen knowing the whole fit — so the footing and headwear always suit it. Each
+// piece coordinates to everything already placed (colour, season, style lane, distinct brand). =====
+function coordFill(clearUnlocked){
+ if(clearUnlocked) SLOTORDER.forEach(k=>{ if(include[k] && !locked[k]) outfit[k]=null; });
+ let n=0;
+ const doSlot=k=>{ if(include[k] && !outfit[k] && !locked[k]){ const p=coordPick(k, k==='top'?null:heroColour()); if(p){ outfit[k]=p; n++; } } };
+ doSlot('top');                                          // 1) palette anchor
+ ['bottom','layer'].forEach(doSlot);                     // 2) season-setters (bottom shorts / heavy layer)
+ ['shoe','hat','accessory'].forEach(doSlot);             // 3) chosen knowing the full fit
+ renderCanvas(); setSlot(activeSlot);
+ return n;
 }
 // FILL THE REST: fill only the slots you've INCLUDED and haven't locked, coordinated around your picks
 $('bfill').onclick=()=>{
- if(include.top && !outfit.top && !locked.top){ outfit.top=coordPick('top',null); }
- let hero=heroColour(), n=0;
- ['top','bottom','shoe','layer','hat','accessory'].forEach(k=>{
-   if(include[k] && !outfit[k] && !locked[k]){ outfit[k]=coordPick(k,hero); if(outfit[k]){ n++; hero=hero||heroColour(); } }});
- renderCanvas(); setSlot(activeSlot);
- toast(n? `Filled ${n} slot${n>1?'s':''} — coordinated, cross-brand` : 'Nothing to fill — include some slots, or unlock them');
+ const n=coordFill(false);
+ toast(n? `Filled ${n} slot${n>1?'s':''} — coordinated head to toe, cross-brand` : 'Nothing to fill — include some slots, or unlock them');
 };
 // SURPRISE ME: rebuild every UNLOCKED slot into a fresh coordinated fit
 $('brandom').onclick=()=>{
- SLOTORDER.forEach(k=>{ if(include[k] && !locked[k]) outfit[k]=null; });
- if(include.top && !outfit.top){ outfit.top=coordPick('top',null); }
- let hero=heroColour();
- ['bottom','shoe','layer','hat','accessory'].forEach(k=>{
-   if(include[k] && !locked[k] && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
- renderCanvas(); setSlot(activeSlot);
+ coordFill(true);
  toast('Fresh coordinated fit — lock keepers, skip slots you don\u2019t want, Surprise again');
 };
 $('bclear').onclick=()=>{outfit={hat:null,layer:null,top:null,bottom:null,shoe:null,accessory:null};
@@ -1497,13 +1555,20 @@ function renderFits(){
 // a "taste profile" built from your saves: the brands, categories and colours you gravitate to,
 // so we can surface pieces SIMILAR to what you like — not only the exact items you've saved.
 function tasteProfile(){
- const brands=new Set(), cats=new Map(), cols=new Map();
+ const brands=new Set(), cats=new Map(), cols=new Map(), styles=new Map(); const prices=[];
+ let summer=0, winter=0;
  D.forEach(r=>{ if(savedUrls.has(r.u)){
    brands.add(r.b);
    cats.set(r.c,(cats.get(r.c)||0)+1);
    if(r.col&&r.col!=='unknown') cols.set(r.col,(cols.get(r.col)||0)+1);
+   const st=styleOf(r); styles.set(st,(styles.get(st)||0)+1);   // learn the STYLE LANES you gravitate to
+   if(r.g>0) prices.push(r.g);                                  // learn your PRICE BAND
+   const sg=_sig(r); if(sg.summer)summer++; if(sg.winter)winter++;   // learn your SEASON lean
  }});
- return {brands, cats, cols, n: savedUrls.size};
+ prices.sort((a,b)=>a-b);
+ const priceMid=prices.length?prices[Math.floor(prices.length/2)]:0;
+ let topStyle=null,tn=0; styles.forEach((v,k)=>{ if(v>tn){tn=v;topStyle=k;} });
+ return {brands, cats, cols, styles, priceMid, topStyle, seasonLean:(summer-winter), n: savedUrls.size};
 }
 function fitScore(f, prefFormulas, taste){
  let s=0, liked=0, slots=0;
@@ -1521,6 +1586,14 @@ function fitScore(f, prefFormulas, taste){
  s += (f.cs||0)*4;                                           // COORDINATION quality weighs into the rank
  s+=slots*3;                                                 // fuller, more-styled fits
  if(prefFormulas.has(f.formula)) s+=16;                      // formulas you save as outfits
+ // pieces sharing YOUR dominant style lane read as "for me", not just any coordinated fit
+ if(taste.topStyle){ let m=0; SLOTORDER.forEach(k=>{ const p=f.items[k]; if(p&&styleOf(p)===taste.topStyle)m++; }); s+=m*4; }
+ // reward clean SEASON coherence inside the fit (all one season reads deliberate; a mix reads off)
+ { let su=0,wi=0; SLOTORDER.forEach(k=>{ const p=f.items[k]; if(!p)return; const sg=_sig(p); if(sg.summer)su++; if(sg.winter)wi++; });
+   if(su&&wi) s-=10; else if(su||wi) s+=4; }
+ // lean the ranking toward your season (summer saves -> summer fits float up, and vice-versa)
+ if(taste.seasonLean){ let su=0,wi=0; SLOTORDER.forEach(k=>{ const p=f.items[k]; if(!p)return; const sg=_sig(p); if(sg.summer)su++; if(sg.winter)wi++; });
+   s += taste.seasonLean>0 ? (su-wi)*2 : (wi-su)*2; }
  return {f, s, liked, slots};
 }
 function renderTop(){
@@ -1569,9 +1642,11 @@ function fitAroundAnchor(anchor){
  const keep={}; SLOTORDER.forEach(k=>keep[k]=outfit[k]);            // borrow the builder's global to coordinate, then restore
  SLOTORDER.forEach(k=>outfit[k]=null);
  outfit[slot]=anchor;
- if(slot!=='top'){ outfit.top=coordPick('top', heroColour()); }    // establish the top so the palette reads
+ if(slot!=='top' && !outfit.top){ outfit.top=coordPick('top', heroColour()); }        // 1) palette
  let hero=heroColour();
- ['bottom','shoe','hat'].forEach(k=>{ if(k!==slot && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});
+ if(slot!=='bottom' && !outfit.bottom){ outfit.bottom=coordPick('bottom',hero); hero=hero||heroColour(); }  // 2) season-setter
+ if(fitCtx('layer').cold && slot!=='layer' && !outfit.layer){ outfit.layer=coordPick('layer',hero); }        // 3) a layer ONLY if the fit reads cold
+ ['shoe','hat'].forEach(k=>{ if(k!==slot && !outfit[k]){ outfit[k]=coordPick(k,hero); hero=hero||heroColour(); }});  // 4) footing + hat know the whole fit
  const items={}; SLOTORDER.forEach(k=>{ if(outfit[k]) items[k]=outfit[k]; });
  SLOTORDER.forEach(k=>outfit[k]=keep[k]);
  return Object.keys(items).length>=3 ? items : null;
@@ -1580,9 +1655,9 @@ let _foryouSig=null;
 function buildForYou(){
  // cache by the exact set of saved pieces: same saves -> same shelf (stable order, so Back returns you
  // to the very same fits & scroll). Only when you save/unsave something does it rebuild and re-rotate.
- const _sig=[...savedUrls].sort().join('|');
- if(_sig===_foryouSig && FORYOU.length) return FORYOU;
- _foryouSig=_sig;
+ const _svsig=[...savedUrls].sort().join('|');
+ if(_svsig===_foryouSig && FORYOU.length) return FORYOU;
+ _foryouSig=_svsig;
  FORYOU=[]; const seen=new Set();
  const anchors=D.filter(r=>savedUrls.has(r.u) && r.i && r.a)        // your saved, in-stock, shoppable pieces
    .sort(()=>Math.random()-0.5);                                   // rotate the whole wardrobe so every save gets its turn
@@ -1593,8 +1668,9 @@ function buildForYou(){
      const sig=SLOTORDER.map(k=>items[k]?items[k].u:'').join('|');
      if(seen.has(sig)) continue; seen.add(sig);
      const lab=((CATS.find(([k])=>k===a.c)||[])[1]||a.c).toLowerCase().replace(/s$/,'');
+     const sg=_sig(a); const season=sg.summer?'a summer-ready ':(sg.winter?'a cold-weather ':'');
      FORYOU.push({i:'fy'+FORYOU.length, formula:'Built around your '+a.b,
-       note:'Your saved '+lab+' anchors it — every other piece chosen to coordinate.', items:items, foryou:true, anchor:a.u, cs:0});
+       note:'Your saved '+lab+' anchors '+season+'fit — one palette, one season, every other piece chosen to coordinate, cross-brand.', items:items, foryou:true, anchor:a.u, cs:0});
    }
    if(FORYOU.length>=48) break;
  }
