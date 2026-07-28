@@ -121,7 +121,7 @@ FLASHY_RE = re.compile(
     r"|saint laurent|\bysl\b|celine|\bloewe\b|bottega|valentino|dolce ?& ?gabbana|dolce and gabbana"
     r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
     r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
-    r"|goyard|herm[eè]s|brunello|\bferrari\b|\bmclaren\b)\b", re.I)
+    r"|goyard|herm[eè]s|brunello|\bferrari\b|\bmclaren\b|lanvin)\b", re.I)
 try:
     _ALLOWED_DOMAINS = {b["domain"].lower() for b in json.load(open("brands.json"))} | {"laced.com","satoshinakamoto.cloud"}
 except Exception:

@@ -51,7 +51,7 @@ FLASHY_RE = re.compile(
     r"|saint laurent|\bysl\b|celine|\bloewe\b|bottega|valentino|dolce ?& ?gabbana|dolce and gabbana"
     r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
     r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
-    r"|goyard|herm[eè]s|brunello|\bcelio\b|\bferrari\b|\bmclaren\b)\b", re.I)
+    r"|goyard|herm[eè]s|brunello|\bcelio\b|\bferrari\b|\bmclaren\b|lanvin)\b", re.I)
 # NON-APPAREL — homeware / books / lifestyle objects that leak from boutiques (a KAWS book, incense,
 # a candle) must NEVER land in a clothing slot. Filtered by title, keeps real apparel & sneakers.
 NONAPPAREL = re.compile(r"\b(incense|candle|diffuser|fragrance|perfume|cologne|\bbook\b|monograph|magazine|\bzine\b|vinyl|cassette|poster|art ?print|figurine|\bfigure\b|plush|keychain|keyring|lanyard|sticker|pin badge|\bmug\b|tumbler|\bbowl\b|\bplate\b|\btray\b|ashtray|lighter|\bmatches\b|vase|ceramic|blanket|\btowel\b|\brug\b|cushion|\bpillow\b|puzzle|playing cards|notebook|stationery|\bsoap\b|\bbalm\b|lotion|skincare|shampoo|chopsticks|coaster|ornament|snow globe|air ?freshener|scented|home ?fragrance)\b", re.I)
@@ -82,6 +82,8 @@ PATTERN_RE = re.compile(r"\b(gingham|checked?|checker|plaid|tartan|houndstooth|f
 # rolled/cuffed cargo & tailored suit-pants — Dave dislikes these in a casual street fit
 _ROLLCARGO = re.compile(r"\b(rolled|turn.?up|cuffed)\b.*\bcargo|\bcargo\b.*\b(rolled|turn.?up|cuffed)\b", re.I)
 _SUITPANT  = re.compile(r"\b(suit trouser|suit pant|dress trouser|dress pant|pleated wool|tuxedo|formal trouser)\b", re.I)
+_SUITJKT   = re.compile(r"\b(suit jacket|suit blazer|\bblazer\b|sport ?coat|two.?piece suit|tuxedo|tailored jacket|patch pocket blazer)\b", re.I)
+_LOUDSHOE  = re.compile(r"\b(paisley|floral|graffiti|cow[ -]?print|leopard|zebra|snakeskin|tie.?dye|animal print|patchwork)\b", re.I)
 # a LOUD colour word in the title — catches multi-colour sneakers (e.g. a white/PINK Jordan) whose
 # dominant colour reads neutral but that still throw off an all-black / monochrome fit.
 LOUD_COL = re.compile(r"\b(pink|rose|fuchsia|magenta|red|crimson|scarlet|cherry|orange|rust|coral|peach|yellow|mustard|gold|volt|lime|green|emerald|kelly|teal|aqua|turquoise|\bblue\b|cobalt|royal|purple|violet|lilac|neon|multi[- ]?colou?r)\b", re.I)
@@ -245,10 +247,14 @@ for path in files:
             score -= 6                                             # rolled-cuff cargo / suit-pants — Dave dislikes in casual fits
         if cat == "footwear":                       # steer fills toward trainers/sneakers
             if DRESS_RE.search(title):              score -= 10  # dressy leather shoes — Dave: trainers, not these
-            elif CASUAL_SHOE_RE.search(title):      score -= 4   # sandals/slides/mules occasional
+            elif CASUAL_SHOE_RE.search(title):      score -= 8   # sandals/slides/mules — rare, Dave wears trainers
             elif SNEAKER_RE.search(title):          score += 3
             else:                                    score -= 5   # non-sneaker, non-casual footwear = usually dressy/odd
             if b.lower() == "bode":                 score -= 7   # Bode's footwear line is dressy art-shoes, not trainers
+            if not curated and _LOUDSHOE.search(title): score -= 8  # busy paisley/graffiti/floral sneakers rarely coordinate (your saves still pass)
+        # a formal blazer / suit jacket over casual streetwear is a clash — Dave wears streetwear, not tailoring
+        if cat == "jacket_outerwear" and _SUITJKT.search(title) and not curated:
+            score -= 6
         rows.append({"b":b, "t":title, "c":cat,
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
