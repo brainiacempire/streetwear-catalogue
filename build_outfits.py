@@ -342,7 +342,8 @@ def _eligible(cat):
     _elig_cache[cat] = top + tail_curated
     return _elig_cache[cat]
 
-def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True, plain=False, cols=None, noloud=False):
+_ATHLETIC = re.compile(r"\b(track ?pant|warm.?up|nylon pant|jogger|sweat ?pant|side stripe|piping|athletic|active|gym|tricot|parachute)\b", re.I)
+def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True, plain=False, cols=None, noloud=False, avoid=None):
     """Candidate pieces for one or more categories under colour/tone constraints.
     quality=True draws only from the eligible (stronger) slice so fits use the best pieces.
     plain=True excludes loud-patterned pieces (for clean hats/shoes on cohesive fits).
@@ -359,6 +360,7 @@ def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True, p
             if hero and r["col"] not in HEROES:          continue
             if plain and r.get("pat"):                   continue   # keep patterned pieces out of clean slots
             if noloud and not r.get("curated") and LOUD_COL.search(r["t"] or ""): continue   # loud colour off cohesive fits — BUT your saved/liked pieces always pass (learn from your taste)
+            if avoid and avoid.search(r["t"] or ""):     continue   # keep the wrong TYPE out (e.g. athletic pants off a smart-casual fit)
             out.append(r)
     return out[:limit]
 
@@ -621,9 +623,9 @@ add("Layered Winter",
 add("Clean Neutral",
     "Cream and tan, nothing loud — quiet luxury proportions, one warm sneaker.",
     lambda: [("top", pool(["longsleeve","hoodie_sweat","tee"], colour="cream")),
-         ("bottom", pool(["pants","jeans"], neutral=True)),
+         ("bottom", pool(["pants","jeans"], neutral=True, plain=True, avoid=_ATHLETIC) or pool(["pants","jeans"], neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 10)
+         ("hat", pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 10)
 
 # 12) Statement Sneaker Anchor — neutral fit, one loud trainer
 add("Statement Sneaker Anchor",
@@ -631,7 +633,7 @@ add("Statement Sneaker Anchor",
     lambda: [("shoe", pool("footwear", hero=True) or pool("footwear")),
          ("top", pool(["tee","longsleeve","hoodie_sweat"], neutral=True)),
          ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 14)
+         ("hat", pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 14)
 
 # 13) Workwear — chore/work jacket, utility trouser, boot or runner
 add("Workwear",
@@ -693,7 +695,7 @@ add("Double Denim",
 add("Smart Casual",
     "A loafer or clean low shoe with a trouser and a fine knit — dressed up without a suit.",
     lambda: [("top", pool(["longsleeve","top","hoodie_sweat"], neutral=True)),
-         ("bottom", pool("pants", neutral=True)),
+         ("bottom", pool("pants", neutral=True, plain=True, avoid=_ATHLETIC) or pool("pants", neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
          ("layer", pool("jacket_outerwear", neutral=True))], 10)
 
@@ -733,9 +735,9 @@ add("Statement Bottom",
 add("Prep",
     "A polo or fine knit with a chino and a clean low sneaker — collegiate, tidy, tonal.",
     lambda: [("top", pool(["top","longsleeve","tee"], neutral=True)),
-         ("bottom", pool("pants", neutral=True)),
+         ("bottom", pool("pants", neutral=True, plain=True, avoid=_ATHLETIC) or pool("pants", neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 10)
+         ("hat", pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 10)
 
 # 26) Utility Cargo — cargo trouser, tee, work jacket
 add("Utility Cargo",
@@ -791,7 +793,7 @@ add("Colour Pop",
     lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"], hero=True)),
          ("bottom", pool(["jeans","pants","sweats"], neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
-         ("hat", pool("headwear", neutral=True))], 10)
+         ("hat", pool("headwear", neutral=True, plain=True) or pool("headwear", neutral=True))], 10)
 
 # ===== VARIED SILHOUETTES — not every fit is 4 pieces. Some are a clean 3 (no hat),
 #       some are a layered 5 (hat + jacket + top + bottom + shoe). =====
