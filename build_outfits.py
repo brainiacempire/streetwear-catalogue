@@ -63,6 +63,10 @@ def women_tagged(o):
 # outfits lean on trainers/sneakers; loafers are a rare 1-in-many, other casual shoes occasional
 SNEAKER_RE = re.compile(r"sneaker|trainer|\bdunk\b|air ?force|air ?max|air ?jordan|jordan \d|gel[- ]|\brunner|gazelle|samba|campus|superstar|\bforum\b|new balance|\bnb\b|\bvans\b|sk8|old ?skool|\bauthentic\b|\b\d{3,4}\b|\bmax\b|salomon|asics|saucony|onitsuka|\bhoka\b|\bveja\b|superga|novesta|converse", re.I)
 CASUAL_SHOE_RE = re.compile(r"sandal|slides?\b|slider|\bmule|\bclog|\bcroc", re.I)
+# HERO = a graphic/statement piece that can anchor a fit (the reference pages lead with one).
+HERO_RE  = re.compile(r"\b(graphic|print(?:ed)?|logo|embroider|artwork|hand ?painted|tie.?dye|paisley|flame|skull|angel|cherub|butterfly|rhinestone|patch(?:work)?|jacquard|intarsia|souvenir|bowling|baseball jersey|all.?over|statement|varsity|collegiate)\b", re.I)
+# BASIC = generic no-name filler — demoted UNLESS it's a saved/curated/fav-brand piece.
+BASIC_RE = re.compile(r"\b(basic|blank|plain|essential|everyday|staple|\d.?pack|multi.?pack|value pack)\b", re.I)
 
 # Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
 _CLS_RULES = [
@@ -192,11 +196,17 @@ for path in files:
         if women_tagged(o): continue                 # women's by its own tags/type
         cat = classify(title, o.get("category"))
         if cat == "footwear" and BOOT_RE.search(title): continue
+        # ---- CURATION SCORE — heavily weighted so ONLY the best/most-on-taste pieces build fits.
+        # Your saves, the curated best-of picks, the video pieces and your repeat brands sit FAR
+        # above generic stock, so outfits lean on the good stuff, not a random bunch. ----
         score = 1
-        if u in favs:            score += 6
-        if u in picks:           score += 3
-        if u in vidpicks:        score += 3
-        if b.lower() in FAV_BRANDS: score += 2
+        curated = False
+        if u in favs:               score += 14; curated = True   # a piece YOU saved — top priority
+        if u in picks:              score += 8;  curated = True   # curated best-of pick
+        if u in vidpicks:           score += 7;  curated = True   # worn in the videos studied
+        if b.lower() in FAV_BRANDS: score += 6;  curated = True   # a brand you repeat-buy / rate
+        if HERO_RE.search(title):   score += 3                    # graphic / statement piece — a hero anchor
+        if BASIC_RE.search(title) and not curated: score -= 4     # plain no-name basic — demote generic filler
         if cat == "footwear":                       # steer fills toward trainers/sneakers
             if "loafer" in title.lower():           score -= 8   # rare 1-in-many
             elif CASUAL_SHOE_RE.search(title):      score -= 4   # sandals/slides/mules occasional
@@ -205,6 +215,7 @@ for path in files:
                      "g":round(g,2), "p":round(p,2), "cur":cur,
                      "col":o.get("colour","unknown"), "neu":bool(o.get("neutral")),
                      "i":o["image"], "u":u, "sc":score, "s":sizes[:8],
+                     "curated":curated,
                      "new":bool(o.get("new"))})   # recent drop → feeds the Fresh Fits shelf
 
 _COL_MAP2 = [("black",r"\b(black|jet ?black|onyx|noir)\b"),("white",r"\b(white|off.?white|blanc)\b"),
@@ -270,12 +281,24 @@ for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
 usage = collections.Counter()        # cap how often any one piece recurs
 brand_usage = collections.Counter()  # spread looks across as many brands as possible
 
-def pool(cats, colour=None, neutral=None, hero=False, limit=600):
-    """Candidate pieces for one or more categories under colour/tone constraints."""
+# QUALITY FLOOR: build outfits only from the stronger half of each category (bycat is score-sorted),
+# so generic filler never enters a fit — while EVERY curated/saved/fav-brand piece always qualifies.
+def _eligible(cat):
+    cand = bycat.get(cat, [])
+    if not cand: return []
+    cut = max(40, int(len(cand) * 0.55))              # top ~55% by curation score
+    top = cand[:cut]
+    tail_curated = [r for r in cand[cut:] if r.get("curated")]   # keep any saved/curated piece from the tail
+    return top + tail_curated
+
+def pool(cats, colour=None, neutral=None, hero=False, limit=600, quality=True):
+    """Candidate pieces for one or more categories under colour/tone constraints.
+    quality=True draws only from the eligible (stronger) slice so fits use the best pieces."""
     if isinstance(cats, str): cats = [cats]
     out = []
     for cat in cats:
-        for r in bycat.get(cat, [])[:5000]:
+        src = _eligible(cat) if quality else bycat.get(cat, [])[:5000]
+        for r in src:
             if colour and r["col"] != colour:            continue
             if neutral is True and not r["neu"]:         continue
             if neutral is False and r["neu"]:            continue
@@ -285,8 +308,8 @@ def pool(cats, colour=None, neutral=None, hero=False, limit=600):
 
 def freshpool(cats, colour=None, neutral=None, hero=False, limit=600):
     """Like pool(), but recent drops (new) come FIRST — so Fresh Fits leans on what just landed.
-    Falls back to the full pool when few/no new pieces exist, so fits always build."""
-    base = pool(cats, colour=colour, neutral=neutral, hero=hero, limit=5000)
+    Uses the FULL pool (quality=False) so every fresh drop is eligible, then still ranks curated high."""
+    base = pool(cats, colour=colour, neutral=neutral, hero=hero, limit=5000, quality=False)
     fresh = [r for r in base if r.get("new")]
     rest  = [r for r in base if not r.get("new")]
     return (fresh + rest)[:limit]
@@ -334,14 +357,15 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False, ctx
         # soft up to ~4% of the set, then rises hard so no single label can dominate the catalogue
         return bu * 0.35 + 0.9 * max(0, bu - 28)
     def _q(r):
-        return (harmony(r["col"], fc) * 10.0        # coordination dominates (0..5 -> 0..50)
+        return (harmony(r["col"], fc) * 11.0        # coordination dominates (tight colour echo like the fit pages)
                 + _ctx_adj(r) * 4.0                 # season/silhouette/formality fit (strong — a wrong-season piece falls away)
-                + min(15, r["sc"]) * 1.0            # curation/quality (favs, picks, elevated labels, clean sneaker)
+                + min(28, r["sc"]) * 2.2            # CURATION/TASTE weighed heavily — saves, picks, fav brands lead
                 - usage[r["u"]] * 0.6               # gently avoid repeating the exact same piece
                 - _brand_pen(brand_usage[r["b"].lower()]))  # mix brands: soft recurrence, hard cap on dominance
     poolc.sort(key=lambda r: -_q(r))
-    # head = the genuinely best-looking candidates; randomised for fresh variety across rebuilds
-    head = poolc[:max(10, len(poolc)//6)]
+    # head = the genuinely best candidates only; a TIGHT head so the strongest, most-coordinated
+    # piece wins far more often (less randomness = higher, more consistent quality per fit).
+    head = poolc[:max(5, len(poolc)//14)]
     random.shuffle(head)
     return head[0] if head else None
 
@@ -410,7 +434,12 @@ def build(name, blurb, slots):
         if _tap_leg  and _SLEEK.search(_shoefit["t"]):   coord += 2   # tapered leg + clean low shoe = elevated
     # ---- TONAL reward: top & bottom in the same colour family reads expensive ----
     if _topp and _bottom and _topp["col"] not in ("unknown",) and _topp["col"] == _bottom["col"]:
-        coord += 2
+        coord += 3
+    # ---- CAP ECHO: the hat mirroring the top's colour is the single most-repeated move on the
+    #      reference fit pages (blue tee -> blue cap). Reward it hard when it's a real colour. ----
+    _hatp = fit.get("hat")
+    if _hatp and _topp and _hatp["col"] not in ("unknown",) and _hatp["col"] == _topp["col"]:
+        coord += 3
     _bottom = fit.get("bottom"); _shoefit = fit.get("shoe"); _layer = fit.get("layer")
     if _bottom and _shoefit and _ELEVATED.search(_bottom["t"]) and _GYMSHOE.search(_shoefit["t"]):
         coord -= 4                                # slides/sandals under tailored trousers — formality clash
@@ -888,12 +917,14 @@ add("Minimal Summer Tonal",
          ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 12)
 
-random.shuffle(outfits)
-# Keep every Fresh fit, then fill variety up to a much larger cap now the catalogue is huge.
-_fresh_fits = [o for o in outfits if o.get("fresh")]
-_other_fits = [o for o in outfits if not o.get("fresh")]
-outfits = (_fresh_fits + _other_fits)[:1800]   # lifted so the new shorts/sweats/denim lanes all survive
-random.shuffle(outfits)
+# ===== CURATE THE SET: rank by coordination quality, keep every fresh drop + only the BEST of the
+#       rest, and store best-first so the catalogue leads with the strongest, most-styled fits. =====
+random.shuffle(outfits)                                  # break ties fairly before the quality sort
+outfits.sort(key=lambda o: -o["cs"])                     # best-coordinated first
+_fresh_fits = [o for o in outfits if o.get("fresh")]     # keep every fresh-drop fit (feeds the Fresh shelf)
+_other_fits = [o for o in outfits if not o.get("fresh")][:1300]   # only the best-coordinated of the rest
+outfits = _fresh_fits + _other_fits
+outfits.sort(key=lambda o: -o["cs"])                     # overall best-first in storage
 json.dump(outfits, open("outfits.json","w"), indent=1)
 
 print(f"eligible products : {len(rows):,}")

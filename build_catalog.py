@@ -1456,7 +1456,10 @@ function rndFrom(cats,filt,k,style){
  const ctx=fitCtx(k);
  // reason: COLOUR HARMONY + SEASON/SILHOUETTE FIT lead together (co-equal primary), then taste,
  // then style lane, curation/quality, price — the full brain on every fill.
- const prim=r=>harmC(r,acc)*3 + seasonAdj(r,ctx)*2 + propAdj(r,k)*2;
+ // CURATION lead: your saved pieces, curated best-of and video picks are strongly preferred so
+ // auto-fills use the good stuff, not generic stock — matching the server's curation bar.
+ const curB=r=>(r.f?6:0)+(r.n?3:0)+(r.v?3:0)+Math.min(4,(r.sc||0)/2);
+ const prim=r=>harmC(r,acc)*3 + seasonAdj(r,ctx)*2 + propAdj(r,k)*2 + curB(r);
  pool.sort((a,b)=>
    (prim(b)-prim(a))
    ||(tasteBoost(b)-tasteBoost(a))
