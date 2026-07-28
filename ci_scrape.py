@@ -32,6 +32,7 @@ FLASHY = re.compile(
     r"|giorgio armani|emporio armani|ferragamo|zegna|tom ford|moncler|canada goose|moose knuckles"
     r"|philipp plein|dsquared|\bamiri\b|balmain|off.?white|palm angels|golden goose|chrome hearts"
     r"|goyard|herm[eè]s|brunello|\bferrari\b|\bmclaren\b)\b", re.I)
+SWIM = re.compile(r"\b(swim ?shorts?|swim ?trunks?|swim ?suits?|swim ?wear|swim ?briefs?|swimshorts?|swimming|board ?shorts?|bikini|speedo|bathing suit|water ?shorts?)\b", re.I)
 KIDS = re.compile(
     r"\(gs\)|\(ps\)|\(td\)|\(ts\)|\bgs\b|\bgrade.?school\b|\bpre.?school\b|\btoddlers?\b|\binfants?\b"
     r"|\bbig kids?\b|\blittle kids?\b|\bgs sizing\b|^\s*kids?\b"
@@ -89,6 +90,7 @@ for b in BRANDS:
                 title = clean_title(p.get("title",""))
                 if not title: continue
                 if WOMENS.search(title) or KIDS.search(title) or WOMENS_BRAND.search(title): continue
+                if SWIM.search(title): continue   # swimwear is not an outfit piece
                 if FLASHY.search(title) or FLASHY.search(str(p.get("vendor") or "")): continue   # big-designer/flashy flex
                 _ptype = p.get("product_type")
                 if women_item(_ptype, p.get("tags")): continue   # women's by its own tags/type
