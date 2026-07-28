@@ -99,17 +99,27 @@ _SPORTJERSEY = re.compile(
     r"\b(baseball|basketball|football|soccer|hockey|rugby|nba|nfl|mlb|nhl|varsity|throwback|swingman"
     r"|pinstripe)\b[^|]*\bjersey\b|\bjersey\b[^|]*\b(baseball|basketball|football|hockey|nba|nfl|mlb)\b"
     r"|\b(yankees|dodgers|lakers|celtics|bulls|mets|braves|knicks|raiders|cowboys|sox|nlb|negro league)\b", re.I)
-# RECOGNIZED sneaker models — the "understood" trainers Dave wants variety in, so real models lead
-# over a generic "Sneaker"/"Trainer" with no model name (the repeated Abstract A1 problem).
-_GOODSNEAKER = re.compile(
-    r"\b(2002r|990v?\d?|991|992|993|9060|1906r?|1300|1400|574|550|327|530|1000|samba|gazelle|spezial"
-    r"|campus|handball|sl ?72|country|forum|superstar|stan smith|adimatic|taekwondo|sambae|adistar"
-    r"|air ?force ?1|\baf-?1\b|air ?max ?(?:90|95|97|1|plus|tn|180|93|dn)|dunk|jordan ?[1-9]\b|blazer"
-    r"|cortez|p-?6000|vomero|pegasus|air ?max|gel-?(?:nyc|1130|kahana|kayano|quantum|1090|terrain)"
-    r"|gt-?2160|kayano|saucony|shadow ?(?:5000|6000)|progrid|onitsuka|mexico ?66|tokuten|salomon|xt-?6"
-    r"|acs ?pro|speedcross|new balance|\bnb\b|\basics\b|\bveja\b|wallabee|clarks|speedcat|palermo|mostro"
-    r"|\bvans\b|old ?skool|sk8-?hi|knu ?skool|authentic|converse|chuck ?(?:70|taylor)|jack purcell"
-    r"|club ?c|reebok|\bgat\b|german army|mary ?jane ?trainer|puma)\b", re.I)
+# Dave's shoes = variety of GOOD, well-styled sneakers — RUNNERS especially. No model on repeat,
+# and NO adidas-terrace / dad-shoe as the lazy default (samba/gazelle etc.).
+# RUNNERS — the lean. Technical runners across ASICS Gel, NB, Saucony, Salomon, Mizuno, Nike running…
+_RUNNER = re.compile(
+    r"gel-?\w+|\basics\b|\bub\d|ventx|saucony|shadow ?(?:5000|6000)|progrid|ride ?millennium|salomon|xt-?6"
+    r"|speedcross|acs ?pro|\bmizuno\b|wave ?(?:prophecy|rider|creation|daichi)|\bnb\b|new balance"
+    r"|990v?\d?|991|992|993|9060|2002r|1906r?|1300|1400|574|530|327|1080|air ?max ?(?:90|95|97|plus|tn|180|93|dn)?"
+    r"|vomero|pegasus|\bzoom\b|huarache|kayano|nimbus|gt-?2160|monarch|onitsuka|\brunner\b|\btrail\b|hoka|norda|karhu", re.I)
+# GOOD LOWS — the low-top / skate / hyped side, also his taste
+_GOODLOW = re.compile(
+    r"notwoways|\bvault\b|abstract|air ?force ?1|\baf-?1\b|\bdunk\b|jordan ?[1-9]\b|air ?jordan|bape ?sta"
+    r"|\bveja\b|dior ?b\d|margiela ?(?:replica|gat)|\bvans\b|sk8|old ?skool|knu ?skool|\bauthentic\b"
+    r"|converse|chuck ?(?:70|taylor)|jack purcell|reebok|club ?c|p-?6000|blazer ?(?:low|mid)|cortez", re.I)
+# TERRACE / dad-classic — demoted from being the safe default (Dave: not these on repeat)
+_TERRACE = re.compile(
+    r"\bsamba\b|gazelle|spezial|\bcampus\b|stan ?smith|superstar|handball|sl ?72|\bforum\b|adimatic"
+    r"|taekwondo|sambae|\bcountry\b|\bgat\b|german army|wallabee|\bclarks\b", re.I)
+
+# HATS Dave rejects — fair-isle / bobble / pom-pom / patchwork / multicolour knit. He wears fitted caps,
+# truckers, solid beanies, or NO hat. (fair-isle/argyle/patchwork already flag as PATTERN; add the knit-hat tells.)
+_BADHAT = re.compile(r"\b(fair ?isle|bobble|pom ?pom|pompom|nordic|argyle|patchwork|tugihag\w*|boro\b|multi ?colou?r|colou?r ?block|harlequin|jester|christmas|reindeer|snowflake|paisley|floral|tie.?dye|leopard|zebra|gingham|tartan|plaid)\b", re.I)
 
 # Title-first classifier — garment word beats brand/model (fixes 'Jordan thermal shirt' as a shoe).
 _CLS_RULES = [
@@ -260,20 +270,26 @@ for path in files:
         if u in picks:              score += 8;  curated = True   # curated best-of pick
         if u in vidpicks:           score += 7;  curated = True   # worn in the videos studied
         if b.lower() in FAV_BRANDS: score += 6;  curated = True   # a brand you repeat-buy / rate
-        if HERO_RE.search(title):   score += 5                    # graphic / statement top — Dave rates these (Huf etc.)
+        if HERO_RE.search(title):   score += 5                    # graphic / statement top — Dave RATES these (a feature, not noise)
         if BASIC_RE.search(title) and not curated: score -= 4     # plain no-name basic — demote generic filler
         if cat in ("pants","jeans","sweats") and (_ROLLCARGO.search(title) or _SUITPANT.search(title)):
             score -= 6                                             # rolled-cuff cargo / suit-pants — Dave dislikes in casual fits
-        if cat == "footwear":                       # steer fills toward trainers/sneakers
+        # Dave leans BAGGY / flared / parachute / relaxed — reward that silhouette so bottoms read right
+        if cat in ("jeans","pants","sweats","shorts") and re.search(r"\b(baggy|flare[ds]?|parachute|wide|loose|relaxed|balloon|carpenter|stacked)\b", title, re.I):
+            score += 2
+        if cat == "footwear":                       # variety of GOOD sneakers — runners especially
             if DRESS_RE.search(title):              score -= 10  # dressy leather shoes — Dave: trainers, not these
-            elif CASUAL_SHOE_RE.search(title):      score -= 8   # sandals/slides/mules — rare, Dave wears trainers
-            elif SNEAKER_RE.search(title):          score += 3
+            elif CASUAL_SHOE_RE.search(title):      score -= 8   # sandals/slides/mules — rare
+            elif SNEAKER_RE.search(title):          score += 3   # trainers/sneakers are the lane
             else:                                    score -= 5   # non-sneaker, non-casual footwear = usually dressy/odd
-            if _GOODSNEAKER.search(title):          score += 5   # a RECOGNIZED model (samba/2002r/af1/dunk/saucony…) — the understood-trainer variety Dave wants
+            if _RUNNER.search(title):               score += 5   # RUNNERS especially — Dave's lean (Gel/NB/Saucony/Salomon/Mizuno…)
+            elif _GOODLOW.search(title):            score += 4   # good lows (Notwoways/A1/Jordan/Veja/Vans/Dunk…)
+            if _TERRACE.search(title) and not curated: score -= 6  # no adidas-terrace / dad-classic as the safe default
             if b.lower() == "bode":                 score -= 7   # Bode's footwear line is dressy art-shoes, not trainers
-            # busy PRINT shoes (snake/animal/paisley/metallic) rarely coordinate — demote even liked ones,
-            # so a saved statement shoe stays available but never leads a quiet tonal fit.
-            if _LOUDSHOE.search(title):             score -= (5 if curated else 9)
+            if _LOUDSHOE.search(title):             score -= (5 if curated else 9)  # busy PRINT shoes rarely coordinate
+        # fair-isle / bobble / patchwork / multicolour knit hats — Dave: never on a fit
+        if cat == "headwear" and _BADHAT.search(title):
+            score -= 10
         # a formal blazer / suit jacket over casual streetwear is a clash — Dave wears streetwear, not tailoring
         if cat == "jacket_outerwear" and _SUITJKT.search(title) and not curated:
             score -= 6
@@ -350,6 +366,7 @@ for c in bycat: bycat[c].sort(key=lambda r: -r["sc"])
 usage = collections.Counter()        # cap how often any one piece recurs
 brand_usage = collections.Counter()  # spread looks across as many brands as possible
 model_usage = collections.Counter()  # spread SHOE MODELS — so the same silhouette (Samba, Gel-NYC…) doesn't recur across fits
+shoe_brand_usage = collections.Counter()  # spread SHOE BRANDS too — so it isn't 60% ASICS; rotate NB/Saucony/Salomon/Mizuno/Notwoways/Jordan/Veja…
 
 # normalize a shoe title to its MODEL family, so different colourways/retailers of the same silhouette
 # count together and the rotation cycles through many DIFFERENT trainer types (Dave: more types, variety).
@@ -380,6 +397,33 @@ def modelsig(t):
     # no known model → key off the first distinctive word so generic shoes still spread apart
     m = re.search(r"[a-z0-9]{3,}", t.lower())
     return "generic:"+(m.group(0) if m else "shoe")
+
+# SHOE MARQUE (the maker, parsed from the TITLE — the `brand` field is just the retailer, e.g. Afew/Kith),
+# so we can spread across makers and stop the set being ~60% ASICS.
+_MARQUE_KEYS = [
+ ("asics", r"\basics\b|gel-?\w|\bub\d|ventx|kayano|nimbus|cumulus|gt-?2160|quantum ?360|gel ?nyc|onitsuka|mexico ?66"),
+ ("new balance", r"new balance|\bnb\b|\b(?:990|991|992|993|9060|1906|574|530|327|204l|2002r|1300|1400|1080|860|327)\b"),
+ ("nike", r"\bnike\b|air ?max|air ?force|\baf-?1\b|vomero|pegasus|\bzoom\b|huarache|\bblazer\b|cortez|\bdunk\b|p-?6000"),
+ ("jordan", r"\bjordan\b|\baj[1-9]\b"),
+ ("saucony", r"saucony|shadow ?(?:5000|6000)|progrid|ride ?millennium"),
+ ("salomon", r"salomon|xt-?6|speedcross|acs ?pro"),
+ ("mizuno", r"mizuno|wave ?(?:prophecy|rider|creation|daichi)"),
+ ("veja", r"\bveja\b|panenka|v-?(?:90|10|12)\b"),
+ ("notwoways", r"notwoways|\bvault\b|reverse ?syzygy"),
+ ("vans", r"\bvans\b|sk8|old ?skool|knu ?skool"),
+ ("converse", r"converse|chuck ?(?:70|taylor)|jack purcell"),
+ ("puma", r"\bpuma\b|speedcat|palermo|mostro|velophasis"),
+ ("adidas", r"\badidas\b|\bsamba\b|gazelle|spezial|\bcampus\b|superstar|handball|stan ?smith"),
+ ("reebok", r"reebok|club ?c"),
+ ("hoka", r"\bhoka\b"), ("norda", r"\bnorda\b"), ("karhu", r"\bkarhu\b"),
+ ("bape", r"bape ?sta"), ("dior", r"dior ?b\d"), ("abstract", r"abstract|a1 sneaker"),
+]
+_MARQUE_RX = [(k, re.compile(p, re.I)) for k, p in _MARQUE_KEYS]
+def shoe_marque(t):
+    t = t or ""
+    for k, rx in _MARQUE_RX:
+        if rx.search(t): return k
+    return None
 
 # QUALITY FLOOR: build outfits only from the stronger half of each category (bycat is score-sorted),
 # so generic filler never enters a fit — while EVERY curated/saved/fav-brand piece always qualifies.
@@ -475,7 +519,7 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False, ctx
         # soft up to ~4% of the set, then rises hard so no single label can dominate the catalogue
         return bu * 0.35 + 0.9 * max(0, bu - 28)
     def _q(r):
-        _mp = model_usage[modelsig(r["t"])] * 2.6 if r["c"] == "footwear" else 0.0  # spread SHOE MODELS hard
+        _mp = (model_usage[modelsig(r["t"])] * 2.4 + shoe_brand_usage[shoe_marque(r["t"]) or r["b"].lower()] * 2.0) if r["c"] == "footwear" else 0.0  # spread shoe MODELS + MARQUES so it isn't ~60% ASICS
         return (harmony(r["col"], fc) * 11.0        # coordination dominates (tight colour echo like the fit pages)
                 + _ctx_adj(r) * 4.0                 # season/silhouette/formality fit (strong — a wrong-season piece falls away)
                 + min(28, r["sc"]) * 2.2            # CURATION/TASTE weighed heavily — saves, picks, fav brands lead
@@ -516,7 +560,9 @@ def build(name, blurb, slots):
     seen.add(sig)
     for v in fit.values():
         usage[v["u"]] += 1; brand_usage[v["b"].lower()] += 1
-        if v["c"] == "footwear": model_usage[modelsig(v["t"])] += 1
+        if v["c"] == "footwear":
+            model_usage[modelsig(v["t"])] += 1
+            shoe_brand_usage[shoe_marque(v["t"]) or v["b"].lower()] += 1
     brands = {v["b"] for v in fit.values()}
     _cols = [v["col"] for v in fit.values() if v["col"] and v["col"]!="unknown"]
     _accents = set(c for c in _cols if c not in NEUTRALS)
@@ -531,10 +577,8 @@ def build(name, blurb, slots):
     if _shoe:
         if SNEAKER_RE.search(_shoe["t"]) and not CASUAL_SHOE_RE.search(_shoe["t"]): coord += 3
         elif CASUAL_SHOE_RE.search(_shoe["t"]):                                     coord -= 1
-    # a LOUD shoe as the SOLE accent on an otherwise all-neutral fit reads like a random pop, not
-    # styling — the reference pages keep the shoe clean/white or colour-MATCHED to the fit. Nudge away.
-    if _shoe and _shoe["col"] in HEROES and _accents == {_shoe["col"]}:
-        coord -= 3
+    # (a solid COLOUR shoe as the pop on a dark fit is GOOD for Dave — a green/blue Gel on a black base —
+    #  so no penalty here; only busy PRINT shoes get sunk, handled below.)
     # neutral-dominant palette (all but one piece neutral) is the streetwear default that always works
     _neu_n = sum(1 for v in fit.values() if v.get("neu"))
     if _neu_n >= len(fit) - 1: coord += 2
@@ -554,8 +598,8 @@ def build(name, blurb, slots):
     _titles = [v["t"] for v in fit.values()]
     _baggy = sum(1 for t in _titles if _BAGGY.search(t))
     _slim  = sum(1 for t in _titles if _SLIM.search(t))
-    if _baggy >= 2:               coord -= 2      # multiple oversized pieces = shapeless, not styled
     if _baggy >= 1 and _slim >= 1: coord += 2     # relaxed + fitted = deliberate proportion play
+    # (baggy-on-baggy is Dave's default street silhouette — not penalised)
     # ---- VOLUME CONTRAST (from the fit pages): exactly one exaggerated axis reads best ----
     _topp = fit.get("top"); _bottom = fit.get("bottom"); _shoefit = fit.get("shoe")
     if _topp and _bottom:
@@ -563,7 +607,6 @@ def build(name, blurb, slots):
         _bb = bool(_BAGGY.search(_bottom["t"]))
         _ts = bool(_SLIM.search(_topp["t"])); _bs = bool(_SLIM.search(_bottom["t"]))
         if (_tb and _bs) or (_ts and _bb):  coord += 3   # loose + fitted = the one-exaggerated-axis look
-        elif _tb and _bb:                   coord -= 3   # double-baggy reads as a sack
     # ---- FOOTWEAR BULK vs the bottom: substantial shoe under a wide leg, sleek shoe under a taper ----
     if _shoefit and _bottom:
         _wide_leg = bool(_BAGGY.search(_bottom["t"])) and not bool(_SUMMER.search(_bottom["t"]))
@@ -594,23 +637,30 @@ def build(name, blurb, slots):
         coord -= 4                                # suede/high-top/trail shoe on summer shorts — "the footing makes no sense"
     if _shoefit and _layer and _GYMSHOE.search(_shoefit["t"]) and _HEAVY.search(_layer["t"]):
         coord -= 2                                # pool slides under a puffer
-    # ---- REGISTER COHERENCE: a fit must sit in ONE register. Mixing a summer sport jersey under a
-    #      technical shell, or athletic sweats with a tailored top, reads "thrown together" — never the
-    #      tailored look Dave asked for. These are the exact Top-Fits clashes he flagged. ----
+    # ---- GRAPHICS ARE A FEATURE for Dave (layered graphic LS + graphic tee is his signature), so only
+    #      a genuine pile-up (4+ loud pieces) is a mess. One or two strong graphics is the look. ----
     _n_hero = sum(1 for t in _titles if HERO_RE.search(t))
-    if _n_hero >= 2:              coord -= 5       # two+ graphic/statement pieces = busy (the pages lead with ONE)
-    if _n_hero >= 3:              coord -= 4       # three loud pieces = a mess
+    if _n_hero >= 4:              coord -= 4       # four+ competing graphics = actually a mess
     # a short-sleeve sport jersey layered UNDER a jacket/shell — a jersey is a standalone summer top
     if _topp and _layer and _SPORTJERSEY.search(_topp["t"]):
         coord -= 7
-    # athletic sweats / track pants under a tailored or oxford top = register clash
-    if _topp and _bottom and _ELEVATED.search(_topp["t"]) and _ATHLETIC.search(_bottom["t"]):
-        coord -= 4
-    # ---- ELEVATED COHERENCE: a tailored/pleated bottom + a clean low leather shoe + a fine top, kept
-    #      tonal, is exactly the "more tailored" fit Dave wants MORE of. Reward so these rise to the top. ----
-    if (_bottom and _ELEVATED.search(_bottom["t"]) and _shoefit and _CLEANSHOE.search(_shoefit["t"])
-            and not _GYMSHOE.search(_shoefit["t"]) and na <= 1):
+    # ---- DAVE'S PROPORTION: a baggy/flared/parachute bottom under a graphic top, anchored by a GOOD
+    #      sneaker (runner or good low) — reward it so his actual silhouette rises to the top. ----
+    if _bottom and re.search(r"\b(baggy|flare[ds]?|parachute|wide|loose|relaxed|stacked)\b", _bottom["t"], re.I) \
+            and _shoefit and (_RUNNER.search(_shoefit["t"]) or _GOODLOW.search(_shoefit["t"])):
         coord += 4
+    # a good sneaker anywhere in the fit (runner or good low) is on-taste — small nudge
+    if _shoefit and (_RUNNER.search(_shoefit["t"]) or _GOODLOW.search(_shoefit["t"])):
+        coord += 2
+    # a SINGLE colour PLACED on an otherwise dark/neutral base, anchored by a good shoe, is a top-tier
+    # Dave fit (his green/pink/blue/orange pops) — lift it so colour is part of the depth, not buried.
+    if na == 1 and _neu_n >= len(fit) - 1 and _shoefit and (_RUNNER.search(_shoefit["t"]) or _GOODLOW.search(_shoefit["t"])):
+        coord += 3
+    # a colour ECHO — the same accent in TWO places (cap↔shoe or top↔shoe) — reads deliberate; reward it
+    if len(_accents) == 1:
+        _acc = next(iter(_accents))
+        if sum(1 for v in fit.values() if v["col"] == _acc) >= 2:
+            coord += 2
     _fresh = any(v.get("new") for v in fit.values())   # contains a recent drop → Fresh Fits
     return {"formula": name, "note": blurb, "items": fit,
             "brands": len(brands), "cs": coord, "fresh": _fresh,
@@ -1072,6 +1122,82 @@ add("Minimal Summer Tonal",
          ("bottom", pool("shorts", neutral=True)),
          ("shoe", pool("footwear", neutral=True)),
          ("hat", pool("headwear", neutral=True))], 12)
+
+# ============ BLUEPRINT LANES — modeled directly on Dave's own curated fits ============
+# Dark street core + placed colour + graphics + good varied runners + baggy/flared silhouette.
+
+# Dark street staple — graphic top, baggy denim, fitted cap, one good sneaker
+add("Dark Street Staple",
+    "The everyday core — a graphic tee or longsleeve, baggy washed denim, a fitted cap and one good sneaker.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"])),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True, avoid=_BADHAT) or pool("headwear", avoid=_BADHAT))], 22)
+
+# Layered graphic longsleeve — his signature
+add("Layered Graphic LS",
+    "A graphic longsleeve layered up, baggy denim and a good runner — the layered-LS look that runs through your fits.",
+    lambda: [("top", pool("longsleeve")),
+         ("bottom", pool(["jeans","sweats"])),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True, avoid=_BADHAT) or pool("headwear", avoid=_BADHAT))], 18)
+
+# Baggy / flared denim
+add("Baggy Flared Denim",
+    "Graphic top, baggy or flared washed denim, a good low or runner — the core street shape.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"])),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear")),
+         ("hat", pool("headwear", neutral=True, avoid=_BADHAT))], 16)
+
+# Colour pop, GROUNDED — one colour up top on a blacked-out base (Dave's placed colour)
+for colour in ("blue","green","red","pink","orange","purple","yellow"):
+    add("Colour Pop, Grounded",
+        "One colour up top on a blacked-out base — grounded by dark denim and a clean runner, the way you place colour.",
+        lambda c=colour: [("top", pool(["tee","longsleeve","hoodie_sweat"], colour=c)),
+             ("bottom", pool(["jeans","sweats","pants"], cols={"black","grey"}) or pool(["jeans","sweats"], neutral=True)),
+             ("shoe", pool("footwear", cols={"black","white","grey"}, plain=True) or pool("footwear", neutral=True)),
+             ("hat", pool("headwear", cols={"black","grey","white"}, avoid=_BADHAT) or pool("headwear", neutral=True, avoid=_BADHAT))], 4)
+
+# Colour ECHO — a colour tied cap-to-shoe, dark between them
+for colour in ("blue","green","red","orange","pink"):
+    add("Colour Echo",
+        "A colour tied cap-to-shoe — your echo — with the top and bottom kept dark between them.",
+        lambda c=colour: [("hat", pool("headwear", colour=c, avoid=_BADHAT)),
+             ("top", pool(["tee","longsleeve","hoodie_sweat"], cols={"black","grey","white"})),
+             ("bottom", pool(["jeans","sweats"], cols={"black","grey"}) or pool(["jeans","sweats"], neutral=True)),
+             ("shoe", pool("footwear", colour=c) or pool("footwear", neutral=True))], 3)
+
+# Rhinestone / heavy-graphic statement
+add("Rhinestone Statement",
+    "A rhinestone or heavy-graphic hero piece carrying the fit — everything else dark and clean around it.",
+    lambda: [("top", pool(["hoodie_sweat","longsleeve","tee"], hero=True) or pool(["hoodie_sweat","tee"])),
+         ("bottom", pool(["jeans","sweats"], cols={"black","grey"}) or pool(["jeans","sweats"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True, avoid=_BADHAT))], 14)
+
+# Technical set — piped track jacket, clean tee, black sweats, clean runner/AJ
+add("Technical Set (Dark)",
+    "A piped track jacket over a clean tee with black sweats and a clean runner or AJ — the technical set done dark.",
+    lambda: [("layer", pool("windrunner") or pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["tee","longsleeve"], neutral=True, avoid=_SPORTJERSEY)),
+         ("bottom", pool("sweats", cols={"black","grey"}) or pool("sweats", neutral=True)),
+         ("shoe", pool("footwear"))], 12)
+
+# Parachute / tracksuit
+add("Parachute Tracksuit",
+    "Track or fleece jacket, a graphic LS, parachute or track pants and a technical runner — the tracksuit lane.",
+    lambda: [("layer", pool("windrunner") or pool("jacket_outerwear")),
+         ("top", pool(["longsleeve","tee"])),
+         ("bottom", pool("sweats")),
+         ("shoe", pool("footwear"))], 12)
+
+# Clean three-piece — no hat
+add("Clean Three-Piece",
+    "Stripped back — a graphic top, baggy denim and one good sneaker. No hat.",
+    lambda: [("top", pool(["tee","longsleeve","hoodie_sweat"])),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear"))], 16)
 
 # ===== CURATE THE SET: rank by coordination quality, keep every fresh drop + only the BEST of the
 #       rest, and store best-first so the catalogue leads with the strongest, most-styled fits. =====
