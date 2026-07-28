@@ -1278,6 +1278,7 @@ function pickerCoord(r,acc,style,ub,hero,ctx){
  let s=0;
  s+=harmC(r,acc)*3;                                  // colour harmony / accent echo (dominant)
  s+=seasonAdj(r,ctx)*2;                               // season / silhouette fit — real styling reasoning
+ s+=propAdj(r,activeSlot)*2;                           // proportion / footwear-bulk match to the placed pieces
  if(hero && r.col===hero) s+=4;                      // explicitly echo the fit's hero colour
  if(!ub.has((r.b||'').toLowerCase())) s+=3;          // distinct label head-to-toe
  if(style && styleOf(r)===style) s+=3;               // stays in the same style lane
@@ -1407,6 +1408,32 @@ function seasonAdj(r,ctx){ const s=_sig(r); let a=0;
  if(ctx.cold){ if(s.summer)a-=8; if(s.straw&&!s.beanie)a-=3; }
  if(ctx.elev>0 && s.gym)a-=6;
  return a; }
+// ===== PROPORTION / VOLUME + FOOTWEAR-BULK brain (from the fit-page study): one exaggerated axis,
+//       and the shoe's bulk matched to the leg — a wide leg wants a substantial shoe, a taper a sleek one.
+const _BAGGYp=/\b(baggy|wide|loose|balloon|relaxed|oversized|carpenter|skater|puddle|parachute|billow)\b/i;
+const _SLIMp=/\b(slim|skinny|tapered|fitted|slim.?fit|cropped|tailored|straight)\b/i;
+const _BOXYp=/\b(boxy|box ?fit|heavy ?weight|oversized|loose)\b/i;
+const _CHUNKYp=/\b990\b|2002r|9060\b|\b1906\b|air ?force|\baf-?1\b|\bdunk\b|\b540\b|monarch|\bhuarache\b|chunky|dad ?shoe|gel-?nyc|kayano|hi-?top|high-?top/i;
+const _SLEEKp=/\bsamba\b|gazelle|spezial|\bgat\b|german army|margiela|\bcloud\b|\bcourt\b|stan smith|leather low|mexico ?66|onitsuka|plimsoll|\bvulc|\bera\b|\blow(?:-| )?(?:top|pro)?\b|mesh/i;
+// score a candidate for the slot k against the already-placed top/bottom's proportion
+function propAdj(r,k){
+ let a=0; const btm=outfit.bottom, top=outfit.top;
+ if(k==='shoe' && btm){
+   const summerBtm=_SUMMERp.test(btm.t||'');
+   const wide=_BAGGYp.test(btm.t||'') && !summerBtm, slim=_SLIMp.test(btm.t||'');
+   if(wide && _CHUNKYp.test(r.t)) a+=3;      // wide leg wants a substantial shoe
+   if(wide && _SLEEKp.test(r.t)&&!_CHUNKYp.test(r.t)) a-=2;   // sleek low shoe gets lost under a wide leg
+   if(slim && _SLEEKp.test(r.t)) a+=2;       // tapered leg + clean low shoe = elevated
+ }
+ if(k==='top' && btm){
+   if(_BAGGYp.test(btm.t||'') && (_SLIMp.test(r.t)||_BOXYp.test(r.t))) a+=2;   // baggy bottom -> fitted/boxy top
+   if(_BAGGYp.test(btm.t||'') && _BAGGYp.test(r.t)) a-=3;                       // avoid double-baggy
+ }
+ if(k==='bottom' && top){
+   if(_BAGGYp.test(top.t||'') && _SLIMp.test(r.t)) a+=2;      // baggy/boxy top -> slimmer bottom
+   if((_BAGGYp.test(top.t||'')||_BOXYp.test(top.t||'')) && _BAGGYp.test(r.t)) a-=3;
+ }
+ return a; }
 // taste-similarity boost used across fills (_tasteCache is declared+invalidated up in persist())
 function _taste(){ return _tasteCache || (_tasteCache = tasteProfile()); }
 function tasteBoost(r){ const t=_taste(); if(!t.n) return 0; let x=0;
@@ -1429,7 +1456,7 @@ function rndFrom(cats,filt,k,style){
  const ctx=fitCtx(k);
  // reason: COLOUR HARMONY + SEASON/SILHOUETTE FIT lead together (co-equal primary), then taste,
  // then style lane, curation/quality, price — the full brain on every fill.
- const prim=r=>harmC(r,acc)*3 + seasonAdj(r,ctx)*2;
+ const prim=r=>harmC(r,acc)*3 + seasonAdj(r,ctx)*2 + propAdj(r,k)*2;
  pool.sort((a,b)=>
    (prim(b)-prim(a))
    ||(tasteBoost(b)-tasteBoost(a))

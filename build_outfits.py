@@ -243,6 +243,11 @@ _HIGHTOP = re.compile(r"\bhi-?tops?\b|\bhigh-?tops?\b|\bmid-?tops?\b|\bchukka\b|
 _SUEDE   = re.compile(r"\bsuede\b|\bnubuck\b|pony ?hair|\bcalf ?hair\b", re.I)          # warm/luxe material — reads wrong on a shorts fit
 _TRAILSHOE = re.compile(r"gore[- ]?tex|\bgtx\b|salomon|speedcross|\btrail\b|\bacg\b|terrex|\bhoka\b|\bxt-?\d|mountain", re.I)
 _CLEANSHOE = re.compile(r"leather|minimal|\bcourt\b|\bstan\b|\bsamba\b|gazelle|spezial|german army|\bgat\b|achilles|\bclean\b|loafer", re.I)
+# footwear BULK — the styling grammar from the fit pages: a wide leg wants a substantial shoe,
+# a tapered/clean leg wants a sleek low-profile one. Balances volume so the fit reads considered.
+_CHUNKY  = re.compile(r"\b990\b|2002r|9060\b|\b1906\b|\b9070\b|air ?force|\baf-?1\b|\bdunk\b|\b540\b|monarch|\bhuarache\b|chunky|dad ?shoe|gel-?nyc|kayano|\bhi-?top|high-?top", re.I)
+_SLEEK   = re.compile(r"\bsamba\b|gazelle|spezial|\bgat\b|german army|margiela|\bcloud\b|\bcourt\b|stan smith|leather low|mexico ?66|onitsuka|plimsoll|\bvulc|\bera\b|\blow(?:-| )?(?:top|pro)?\b|mesh", re.I)
+_BOXY    = re.compile(r"\bboxy\b|box ?fit|heavy ?weight|\boversized\b|\bloose\b", re.I)
 def _sig(t):
     """Season / silhouette / formality signals from a piece's title — the styling reasoning that
     lets us keep a fit seasonally & proportionally coherent (no suede high-top on summer shorts)."""
@@ -388,6 +393,24 @@ def build(name, blurb, slots):
     _slim  = sum(1 for t in _titles if _SLIM.search(t))
     if _baggy >= 2:               coord -= 2      # multiple oversized pieces = shapeless, not styled
     if _baggy >= 1 and _slim >= 1: coord += 2     # relaxed + fitted = deliberate proportion play
+    # ---- VOLUME CONTRAST (from the fit pages): exactly one exaggerated axis reads best ----
+    _topp = fit.get("top"); _bottom = fit.get("bottom"); _shoefit = fit.get("shoe")
+    if _topp and _bottom:
+        _tb = bool(_BAGGY.search(_topp["t"]) or _BOXY.search(_topp["t"]))
+        _bb = bool(_BAGGY.search(_bottom["t"]))
+        _ts = bool(_SLIM.search(_topp["t"])); _bs = bool(_SLIM.search(_bottom["t"]))
+        if (_tb and _bs) or (_ts and _bb):  coord += 3   # loose + fitted = the one-exaggerated-axis look
+        elif _tb and _bb:                   coord -= 3   # double-baggy reads as a sack
+    # ---- FOOTWEAR BULK vs the bottom: substantial shoe under a wide leg, sleek shoe under a taper ----
+    if _shoefit and _bottom:
+        _wide_leg = bool(_BAGGY.search(_bottom["t"])) and not bool(_SUMMER.search(_bottom["t"]))
+        _tap_leg  = bool(_SLIM.search(_bottom["t"]))
+        if _wide_leg and _CHUNKY.search(_shoefit["t"]):  coord += 2   # wide leg anchored by a substantial shoe
+        if _wide_leg and _SLEEK.search(_shoefit["t"]):   coord -= 2   # sleek low shoe gets lost under a wide leg
+        if _tap_leg  and _SLEEK.search(_shoefit["t"]):   coord += 2   # tapered leg + clean low shoe = elevated
+    # ---- TONAL reward: top & bottom in the same colour family reads expensive ----
+    if _topp and _bottom and _topp["col"] not in ("unknown",) and _topp["col"] == _bottom["col"]:
+        coord += 2
     _bottom = fit.get("bottom"); _shoefit = fit.get("shoe"); _layer = fit.get("layer")
     if _bottom and _shoefit and _ELEVATED.search(_bottom["t"]) and _GYMSHOE.search(_shoefit["t"]):
         coord -= 4                                # slides/sandals under tailored trousers — formality clash
@@ -802,6 +825,68 @@ add("Indigo Denim Clean",
          ("bottom", pool("jeans")),
          ("shoe", pool("footwear", neutral=True)),
          ("layer", pool("jacket_outerwear", neutral=True))], 12)
+
+# ===== NEW LANES — encoded from the fit-page study (@haven.ctl, @civilizednation2nj, @mcgetfitted,
+#       @chamber13main + elevated/Japanese/gorp references). New silhouettes & styling grammar. =====
+add("Quiet Neutral Column",
+    "One colour family head to toe — a fine knit, a wide pleated trouser and a minimal low shoe. Reads expensive whatever it cost.",
+    lambda: [("top", pool(["top","longsleeve","hoodie_sweat"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("layer", pool("jacket_outerwear", neutral=True))], 16)
+add("Japanese Workwear Fatigue",
+    "A boxy sweat or henley over a wide fatigue trouser with a chore coat and a moc-toe or GAT — the ametora workwear look, tonal indigo and ecru.",
+    lambda: [("layer", pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["hoodie_sweat","longsleeve","tee"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear"))], 14)
+add("Denim-on-Denim Repro",
+    "A chambray or western shirt over raw selvedge with a clean sneaker — Canadian tuxedo done in repro denim, contrast washes top and bottom.",
+    lambda: [("top", pool("top", neutral=True) or pool("longsleeve", neutral=True)),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True)),
+         ("layer", pool("jacket_outerwear"))], 12)
+add("Oversized Hoodie Stack",
+    "A boxy hoodie over a wide tapered sweat or denim with a chunky runner — layered hems, greyscale with one muted break.",
+    lambda: [("top", pool("hoodie_sweat")),
+         ("bottom", pool(["sweats","jeans"], neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 14)
+add("Chore-Coat Smart Workwear",
+    "An OCBD or fine knit with a pleated chino under a French chore jacket, a derby or GAT below — tonal earth, tidy at the ankle.",
+    lambda: [("layer", pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["top","longsleeve"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 12)
+add("Gorp Lite Commute",
+    "A grid-fleece quarter-zip over a tapered tech trouser with a trail runner — trim, technical, charcoal with one heather accent.",
+    lambda: [("layer", pool("windrunner")),
+         ("top", pool(["longsleeve","tee"], neutral=True)),
+         ("bottom", pool(["pants","sweats"], neutral=True)),
+         ("shoe", pool("footwear"))], 12)
+add("Boxy Tee, Baggy Denim",
+    "A heavyweight boxy tee over baggy raw denim, anchored by a substantial sneaker — the proportion play the fit pages run on.",
+    lambda: [("top", pool(["tee","longsleeve"])),
+         ("bottom", pool("jeans")),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 16)
+add("Elevated Monochrome Layer",
+    "An oxford under a crew with a wool-blend trouser and a suede low shoe — three shades of one neutral, mid-weight layer for depth.",
+    lambda: [("layer", pool("jacket_outerwear", neutral=True)),
+         ("top", pool(["top","longsleeve","hoodie_sweat"], neutral=True)),
+         ("bottom", pool("pants", neutral=True)),
+         ("shoe", pool("footwear", neutral=True))], 12)
+add("Statement-Shoe Neutral Frame",
+    "Everything black-and-white so a bold sneaker is the only colour — the neutral frame that lets the shoe carry it.",
+    lambda: [("shoe", pool("footwear", hero=True) or pool("footwear")),
+         ("top", pool(["tee","longsleeve","hoodie_sweat"], neutral=True)),
+         ("bottom", pool(["jeans","pants"], neutral=True))], 12)
+add("Minimal Summer Tonal",
+    "An open camp shirt over a tee with a pleated short and a woven mule or minimal low — off-white and sand, ankle shown.",
+    lambda: [("top", pool(["top","tee"], neutral=True)),
+         ("bottom", pool("shorts", neutral=True)),
+         ("shoe", pool("footwear", neutral=True)),
+         ("hat", pool("headwear", neutral=True))], 12)
 
 random.shuffle(outfits)
 # Keep every Fresh fit, then fill variety up to a much larger cap now the catalogue is huge.

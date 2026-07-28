@@ -466,7 +466,7 @@
  },
  {
   "domain": "eu.stussy.com",
-  "brand": "Stüssy",
+  "brand": "St\u00fcssy",
   "cur": "EUR"
  },
  {
@@ -506,7 +506,7 @@
  },
  {
   "domain": "aimeleondore.com",
-  "brand": "Aimé Leon Dore",
+  "brand": "Aim\u00e9 Leon Dore",
   "cur": "USD"
  },
  {
@@ -651,7 +651,7 @@
  },
  {
   "domain": "helascaps.com",
-  "brand": "Hélas",
+  "brand": "H\u00e9las",
   "cur": "EUR"
  },
  {
@@ -1683,5 +1683,30 @@
   "domain": "poeticcollective.com",
   "brand": "Poetic Collective",
   "cur": "EUR"
+ },
+ {
+  "domain": "stampd.com",
+  "brand": "Stampd",
+  "cur": "USD"
+ },
+ {
+  "domain": "serenede.com",
+  "brand": "Serenede",
+  "cur": "USD"
+ },
+ {
+  "domain": "akashi-kama.com",
+  "brand": "Akashi-Kama",
+  "cur": "USD"
+ },
+ {
+  "domain": "hommefemme.com",
+  "brand": "Homme Femme",
+  "cur": "USD"
+ },
+ {
+  "domain": "sagaboi.com",
+  "brand": "Sagaboi",
+  "cur": "GBP"
  }
 ]
