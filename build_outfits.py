@@ -535,6 +535,18 @@ def pick(cands, fit_urls, fit_brands, fit_cols=None, allow_same_brand=False, ctx
 
 outfits = []
 seen = set()
+
+# ONE HERO, THE REST CLEAN — Dave's actual rule. A piece "shouts" if it's a graphic/print/rhinestone/
+# statement, a bold non-neutral colour, or a statement/print shoe. A styled fit has exactly ONE of these
+# (or zero, for a clean tonal fit) — never two competing statements, never three.
+_STATSHOE = re.compile(r"bape ?sta|\bjordan\b|\baj[1-9]\b|\bdunk\b|yeezy|foamposite|off.?white", re.I)
+def _loud(v):
+    t = v.get("t","") or ""
+    if HERO_RE.search(t) or PATTERN_RE.search(t):            return True   # graphic / print / rhinestone / statement
+    if v.get("col") in HEROES:                               return True   # a bold non-neutral colour
+    if v.get("c") == "footwear" and (_LOUDSHOE.search(t) or _STATSHOE.search(t)): return True  # statement / print shoe
+    return False
+
 def build(name, blurb, slots):
     """slots: list of (slotname, candidate_list). Brands are forced distinct."""
     fit, fit_urls, fit_brands, fit_cols, fit_ctx = {}, set(), set(), set(), set()
@@ -554,6 +566,11 @@ def build(name, blurb, slots):
     if _gb and _SUMMER.search(_gb["t"]):
         if _gh and _WINTERHAT.search(_gh["t"]):   return None
         if _gl and _HEAVY.search(_gl["t"]):       return None
+    # ---- ONE HERO, THE REST CLEAN — the rule Dave confirmed. Two competing statements is where his
+    #      fits fall apart; three is a mess. Reject 2+ outright so every built fit has a single focal point.
+    _nloud = sum(1 for v in fit.values() if _loud(v))
+    if _nloud >= 3:
+        return None
     sig = tuple(sorted(fit_urls))
     if sig in seen:
         return None
@@ -639,8 +656,8 @@ def build(name, blurb, slots):
         coord -= 2                                # pool slides under a puffer
     # ---- GRAPHICS ARE A FEATURE for Dave (layered graphic LS + graphic tee is his signature), so only
     #      a genuine pile-up (4+ loud pieces) is a mess. One or two strong graphics is the look. ----
-    _n_hero = sum(1 for t in _titles if HERO_RE.search(t))
-    if _n_hero >= 4:              coord -= 4       # four+ competing graphics = actually a mess
+    if _nloud == 1:              coord += 5       # exactly one focal point, the rest clean = reads STYLED (Dave's rule)
+    if _nloud == 2:              coord -= 9       # two competing statements — where his fits fall apart; sink it hard
     # a short-sleeve sport jersey layered UNDER a jacket/shell — a jersey is a standalone summer top
     if _topp and _layer and _SPORTJERSEY.search(_topp["t"]):
         coord -= 7
