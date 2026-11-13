@@ -1,23 +1,23 @@
 {
- "generated": "2026-11-12T14:43:49.353969+00:00",
+ "generated": "2026-11-13T14:02:30.130648+00:00",
  "cats": {
-  "tee": 2268,
-  "longsleeve": 759,
-  "top": 1041,
-  "hoodie_sweat": 1509,
-  "windrunner": 627,
-  "jeans": 1396,
-  "sweats": 800,
-  "pants": 1004,
-  "shorts": 882,
-  "jacket_outerwear": 1425,
-  "footwear": 1718,
-  "headwear": 1489,
-  "accessory": 561,
-  "underwear": 193,
-  "set": 516,
-  "other": 705
+  "tee": 2535,
+  "longsleeve": 717,
+  "top": 956,
+  "hoodie_sweat": 1570,
+  "windrunner": 537,
+  "jeans": 1397,
+  "sweats": 747,
+  "pants": 906,
+  "shorts": 826,
+  "jacket_outerwear": 1387,
+  "footwear": 1624,
+  "headwear": 1413,
+  "accessory": 540,
+  "underwear": 191,
+  "set": 714,
+  "other": 834
  },
- "rows": 16893,
- "instock": 15438
+ "rows": 16894,
+ "instock": 15669
 }
